@@ -1,0 +1,15 @@
+digraph "com.example.graphics.model.Shape.getY"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  rankdir="RL";
+  Node1 [id="Node000001",label="com.example.graphics.model.\lShape.getY",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [id="edge1_Node000001_Node000002",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node2 [id="Node000002",label="com.example.graphics.observer.\lConsoleLogger.onShapeAdded",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classcom_1_1example_1_1graphics_1_1observer_1_1ConsoleLogger.html#ac1d693958dac00a10a0d83b90bf82b54",tooltip=" "];
+  Node1 -> Node3 [id="edge2_Node000001_Node000003",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node3 [id="Node000003",label="com.example.graphics.observer.\lConsoleLogger.onShapeModified",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classcom_1_1example_1_1graphics_1_1observer_1_1ConsoleLogger.html#a4ee6bea7b3b0054d309ed43112010f3f",tooltip=" "];
+  Node1 -> Node4 [id="edge3_Node000001_Node000004",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node4 [id="Node000004",label="com.example.graphics.observer.\lConsoleLogger.onShapeRemoved",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classcom_1_1example_1_1graphics_1_1observer_1_1ConsoleLogger.html#aaba00d7b16b09d4797453cdbef77aa32",tooltip=" "];
+}

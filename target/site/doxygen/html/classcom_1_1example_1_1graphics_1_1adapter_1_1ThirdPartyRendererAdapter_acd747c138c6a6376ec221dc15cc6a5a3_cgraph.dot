@@ -1,0 +1,15 @@
+digraph "com.example.graphics.adapter.ThirdPartyRendererAdapter.renderCircle"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  rankdir="LR";
+  Node1 [id="Node000001",label="com.example.graphics.adapter.\lThirdPartyRendererAdapter.render\lCircle",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [id="edge1_Node000001_Node000002",color="steelblue1",style="solid",tooltip=" "];
+  Node2 [id="Node000002",label="com.example.graphics.model.\lCircle.getRadius",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classcom_1_1example_1_1graphics_1_1model_1_1Circle.html#a9c210340e21ba311653fcdee09adcab0",tooltip=" "];
+  Node1 -> Node3 [id="edge2_Node000001_Node000003",color="steelblue1",style="solid",tooltip=" "];
+  Node3 [id="Node000003",label="com.example.graphics.model.\lCircle.getX",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classcom_1_1example_1_1graphics_1_1model_1_1Circle.html#a54365014f9071fd689bbd923e8f6ddb2",tooltip=" "];
+  Node1 -> Node4 [id="edge3_Node000001_Node000004",color="steelblue1",style="solid",tooltip=" "];
+  Node4 [id="Node000004",label="com.example.graphics.model.\lCircle.getY",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classcom_1_1example_1_1graphics_1_1model_1_1Circle.html#a0bc7678217e2c65154bd56d6d2a76a39",tooltip=" "];
+}

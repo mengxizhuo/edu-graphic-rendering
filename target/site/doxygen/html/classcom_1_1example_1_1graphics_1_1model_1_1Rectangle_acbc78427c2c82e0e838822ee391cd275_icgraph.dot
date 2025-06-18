@@ -1,0 +1,31 @@
+digraph "com.example.graphics.model.Rectangle.getHeight"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  rankdir="RL";
+  Node1 [id="Node000001",label="com.example.graphics.model.\lRectangle.getHeight",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [id="edge1_Node000001_Node000002",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node2 [id="Node000002",label="com.example.graphics.Swing\lGraphicsApp.isPointOnShape",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classcom_1_1example_1_1graphics_1_1SwingGraphicsApp.html#a1c4d6653e42fc222d6335d008b0b1bc8",tooltip=" "];
+  Node2 -> Node3 [id="edge2_Node000002_Node000003",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node3 [id="Node000003",label="com.example.graphics.Swing\lGraphicsApp.setupRenderPanelListeners",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classcom_1_1example_1_1graphics_1_1SwingGraphicsApp.html#a0fdd57b5be212547139e10db53e5260e",tooltip=" "];
+  Node3 -> Node4 [id="edge3_Node000003_Node000004",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node4 [id="Node000004",label="com.example.graphics.Swing\lGraphicsApp.setupUI",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classcom_1_1example_1_1graphics_1_1SwingGraphicsApp.html#ae8019d68e884d3a0c6f979f93a207c55",tooltip=" "];
+  Node4 -> Node5 [id="edge4_Node000004_Node000005",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node5 [id="Node000005",label="com.example.graphics.Swing\lGraphicsApp.SwingGraphicsApp",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classcom_1_1example_1_1graphics_1_1SwingGraphicsApp.html#a2bbfba9c605640127400aa7f8e982b35",tooltip=" "];
+  Node1 -> Node6 [id="edge5_Node000001_Node000006",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node6 [id="Node000006",label="com.example.graphics.adapter.\lThirdPartyRendererAdapter.render\lRectangle",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classcom_1_1example_1_1graphics_1_1adapter_1_1ThirdPartyRendererAdapter.html#acf6d8f4da42d65d9f6eca6dfb74e2dbe",tooltip=" "];
+  Node1 -> Node7 [id="edge6_Node000001_Node000007",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node7 [id="Node000007",label="com.example.graphics.proxy.\lRemoteRendererImpl.renderRectangle",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classcom_1_1example_1_1graphics_1_1proxy_1_1RemoteRendererImpl.html#aee1fff29aae250aa380b72ce055364cd",tooltip=" "];
+  Node1 -> Node8 [id="edge7_Node000001_Node000008",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node8 [id="Node000008",label="com.example.graphics.render.\lConsoleRenderer.renderRectangle",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classcom_1_1example_1_1graphics_1_1render_1_1ConsoleRenderer.html#adf8e2e2d6ce175b3d6ffd6537f7227a7",tooltip=" "];
+  Node1 -> Node9 [id="edge8_Node000001_Node000009",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node9 [id="Node000009",label="com.example.graphics.render.\lSvgRenderer.renderRectangle",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classcom_1_1example_1_1graphics_1_1render_1_1SvgRenderer.html#a110bdb5865f5de80136143a60636075e",tooltip=" "];
+  Node1 -> Node10 [id="edge9_Node000001_Node000010",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node10 [id="Node000010",label="com.example.graphics.render.\lSwingRenderer.renderRectangle",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classcom_1_1example_1_1graphics_1_1render_1_1SwingRenderer.html#a1b020e55c5dd507ee337f2f6db6cf0fd",tooltip=" "];
+  Node1 -> Node11 [id="edge10_Node000001_Node000011",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node11 [id="Node000011",label="com.example.graphics.visitor.\lJsonExportVisitor.visit",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classcom_1_1example_1_1graphics_1_1visitor_1_1JsonExportVisitor.html#a9bfd62045d4bac9706e9e73a2680ac3e",tooltip=" "];
+  Node1 -> Node12 [id="edge11_Node000001_Node000012",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node12 [id="Node000012",label="com.example.graphics.visitor.\lXmlExportVisitor.visit",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classcom_1_1example_1_1graphics_1_1visitor_1_1XmlExportVisitor.html#a3c9058daa6b391f6114c45bb57bcf3af",tooltip=" "];
+}
