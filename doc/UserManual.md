@@ -92,4 +92,4 @@ drawing.render();
 
 ## 8. 联系方式
 
-如有问题，请联系软件工程课程教师或助教。 
+mengxizhuo@gmail.com。 

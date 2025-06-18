@@ -133,5 +133,5 @@ mvn site
 - 测试结果
 - 代码覆盖率
 
-## 开发团队
-软件工程课程期末大作业
+## 开发
+mengxizhuo@gmail.com

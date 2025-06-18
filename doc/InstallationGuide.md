@@ -119,4 +119,4 @@ java -jar target/graphic-rendering-1.0-SNAPSHOT-jar-with-dependencies.jar
 
 ## 联系支持
 
-如果您在安装过程中遇到任何问题，请联系软件工程课程教师或助教获取支持。 
+如果您在安装过程中遇到任何问题，请联系mengxizhuo@gmail.com获取支持。 

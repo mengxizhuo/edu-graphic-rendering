@@ -19,9 +19,9 @@
 
 - [JavaDoc API 文档](javadoc/index.html)
 - [Doxygen 文档](doxygen/html/index.html)
-- [用户手册](../doc/UserManual.md)
-- [安装指南](../doc/InstallationGuide.md)
-- [设计文档](../doc/DesignDocument.md)
+- [用户手册](../../doc/UserManual.md)
+- [安装指南](../../doc/InstallationGuide.md)
+- [设计文档](../../doc/DesignDocument.md)
 
 ## 项目报告
 
