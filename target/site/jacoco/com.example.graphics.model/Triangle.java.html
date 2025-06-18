@@ -34,36 +34,39 @@ public class Triangle implements Shape {
     @Override
     public int getX() {
         // 返回三角形的重心作为参考点
-<span class="nc" id="L37">        return (x1 + x2 + x3) / 3;</span>
+//        return (x1 + x2 + x3) / 3;
+<span class="fc" id="L38">        return x1;</span>
     }
     
     @Override
     public int getY() {
         // 返回三角形的重心作为参考点
-<span class="nc" id="L43">        return (y1 + y2 + y3) / 3;</span>
+//        return (y1 + y2 + y3) / 3;
+<span class="fc" id="L45">        return y1;</span>
     }
+
     
     @Override
     public void setPosition(int x, int y) {
         // 计算移动的偏移量
-<span class="nc" id="L49">        int dx = x - getX();</span>
-<span class="nc" id="L50">        int dy = y - getY();</span>
+<span class="fc" id="L52">        int dx = x - getX();</span>
+<span class="fc" id="L53">        int dy = y - getY();</span>
         
         // 移动所有顶点
-<span class="nc" id="L53">        x1 += dx;</span>
-<span class="nc" id="L54">        y1 += dy;</span>
-<span class="nc" id="L55">        x2 += dx;</span>
-<span class="nc" id="L56">        y2 += dy;</span>
-<span class="nc" id="L57">        x3 += dx;</span>
-<span class="nc" id="L58">        y3 += dy;</span>
-<span class="nc" id="L59">    }</span>
+<span class="fc" id="L56">        x1 += dx;</span>
+<span class="fc" id="L57">        y1 += dy;</span>
+<span class="fc" id="L58">        x2 += dx;</span>
+<span class="fc" id="L59">        y2 += dy;</span>
+<span class="fc" id="L60">        x3 += dx;</span>
+<span class="fc" id="L61">        y3 += dy;</span>
+<span class="fc" id="L62">    }</span>
     
     /**
      * Get the x coordinate of the first vertex
      * @return the x1 coordinate
      */
     public int getX1() {
-<span class="fc" id="L66">        return x1;</span>
+<span class="fc" id="L69">        return x1;</span>
     }
     
     /**
@@ -71,7 +74,7 @@ public class Triangle implements Shape {
      * @return the y1 coordinate
      */
     public int getY1() {
-<span class="fc" id="L74">        return y1;</span>
+<span class="fc" id="L77">        return y1;</span>
     }
     
     /**
@@ -79,7 +82,7 @@ public class Triangle implements Shape {
      * @return the x2 coordinate
      */
     public int getX2() {
-<span class="fc" id="L82">        return x2;</span>
+<span class="fc" id="L85">        return x2;</span>
     }
     
     /**
@@ -87,7 +90,7 @@ public class Triangle implements Shape {
      * @return the y2 coordinate
      */
     public int getY2() {
-<span class="fc" id="L90">        return y2;</span>
+<span class="fc" id="L93">        return y2;</span>
     }
     
     /**
@@ -95,7 +98,7 @@ public class Triangle implements Shape {
      * @return the x3 coordinate
      */
     public int getX3() {
-<span class="fc" id="L98">        return x3;</span>
+<span class="fc" id="L101">        return x3;</span>
     }
     
     /**
@@ -103,17 +106,35 @@ public class Triangle implements Shape {
      * @return the y3 coordinate
      */
     public int getY3() {
-<span class="fc" id="L106">        return y3;</span>
+<span class="fc" id="L109">        return y3;</span>
     }
+    
+    /**
+     * Set all three vertices of the triangle at once
+     * @param x1 the x coordinate of the first vertex
+     * @param y1 the y coordinate of the first vertex
+     * @param x2 the x coordinate of the second vertex
+     * @param y2 the y coordinate of the second vertex
+     * @param x3 the x coordinate of the third vertex
+     * @param y3 the y coordinate of the third vertex
+     */
+    public void setTriangle(int x1, int y1, int x2, int y2, int x3, int y3) {
+<span class="fc" id="L122">        this.x1 = x1;</span>
+<span class="fc" id="L123">        this.y1 = y1;</span>
+<span class="fc" id="L124">        this.x2 = x2;</span>
+<span class="fc" id="L125">        this.y2 = y2;</span>
+<span class="fc" id="L126">        this.x3 = x3;</span>
+<span class="fc" id="L127">        this.y3 = y3;</span>
+<span class="fc" id="L128">    }</span>
     
     @Override
     public void accept(ShapeVisitor visitor) {
-<span class="fc" id="L111">        visitor.visit(this);</span>
-<span class="fc" id="L112">    }</span>
+<span class="fc" id="L132">        visitor.visit(this);</span>
+<span class="fc" id="L133">    }</span>
     
     @Override
     public Shape clone() {
-<span class="nc" id="L116">        return new Triangle(x1, y1, x2, y2, x3, y3);</span>
+<span class="fc" id="L137">        return new Triangle(x1, y1, x2, y2, x3, y3);</span>
     }
 } 
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

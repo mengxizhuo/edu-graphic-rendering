@@ -4,45 +4,45 @@
  * Mock implementation of the ThirdPartyRenderer interface.
  * This simulates a third-party rendering library.
  */
-<span class="nc" id="L7">public class MockThirdPartyRenderer implements ThirdPartyRenderer {</span>
+<span class="fc" id="L7">public class MockThirdPartyRenderer implements ThirdPartyRenderer {</span>
     @Override
     public void drawCircle(double centerX, double centerY, double radius) {
-<span class="nc" id="L10">        System.out.println(&quot;ThirdParty: Drawing circle at (&quot; + centerX + &quot;,&quot; + centerY + </span>
+<span class="fc" id="L10">        System.out.println(&quot;ThirdParty: Drawing circle at (&quot; + centerX + &quot;,&quot; + centerY + </span>
                            &quot;) with radius &quot; + radius);
-<span class="nc" id="L12">    }</span>
+<span class="fc" id="L12">    }</span>
     
     @Override
     public void drawRect(double x, double y, double width, double height) {
-<span class="nc" id="L16">        System.out.println(&quot;ThirdParty: Drawing rectangle at (&quot; + x + &quot;,&quot; + y + </span>
+<span class="fc" id="L16">        System.out.println(&quot;ThirdParty: Drawing rectangle at (&quot; + x + &quot;,&quot; + y + </span>
                            &quot;) with width &quot; + width + &quot; and height &quot; + height);
-<span class="nc" id="L18">    }</span>
+<span class="fc" id="L18">    }</span>
     
     @Override
     public void drawLine(double startX, double startY, double endX, double endY) {
-<span class="nc" id="L22">        System.out.println(&quot;ThirdParty: Drawing line from (&quot; + startX + &quot;,&quot; + startY + </span>
+<span class="fc" id="L22">        System.out.println(&quot;ThirdParty: Drawing line from (&quot; + startX + &quot;,&quot; + startY + </span>
                            &quot;) to (&quot; + endX + &quot;,&quot; + endY + &quot;)&quot;);
-<span class="nc" id="L24">    }</span>
+<span class="fc" id="L24">    }</span>
     
     @Override
     public void drawPolygon(int[] xPoints, int[] yPoints, int nPoints) {
-<span class="nc" id="L28">        System.out.print(&quot;ThirdParty: Drawing polygon with points: &quot;);</span>
-<span class="nc bnc" id="L29" title="All 2 branches missed.">        for (int i = 0; i &lt; nPoints; i++) {</span>
-<span class="nc" id="L30">            System.out.print(&quot;(&quot; + xPoints[i] + &quot;,&quot; + yPoints[i] + &quot;)&quot;);</span>
-<span class="nc bnc" id="L31" title="All 2 branches missed.">            if (i &lt; nPoints - 1) {</span>
-<span class="nc" id="L32">                System.out.print(&quot;, &quot;);</span>
+<span class="fc" id="L28">        System.out.print(&quot;ThirdParty: Drawing polygon with points: &quot;);</span>
+<span class="fc bfc" id="L29" title="All 2 branches covered.">        for (int i = 0; i &lt; nPoints; i++) {</span>
+<span class="fc" id="L30">            System.out.print(&quot;(&quot; + xPoints[i] + &quot;,&quot; + yPoints[i] + &quot;)&quot;);</span>
+<span class="fc bfc" id="L31" title="All 2 branches covered.">            if (i &lt; nPoints - 1) {</span>
+<span class="fc" id="L32">                System.out.print(&quot;, &quot;);</span>
             }
         }
-<span class="nc" id="L35">        System.out.println();</span>
-<span class="nc" id="L36">    }</span>
+<span class="fc" id="L35">        System.out.println();</span>
+<span class="fc" id="L36">    }</span>
     
     @Override
     public void clearSurface() {
-<span class="nc" id="L40">        System.out.println(&quot;ThirdParty: Clearing surface&quot;);</span>
-<span class="nc" id="L41">    }</span>
+<span class="fc" id="L40">        System.out.println(&quot;ThirdParty: Clearing surface&quot;);</span>
+<span class="fc" id="L41">    }</span>
     
     @Override
     public void refreshDisplay() {
-<span class="nc" id="L45">        System.out.println(&quot;ThirdParty: Refreshing display&quot;);</span>
-<span class="nc" id="L46">    }</span>
+<span class="fc" id="L45">        System.out.println(&quot;ThirdParty: Refreshing display&quot;);</span>
+<span class="fc" id="L46">    }</span>
 } 
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

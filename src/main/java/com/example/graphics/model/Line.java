@@ -99,6 +99,20 @@ public class Line implements Shape {
         this.y2 = y2;
     }
     
+    /**
+     * Set both endpoints of the line at once
+     * @param x1 the x coordinate of the first endpoint
+     * @param y1 the y coordinate of the first endpoint
+     * @param x2 the x coordinate of the second endpoint
+     * @param y2 the y coordinate of the second endpoint
+     */
+    public void setLine(int x1, int y1, int x2, int y2) {
+        this.x1 = x1;
+        this.y1 = y1;
+        this.x2 = x2;
+        this.y2 = y2;
+    }
+    
     @Override
     public void accept(ShapeVisitor visitor) {
         visitor.visit(this);

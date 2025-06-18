@@ -9,7 +9,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content="Apache Maven Doxia Site Renderer 1.9.2" />
-    <title>Graphic Rendering System &#x2013; Graphic Rendering System</title>
+    <title>Graphic Rendering System &#x2013; 图形渲染系统</title>
     <link rel="stylesheet" href="./css/maven-base.css" />
     <link rel="stylesheet" href="./css/maven-theme.css" />
     <link rel="stylesheet" href="./css/site.css" />
@@ -24,9 +24,11 @@
       </div>
     </div>
     <div id="breadcrumbs">
-      <div class="xright">         <span id="publishDate">Last Published: 2025-06-18</span>
-        &#xA0;| <span id="projectVersion">Version: 1.0-SNAPSHOT</span>
+      <div class="xleft">
+        <span id="publishDate">Last Published: 2025-06-18</span>
+          &#xA0;| <span id="projectVersion">Version: 1.0-SNAPSHOT</span>
       </div>
+      <div class="xright">      </div>
       <div class="clear">
         <hr/>
       </div>
@@ -46,20 +48,8 @@
        <h5>Project Reports</h5>
     <ul>
      <li class="none"><a href="dependencies.html" title="Dependencies">Dependencies</a></li>
-     <li class="none"><a href="dependency-management.html" title="Dependency Management">Dependency Management</a></li>
      <li class="none"><a href="surefire-report.html" title="Test Results">Test Results</a></li>
      <li class="none"><a href="jacoco/index.html" title="Coverage">Coverage</a></li>
-    </ul>
-       <h5>Project Documentation</h5>
-    <ul>
-     <li class="expanded"><a href="project-info.html" title="Project Information">Project Information</a>
-      <ul>
-       <li class="none"><strong>About</strong></li>
-       <li class="none"><a href="summary.html" title="Summary">Summary</a></li>
-       <li class="none"><a href="dependencies.html" title="Dependencies">Dependencies</a></li>
-       <li class="none"><a href="dependency-info.html" title="Dependency Information">Dependency Information</a></li>
-      </ul></li>
-     <li class="collapsed"><a href="project-reports.html" title="Project Reports">Project Reports</a></li>
     </ul>
       <a href="http://maven.apache.org/" title="Built by Maven" class="poweredBy">
         <img class="poweredBy" alt="Built by Maven" src="./images/logos/maven-feather.png" />
@@ -68,45 +58,34 @@
     </div>
     <div id="bodyColumn">
       <div id="contentBox">
-<h1>Graphic Rendering System</h1><section>
-<h2><a name="Overview"></a>Overview</h2>
-<p>The Graphic Rendering System is a Java-based application that demonstrates the implementation of various design patterns in a graphical rendering context. This system allows users to create, manipulate, and render different shapes using multiple rendering techniques.</p></section><section>
-<h2><a name="Features"></a>Features</h2>
+<h1>&#x56fe;&#x5f62;&#x6e32;&#x67d3;&#x7cfb;&#x7edf;</h1><section>
+<h2><a name="a.E6.A6.82.E8.BF.B0"></a>&#x6982;&#x8ff0;</h2>
+<p>&#x56fe;&#x5f62;&#x6e32;&#x67d3;&#x7cfb;&#x7edf;&#x662f;&#x4e00;&#x4e2a;&#x57fa;&#x4e8e; Java &#x7684;&#x5e94;&#x7528;&#x7a0b;&#x5e8f;&#xff0c;&#x7528;&#x4e8e;&#x6f14;&#x793a;&#x5728;&#x56fe;&#x5f62;&#x6e32;&#x67d3;&#x73af;&#x5883;&#x4e2d;&#x5404;&#x79cd;&#x8bbe;&#x8ba1;&#x6a21;&#x5f0f;&#x7684;&#x5b9e;&#x73b0;&#x3002;&#x8be5;&#x7cfb;&#x7edf;&#x5141;&#x8bb8;&#x7528;&#x6237;&#x521b;&#x5efa;&#x3001;&#x64cd;&#x4f5c;&#x548c;&#x6e32;&#x67d3;&#x4e0d;&#x540c;&#x7c7b;&#x578b;&#x7684;&#x56fe;&#x5f62;&#xff0c;&#x5e76;&#x652f;&#x6301;&#x591a;&#x79cd;&#x6e32;&#x67d3;&#x6280;&#x672f;&#x3002;</p></section><section>
+<h2><a name="a.E5.8A.9F.E8.83.BD.E7.89.B9.E7.82.B9"></a>&#x529f;&#x80fd;&#x7279;&#x70b9;</h2>
 <ul>
 
-<li>Create various shapes (Circle, Rectangle, Line, Triangle)</li>
-<li>Manipulate shapes (move, resize)</li>
-<li>Render shapes using different renderers (Console, SVG, Swing)</li>
-<li>Undo/Redo functionality</li>
-<li>Export shapes to different formats (XML, JSON)</li>
+<li>&#x521b;&#x5efa;&#x591a;&#x79cd;&#x56fe;&#x5f62;&#xff08;&#x5706;&#x5f62;&#x3001;&#x77e9;&#x5f62;&#x3001;&#x7ebf;&#x6761;&#x3001;&#x4e09;&#x89d2;&#x5f62;&#xff09;</li>
+<li>&#x56fe;&#x5f62;&#x64cd;&#x4f5c;&#xff08;&#x79fb;&#x52a8;&#x3001;&#x8c03;&#x6574;&#x5927;&#x5c0f;&#xff09;</li>
+<li>&#x4f7f;&#x7528;&#x4e0d;&#x540c;&#x7684;&#x6e32;&#x67d3;&#x5668;&#x6e32;&#x67d3;&#x56fe;&#x5f62;&#xff08;&#x63a7;&#x5236;&#x53f0;&#x3001;SVG&#x3001;Swing&#xff09;</li>
+<li>&#x64a4;&#x9500;/&#x91cd;&#x505a;&#x529f;&#x80fd;</li>
+<li>&#x5c06;&#x56fe;&#x5f62;&#x5bfc;&#x51fa;&#x4e3a;&#x4e0d;&#x540c;&#x683c;&#x5f0f;&#xff08;XML&#x3001;JSON&#xff09;</li>
 </ul></section><section>
-<h2><a name="Design_Patterns_Implemented"></a>Design Patterns Implemented</h2>
+<h2><a name="a.E6.96.87.E6.A1.A3.E8.B5.84.E6.96.99"></a>&#x6587;&#x6863;&#x8d44;&#x6599;</h2>
+<p>&#x6211;&#x4eec;&#x63d0;&#x4f9b;&#x4e86;&#x5168;&#x9762;&#x7684;&#x6587;&#x6863;&#x652f;&#x6301;&#xff1a;</p>
 <ul>
 
-<li><b>Factory Pattern</b>: For creating shapes and renderers</li>
-<li><b>Command Pattern</b>: For undo/redo functionality</li>
-<li><b>Observer Pattern</b>: For monitoring shape changes</li>
-<li><b>Adapter Pattern</b>: For integrating third-party renderers</li>
-<li><b>Visitor Pattern</b>: For exporting shapes to different formats</li>
-<li><b>Proxy Pattern</b>: For remote rendering capabilities</li>
-<li><b>Singleton Pattern</b>: For configuration management</li>
+<li><a href="javadoc/index.html">JavaDoc API &#x6587;&#x6863;</a></li>
+<li><a href="doxygen/html/index.html">Doxygen &#x6587;&#x6863;</a></li>
+<li><a href="../doc/UserManual.md">&#x7528;&#x6237;&#x624b;&#x518c;</a></li>
+<li><a href="../doc/InstallationGuide.md">&#x5b89;&#x88c5;&#x6307;&#x5357;</a></li>
+<li><a href="../doc/DesignDocument.md">&#x8bbe;&#x8ba1;&#x6587;&#x6863;</a></li>
 </ul></section><section>
-<h2><a name="Documentation"></a>Documentation</h2>
-<p>Comprehensive documentation is available:</p>
+<h2><a name="a.E9.A1.B9.E7.9B.AE.E6.8A.A5.E5.91.8A"></a>&#x9879;&#x76ee;&#x62a5;&#x544a;</h2>
 <ul>
 
-<li><a href="javadoc/index.html">JavaDoc API Documentation</a></li>
-<li><a href="doxygen/html/index.html">Doxygen Documentation</a></li>
-<li><a href="../doc/UserManual.md">User Manual</a></li>
-<li><a href="../doc/InstallationGuide.md">Installation Guide</a></li>
-<li><a href="../doc/DesignDocument.md">Design Document</a></li>
-</ul></section><section>
-<h2><a name="Project_Reports"></a>Project Reports</h2>
-<ul>
-
-<li><a href="dependencies.html">Dependencies</a></li>
-<li><a href="surefire-report.html">Test Results</a></li>
-<li><a href="jacoco/index.html">Code Coverage</a></li>
+<li><a href="dependencies.html">&#x4f9d;&#x8d56;&#x9879;&#x62a5;&#x544a;</a></li>
+<li><a href="surefire-report.html">&#x6d4b;&#x8bd5;&#x7ed3;&#x679c;&#x62a5;&#x544a;</a></li>
+<li><a href="jacoco/index.html">&#x4ee3;&#x7801;&#x8986;&#x76d6;&#x7387;&#x62a5;&#x544a;</a></li>
 </ul></section>
       </div>
     </div>

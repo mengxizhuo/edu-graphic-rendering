@@ -27,25 +27,25 @@ public class Line implements Shape {
     
     @Override
     public int getX() {
-<span class="nc" id="L30">        return x1; // Return the first endpoint's x as the reference point</span>
+<span class="fc" id="L30">        return x1; // Return the first endpoint's x as the reference point</span>
     }
     
     @Override
     public int getY() {
-<span class="nc" id="L35">        return y1; // Return the first endpoint's y as the reference point</span>
+<span class="fc" id="L35">        return y1; // Return the first endpoint's y as the reference point</span>
     }
     
     @Override
     public void setPosition(int x, int y) {
         // Calculate the offset and apply it to both endpoints
-<span class="nc" id="L41">        int dx = x - x1;</span>
-<span class="nc" id="L42">        int dy = y - y1;</span>
+<span class="fc" id="L41">        int dx = x - x1;</span>
+<span class="fc" id="L42">        int dy = y - y1;</span>
         
-<span class="nc" id="L44">        x1 = x;</span>
-<span class="nc" id="L45">        y1 = y;</span>
-<span class="nc" id="L46">        x2 += dx;</span>
-<span class="nc" id="L47">        y2 += dy;</span>
-<span class="nc" id="L48">    }</span>
+<span class="fc" id="L44">        x1 = x;</span>
+<span class="fc" id="L45">        y1 = y;</span>
+<span class="fc" id="L46">        x2 += dx;</span>
+<span class="fc" id="L47">        y2 += dy;</span>
+<span class="fc" id="L48">    }</span>
     
     /**
      * Get the x coordinate of the first endpoint
@@ -99,14 +99,28 @@ public class Line implements Shape {
 <span class="nc" id="L99">        this.y2 = y2;</span>
 <span class="nc" id="L100">    }</span>
     
+    /**
+     * Set both endpoints of the line at once
+     * @param x1 the x coordinate of the first endpoint
+     * @param y1 the y coordinate of the first endpoint
+     * @param x2 the x coordinate of the second endpoint
+     * @param y2 the y coordinate of the second endpoint
+     */
+    public void setLine(int x1, int y1, int x2, int y2) {
+<span class="fc" id="L110">        this.x1 = x1;</span>
+<span class="fc" id="L111">        this.y1 = y1;</span>
+<span class="fc" id="L112">        this.x2 = x2;</span>
+<span class="fc" id="L113">        this.y2 = y2;</span>
+<span class="fc" id="L114">    }</span>
+    
     @Override
     public void accept(ShapeVisitor visitor) {
-<span class="fc" id="L104">        visitor.visit(this);</span>
-<span class="fc" id="L105">    }</span>
+<span class="fc" id="L118">        visitor.visit(this);</span>
+<span class="fc" id="L119">    }</span>
     
     @Override
     public Shape clone() {
-<span class="nc" id="L109">        return new Line(this.x1, this.y1, this.x2, this.y2);</span>
+<span class="fc" id="L123">        return new Line(this.x1, this.y1, this.x2, this.y2);</span>
     }
 } 
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

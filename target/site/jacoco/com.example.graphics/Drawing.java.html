@@ -142,7 +142,7 @@ public class Drawing implements Serializable {
 <span class="pc bpc" id="L142" title="1 of 2 branches missed.">            } else if (shape instanceof com.example.graphics.model.Triangle) {</span>
 <span class="fc" id="L143">                renderer.renderTriangle((com.example.graphics.model.Triangle) shape);</span>
             }
-        }
+<span class="fc" id="L145">        }</span>
         
 <span class="fc" id="L147">        renderer.display();</span>
 <span class="fc" id="L148">    }</span>
@@ -154,7 +154,7 @@ public class Drawing implements Serializable {
     public void acceptVisitor(ShapeVisitor visitor) {
 <span class="fc bfc" id="L155" title="All 2 branches covered.">        for (Shape shape : shapes) {</span>
 <span class="fc" id="L156">            shape.accept(visitor);</span>
-        }
+<span class="fc" id="L157">        }</span>
 <span class="fc" id="L158">    }</span>
 } 
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

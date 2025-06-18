@@ -91,7 +91,7 @@ public class ConsoleRenderer implements Renderer {
 <span class="nc bnc" id="L91" title="All 2 branches missed.">        int sy = y1 &lt; y2 ? 1 : -1;</span>
 <span class="nc" id="L92">        int err = dx - dy;</span>
         
-<span class="nc" id="L94">        while (true) {</span>
+        while (true) {
 <span class="nc" id="L95">            drawPixel(x1, y1);</span>
             
 <span class="nc bnc" id="L97" title="All 4 branches missed.">            if (x1 == x2 &amp;&amp; y1 == y2) break;</span>
@@ -107,7 +107,7 @@ public class ConsoleRenderer implements Renderer {
 <span class="nc" id="L107">                err += dx;</span>
 <span class="nc" id="L108">                y1 += sy;</span>
             }
-        }
+<span class="nc" id="L110">        }</span>
 <span class="nc" id="L111">    }</span>
     
     @Override
@@ -193,7 +193,7 @@ public class ConsoleRenderer implements Renderer {
 <span class="nc bnc" id="L193" title="All 2 branches missed.">        int sy = y1 &lt; y2 ? 1 : -1;</span>
 <span class="nc" id="L194">        int err = dx - dy;</span>
         
-<span class="nc" id="L196">        while (true) {</span>
+        while (true) {
 <span class="nc" id="L197">            drawPixel(x1, y1);</span>
             
 <span class="nc bnc" id="L199" title="All 4 branches missed.">            if (x1 == x2 &amp;&amp; y1 == y2) break;</span>
@@ -209,7 +209,7 @@ public class ConsoleRenderer implements Renderer {
 <span class="nc" id="L209">                err += dx;</span>
 <span class="nc" id="L210">                y1 += sy;</span>
             }
-        }
+<span class="nc" id="L212">        }</span>
 <span class="nc" id="L213">    }</span>
 } 
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -4,8 +4,8 @@
     <name>Graphic Rendering System</name>
   </bannerLeft>
   
-  <publishDate position="right"/>
-  <version position="right"/>
+  <publishDate position="left"/>
+  <version position="left"/>
   
   <body>
     <menu name="Overview">
@@ -20,11 +20,10 @@
     
     <menu name="Project Reports">
       <item name="Dependencies" href="dependencies.html"/>
-      <item name="Dependency Management" href="dependency-management.html"/>
       <item name="Test Results" href="surefire-report.html"/>
       <item name="Coverage" href="jacoco/index.html"/>
     </menu>
     
-    <menu ref="reports"/>
+<!--    <menu ref="reports"/>-->
   </body>
 </project> 

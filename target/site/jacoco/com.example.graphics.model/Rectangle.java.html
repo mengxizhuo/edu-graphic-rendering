@@ -37,9 +37,9 @@ public class Rectangle implements Shape {
     
     @Override
     public void setPosition(int x, int y) {
-<span class="nc" id="L40">        this.x = x;</span>
-<span class="nc" id="L41">        this.y = y;</span>
-<span class="nc" id="L42">    }</span>
+<span class="fc" id="L40">        this.x = x;</span>
+<span class="fc" id="L41">        this.y = y;</span>
+<span class="fc" id="L42">    }</span>
     
     /**
      * Get the width of the rectangle
@@ -73,14 +73,24 @@ public class Rectangle implements Shape {
 <span class="nc" id="L73">        this.height = height;</span>
 <span class="nc" id="L74">    }</span>
     
+    /**
+     * Set both width and height of the rectangle at once
+     * @param width the new width
+     * @param height the new height
+     */
+    public void setSize(int width, int height) {
+<span class="fc" id="L82">        this.width = width;</span>
+<span class="fc" id="L83">        this.height = height;</span>
+<span class="fc" id="L84">    }</span>
+    
     @Override
     public void accept(ShapeVisitor visitor) {
-<span class="fc" id="L78">        visitor.visit(this);</span>
-<span class="fc" id="L79">    }</span>
+<span class="fc" id="L88">        visitor.visit(this);</span>
+<span class="fc" id="L89">    }</span>
     
     @Override
     public Shape clone() {
-<span class="nc" id="L83">        return new Rectangle(this.x, this.y, this.width, this.height);</span>
+<span class="fc" id="L93">        return new Rectangle(this.x, this.y, this.width, this.height);</span>
     }
 } 
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

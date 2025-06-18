@@ -73,6 +73,16 @@ public class Rectangle implements Shape {
         this.height = height;
     }
     
+    /**
+     * Set both width and height of the rectangle at once
+     * @param width the new width
+     * @param height the new height
+     */
+    public void setSize(int width, int height) {
+        this.width = width;
+        this.height = height;
+    }
+    
     @Override
     public void accept(ShapeVisitor visitor) {
         visitor.visit(this);

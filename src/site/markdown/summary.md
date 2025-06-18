@@ -1,55 +1,62 @@
-# Project Summary
+# 项目概述
 
-## Architecture Overview
+## 架构概览
 
-The Graphic Rendering System is structured around several key components:
+图形渲染系统围绕以下几个核心组件构建：
 
-1. **Shape Models**: Core shape classes (Circle, Rectangle, Line, Triangle) that inherit from the abstract Shape class
-2. **Renderers**: Different rendering strategies (Console, SVG, Swing) implementing the Renderer interface
-3. **Command System**: Implementation of the Command pattern for undo/redo functionality
-4. **Factory System**: Factory classes for creating shapes and renderers
-5. **Observer System**: Implementation of the Observer pattern for monitoring shape changes
-6. **Visitor System**: Implementation of the Visitor pattern for exporting shapes
-7. **Adapter System**: Implementation of the Adapter pattern for third-party renderers
-8. **Proxy System**: Implementation of the Proxy pattern for remote rendering
-9. **Utility Classes**: Supporting functionality like file management
+1. **图形模型**：核心图形类（圆形、矩形、线条、三角形），它们继承自抽象类 `Shape`
+2. **渲染器**：不同的渲染策略（控制台、SVG、Swing），实现 `Renderer` 接口
+3. **命令系统**：使用命令模式实现撤销与重做功能
+4. **工厂系统**：用于创建图形对象和渲染器的工厂类
+5. **观察者系统**：通过观察者模式监听图形变化
+6. **访问者系统**：通过访问者模式实现图形导出功能
+7. **适配器系统**：通过适配器模式集成第三方渲染器
+8. **代理系统**：通过代理模式实现远程渲染功能
+9. **工具类**：如文件管理等辅助功能
 
-## Design Pattern Implementation
+## 设计模式实现
 
-### Factory Pattern
-The system uses factories to create shapes and renderers, allowing for flexibility in object creation.
+### 工厂模式（Factory Pattern）
 
-### Command Pattern
-All operations that modify the drawing are encapsulated as commands, enabling undo/redo functionality.
+系统使用工厂来创建图形对象和渲染器，使得对象的创建过程更加灵活。
 
-### Observer Pattern
-Shape changes are monitored through the Observer pattern, allowing for reactive updates.
+### 命令模式（Command Pattern）
 
-### Adapter Pattern
-Third-party renderers are integrated through adapters, enabling compatibility with external systems.
+所有修改绘图内容的操作都被封装为命令对象，从而支持撤销与重做功能。
 
-### Visitor Pattern
-The Visitor pattern is used for exporting shapes to different formats without modifying the shape classes.
+### 观察者模式（Observer Pattern）
 
-### Proxy Pattern
-Remote rendering is facilitated through the Proxy pattern, providing a local interface to remote rendering services.
+通过观察者模式监控图形的变化，实现界面或其他组件的响应式更新。
 
-### Singleton Pattern
-Configuration management is handled through a singleton, ensuring a single point of access to configuration data.
+### 适配器模式（Adapter Pattern）
 
-## Technical Stack
+通过适配器将第三方渲染器集成到系统中，确保与外部系统的兼容性。
 
-- **Language**: Java 11
-- **Build System**: Maven
-- **Testing Framework**: JUnit 5
-- **Documentation**: JavaDoc, Doxygen
-- **UI Framework**: Java Swing (for graphical rendering)
+### 访问者模式（Visitor Pattern）
 
-## Development Status
+使用访问者模式将图形导出为不同格式，而无需修改图形类本身。
 
-The project is currently in a stable state with all core functionality implemented. Future enhancements may include:
+### 代理模式（Proxy Pattern）
 
-1. Additional shape types
-2. More rendering options
-3. Enhanced export capabilities
-4. Network-based collaborative editing 
+通过代理模式实现远程渲染功能，为远程渲染服务提供本地接口。
+
+### 单例模式（Singleton Pattern）
+
+配置管理采用单例模式实现，确保配置数据的全局唯一访问点。
+
+## 技术栈
+
+- **编程语言**：Java 11
+- **构建工具**：Maven
+- **测试框架**：JUnit 5
+- **文档生成**：JavaDoc、Doxygen
+- **用户界面框架**：Java Swing（用于图形渲染）
+
+## 开发状态
+
+目前项目处于稳定状态，所有核心功能均已实现。未来可能的增强包括：
+
+1. 新增更多类型的图形
+2. 支持更多的渲染选项
+3. 增强导出功能
+4. 实现基于网络的协同编辑功能

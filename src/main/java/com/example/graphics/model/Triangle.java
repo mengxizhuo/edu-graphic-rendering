@@ -34,14 +34,17 @@ public class Triangle implements Shape {
     @Override
     public int getX() {
         // 返回三角形的重心作为参考点
-        return (x1 + x2 + x3) / 3;
+//        return (x1 + x2 + x3) / 3;
+        return x1;
     }
     
     @Override
     public int getY() {
         // 返回三角形的重心作为参考点
-        return (y1 + y2 + y3) / 3;
+//        return (y1 + y2 + y3) / 3;
+        return y1;
     }
+
     
     @Override
     public void setPosition(int x, int y) {
@@ -104,6 +107,24 @@ public class Triangle implements Shape {
      */
     public int getY3() {
         return y3;
+    }
+    
+    /**
+     * Set all three vertices of the triangle at once
+     * @param x1 the x coordinate of the first vertex
+     * @param y1 the y coordinate of the first vertex
+     * @param x2 the x coordinate of the second vertex
+     * @param y2 the y coordinate of the second vertex
+     * @param x3 the x coordinate of the third vertex
+     * @param y3 the y coordinate of the third vertex
+     */
+    public void setTriangle(int x1, int y1, int x2, int y2, int x3, int y3) {
+        this.x1 = x1;
+        this.y1 = y1;
+        this.x2 = x2;
+        this.y2 = y2;
+        this.x3 = x3;
+        this.y3 = y3;
     }
     
     @Override

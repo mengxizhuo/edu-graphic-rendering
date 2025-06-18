@@ -23,27 +23,27 @@ public class ShapeSubject {
      * @param observer the observer to add
      */
     public void addObserver(ShapeObserver observer) {
-<span class="nc bnc" id="L26" title="All 2 branches missed.">        if (!observers.contains(observer)) {</span>
-<span class="nc" id="L27">            observers.add(observer);</span>
+<span class="fc bfc" id="L26" title="All 2 branches covered.">        if (!observers.contains(observer)) {</span>
+<span class="fc" id="L27">            observers.add(observer);</span>
         }
-<span class="nc" id="L29">    }</span>
+<span class="fc" id="L29">    }</span>
     
     /**
      * Remove an observer from the notification list
      * @param observer the observer to remove
      */
     public void removeObserver(ShapeObserver observer) {
-<span class="nc" id="L36">        observers.remove(observer);</span>
-<span class="nc" id="L37">    }</span>
+<span class="fc" id="L36">        observers.remove(observer);</span>
+<span class="fc" id="L37">    }</span>
     
     /**
      * Notify all observers that a shape was added
      * @param shape the shape that was added
      */
     public void notifyShapeAdded(Shape shape) {
-<span class="pc bpc" id="L44" title="1 of 2 branches missed.">        for (ShapeObserver observer : observers) {</span>
-<span class="nc" id="L45">            observer.onShapeAdded(shape);</span>
-<span class="nc" id="L46">        }</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        for (ShapeObserver observer : observers) {</span>
+<span class="fc" id="L45">            observer.onShapeAdded(shape);</span>
+<span class="fc" id="L46">        }</span>
 <span class="fc" id="L47">    }</span>
     
     /**
@@ -51,9 +51,9 @@ public class ShapeSubject {
      * @param shape the shape that was removed
      */
     public void notifyShapeRemoved(Shape shape) {
-<span class="pc bpc" id="L54" title="1 of 2 branches missed.">        for (ShapeObserver observer : observers) {</span>
-<span class="nc" id="L55">            observer.onShapeRemoved(shape);</span>
-<span class="nc" id="L56">        }</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        for (ShapeObserver observer : observers) {</span>
+<span class="fc" id="L55">            observer.onShapeRemoved(shape);</span>
+<span class="fc" id="L56">        }</span>
 <span class="fc" id="L57">    }</span>
     
     /**
@@ -61,9 +61,9 @@ public class ShapeSubject {
      * @param shape the shape that was modified
      */
     public void notifyShapeModified(Shape shape) {
-<span class="pc bpc" id="L64" title="1 of 2 branches missed.">        for (ShapeObserver observer : observers) {</span>
-<span class="nc" id="L65">            observer.onShapeModified(shape);</span>
-<span class="nc" id="L66">        }</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        for (ShapeObserver observer : observers) {</span>
+<span class="fc" id="L65">            observer.onShapeModified(shape);</span>
+<span class="fc" id="L66">        }</span>
 <span class="fc" id="L67">    }</span>
 } 
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

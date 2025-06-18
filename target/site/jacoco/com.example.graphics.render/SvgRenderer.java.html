@@ -28,7 +28,7 @@ public class SvgRenderer implements Renderer {
     @Override
     public void renderCircle(Circle circle) {
 <span class="nc" id="L30">        svgContent.append(String.format(</span>
-<span class="nc" id="L31">            &quot;&lt;circle cx=\&quot;%d\&quot; cy=\&quot;%d\&quot; r=\&quot;%d\&quot; fill=\&quot;none\&quot; stroke=\&quot;black\&quot; stroke-width=\&quot;1\&quot; /&gt;\n&quot;,</span>
+            &quot;&lt;circle cx=\&quot;%d\&quot; cy=\&quot;%d\&quot; r=\&quot;%d\&quot; fill=\&quot;none\&quot; stroke=\&quot;black\&quot; stroke-width=\&quot;1\&quot; /&gt;\n&quot;,
 <span class="nc" id="L32">            circle.getX(), circle.getY(), circle.getRadius()</span>
         ));
 <span class="nc" id="L34">    }</span>
@@ -36,7 +36,7 @@ public class SvgRenderer implements Renderer {
     @Override
     public void renderRectangle(Rectangle rectangle) {
 <span class="nc" id="L38">        svgContent.append(String.format(</span>
-<span class="nc" id="L39">            &quot;&lt;rect x=\&quot;%d\&quot; y=\&quot;%d\&quot; width=\&quot;%d\&quot; height=\&quot;%d\&quot; fill=\&quot;none\&quot; stroke=\&quot;black\&quot; stroke-width=\&quot;1\&quot; /&gt;\n&quot;,</span>
+            &quot;&lt;rect x=\&quot;%d\&quot; y=\&quot;%d\&quot; width=\&quot;%d\&quot; height=\&quot;%d\&quot; fill=\&quot;none\&quot; stroke=\&quot;black\&quot; stroke-width=\&quot;1\&quot; /&gt;\n&quot;,
 <span class="nc" id="L40">            rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight()</span>
         ));
 <span class="nc" id="L42">    }</span>
@@ -44,7 +44,7 @@ public class SvgRenderer implements Renderer {
     @Override
     public void renderLine(Line line) {
 <span class="nc" id="L46">        svgContent.append(String.format(</span>
-<span class="nc" id="L47">            &quot;&lt;line x1=\&quot;%d\&quot; y1=\&quot;%d\&quot; x2=\&quot;%d\&quot; y2=\&quot;%d\&quot; stroke=\&quot;black\&quot; stroke-width=\&quot;1\&quot; /&gt;\n&quot;,</span>
+            &quot;&lt;line x1=\&quot;%d\&quot; y1=\&quot;%d\&quot; x2=\&quot;%d\&quot; y2=\&quot;%d\&quot; stroke=\&quot;black\&quot; stroke-width=\&quot;1\&quot; /&gt;\n&quot;,
 <span class="nc" id="L48">            line.getX1(), line.getY1(), line.getX2(), line.getY2()</span>
         ));
 <span class="nc" id="L50">    }</span>
@@ -52,7 +52,7 @@ public class SvgRenderer implements Renderer {
     @Override
     public void renderTriangle(Triangle triangle) {
 <span class="nc" id="L54">        svgContent.append(String.format(</span>
-<span class="nc" id="L55">            &quot;&lt;polygon points=\&quot;%d,%d %d,%d %d,%d\&quot; fill=\&quot;none\&quot; stroke=\&quot;black\&quot; stroke-width=\&quot;1\&quot; /&gt;\n&quot;,</span>
+            &quot;&lt;polygon points=\&quot;%d,%d %d,%d %d,%d\&quot; fill=\&quot;none\&quot; stroke=\&quot;black\&quot; stroke-width=\&quot;1\&quot; /&gt;\n&quot;,
 <span class="nc" id="L56">            triangle.getX1(), triangle.getY1(),</span>
 <span class="nc" id="L57">            triangle.getX2(), triangle.getY2(),</span>
 <span class="nc" id="L58">            triangle.getX3(), triangle.getY3()</span>
@@ -63,7 +63,7 @@ public class SvgRenderer implements Renderer {
     public void clear() {
 <span class="fc" id="L64">        svgContent = new StringBuilder();</span>
 <span class="fc" id="L65">        svgContent.append(String.format(</span>
-<span class="fc" id="L66">            &quot;&lt;?xml version=\&quot;1.0\&quot; encoding=\&quot;UTF-8\&quot;?&gt;\n&quot; +</span>
+            &quot;&lt;?xml version=\&quot;1.0\&quot; encoding=\&quot;UTF-8\&quot;?&gt;\n&quot; +
             &quot;&lt;svg xmlns=\&quot;http://www.w3.org/2000/svg\&quot; width=\&quot;%d\&quot; height=\&quot;%d\&quot;&gt;\n&quot;,
 <span class="fc" id="L68">            width, height</span>
         ));
@@ -84,4 +84,4 @@ public class SvgRenderer implements Renderer {
 <span class="nc" id="L84">        return svgContent.toString() + &quot;&lt;/svg&gt;&quot;;</span>
     }
 } 
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

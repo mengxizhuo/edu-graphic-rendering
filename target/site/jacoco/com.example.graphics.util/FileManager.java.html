@@ -21,9 +21,9 @@ public class FileManager {
     /**
      * 构造函数
      */
-<span class="nc" id="L24">    public FileManager() {</span>
-<span class="nc" id="L25">        this.shapeFactory = new ShapeFactory();</span>
-<span class="nc" id="L26">    }</span>
+<span class="fc" id="L24">    public FileManager() {</span>
+<span class="fc" id="L25">        this.shapeFactory = new ShapeFactory();</span>
+<span class="fc" id="L26">    }</span>
     
     /**
      * 将图形保存为二进制文件
@@ -60,8 +60,8 @@ public class FileManager {
      * @throws IOException 如果保存失败
      */
     public void saveDrawingJson(String jsonData, String filePath) throws IOException {
-<span class="nc" id="L63">        Files.write(Paths.get(filePath), jsonData.getBytes());</span>
-<span class="nc" id="L64">    }</span>
+<span class="fc" id="L63">        Files.write(Paths.get(filePath), jsonData.getBytes());</span>
+<span class="fc" id="L64">    }</span>
     
     /**
      * 从JSON文件加载图形
@@ -70,59 +70,59 @@ public class FileManager {
      * @throws IOException 如果加载失败
      */
     public List&lt;Shape&gt; loadDrawingJson(String filePath) throws IOException {
-<span class="nc" id="L73">        String content = new String(Files.readAllBytes(Paths.get(filePath)));</span>
-<span class="nc" id="L74">        JSONObject jsonObject = new JSONObject(content);</span>
-<span class="nc" id="L75">        JSONArray shapesArray = jsonObject.getJSONArray(&quot;shapes&quot;);</span>
+<span class="fc" id="L73">        String content = new String(Files.readAllBytes(Paths.get(filePath)));</span>
+<span class="fc" id="L74">        JSONObject jsonObject = new JSONObject(content);</span>
+<span class="fc" id="L75">        JSONArray shapesArray = jsonObject.getJSONArray(&quot;shapes&quot;);</span>
         
-<span class="nc" id="L77">        List&lt;Shape&gt; shapes = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L77">        List&lt;Shape&gt; shapes = new ArrayList&lt;&gt;();</span>
         
-<span class="nc bnc" id="L79" title="All 2 branches missed.">        for (int i = 0; i &lt; shapesArray.length(); i++) {</span>
-<span class="nc" id="L80">            JSONObject shapeJson = shapesArray.getJSONObject(i);</span>
-<span class="nc" id="L81">            String type = shapeJson.getString(&quot;type&quot;);</span>
+<span class="fc bfc" id="L79" title="All 2 branches covered.">        for (int i = 0; i &lt; shapesArray.length(); i++) {</span>
+<span class="fc" id="L80">            JSONObject shapeJson = shapesArray.getJSONObject(i);</span>
+<span class="fc" id="L81">            String type = shapeJson.getString(&quot;type&quot;);</span>
             
-<span class="nc" id="L83">            Shape shape = null;</span>
-<span class="nc bnc" id="L84" title="All 5 branches missed.">            switch (type) {</span>
+<span class="fc" id="L83">            Shape shape = null;</span>
+<span class="pc bpc" id="L84" title="1 of 5 branches missed.">            switch (type) {</span>
                 case &quot;circle&quot;:
-<span class="nc" id="L86">                    shape = shapeFactory.createCircle(</span>
-<span class="nc" id="L87">                        shapeJson.getInt(&quot;x&quot;),</span>
-<span class="nc" id="L88">                        shapeJson.getInt(&quot;y&quot;),</span>
-<span class="nc" id="L89">                        shapeJson.getInt(&quot;radius&quot;)</span>
+<span class="fc" id="L86">                    shape = shapeFactory.createCircle(</span>
+<span class="fc" id="L87">                        shapeJson.getInt(&quot;x&quot;),</span>
+<span class="fc" id="L88">                        shapeJson.getInt(&quot;y&quot;),</span>
+<span class="fc" id="L89">                        shapeJson.getInt(&quot;radius&quot;)</span>
                     );
-<span class="nc" id="L91">                    break;</span>
+<span class="fc" id="L91">                    break;</span>
                 case &quot;rectangle&quot;:
-<span class="nc" id="L93">                    shape = shapeFactory.createRectangle(</span>
-<span class="nc" id="L94">                        shapeJson.getInt(&quot;x&quot;),</span>
-<span class="nc" id="L95">                        shapeJson.getInt(&quot;y&quot;),</span>
-<span class="nc" id="L96">                        shapeJson.getInt(&quot;width&quot;),</span>
-<span class="nc" id="L97">                        shapeJson.getInt(&quot;height&quot;)</span>
+<span class="fc" id="L93">                    shape = shapeFactory.createRectangle(</span>
+<span class="fc" id="L94">                        shapeJson.getInt(&quot;x&quot;),</span>
+<span class="fc" id="L95">                        shapeJson.getInt(&quot;y&quot;),</span>
+<span class="fc" id="L96">                        shapeJson.getInt(&quot;width&quot;),</span>
+<span class="fc" id="L97">                        shapeJson.getInt(&quot;height&quot;)</span>
                     );
-<span class="nc" id="L99">                    break;</span>
+<span class="fc" id="L99">                    break;</span>
                 case &quot;line&quot;:
-<span class="nc" id="L101">                    shape = shapeFactory.createLine(</span>
-<span class="nc" id="L102">                        shapeJson.getInt(&quot;x1&quot;),</span>
-<span class="nc" id="L103">                        shapeJson.getInt(&quot;y1&quot;),</span>
-<span class="nc" id="L104">                        shapeJson.getInt(&quot;x2&quot;),</span>
-<span class="nc" id="L105">                        shapeJson.getInt(&quot;y2&quot;)</span>
+<span class="fc" id="L101">                    shape = shapeFactory.createLine(</span>
+<span class="fc" id="L102">                        shapeJson.getInt(&quot;x1&quot;),</span>
+<span class="fc" id="L103">                        shapeJson.getInt(&quot;y1&quot;),</span>
+<span class="fc" id="L104">                        shapeJson.getInt(&quot;x2&quot;),</span>
+<span class="fc" id="L105">                        shapeJson.getInt(&quot;y2&quot;)</span>
                     );
-<span class="nc" id="L107">                    break;</span>
+<span class="fc" id="L107">                    break;</span>
                 case &quot;triangle&quot;:
-<span class="nc" id="L109">                    shape = shapeFactory.createTriangle(</span>
-<span class="nc" id="L110">                        shapeJson.getInt(&quot;x1&quot;),</span>
-<span class="nc" id="L111">                        shapeJson.getInt(&quot;y1&quot;),</span>
-<span class="nc" id="L112">                        shapeJson.getInt(&quot;x2&quot;),</span>
-<span class="nc" id="L113">                        shapeJson.getInt(&quot;y2&quot;),</span>
-<span class="nc" id="L114">                        shapeJson.getInt(&quot;x3&quot;),</span>
-<span class="nc" id="L115">                        shapeJson.getInt(&quot;y3&quot;)</span>
+<span class="fc" id="L109">                    shape = shapeFactory.createTriangle(</span>
+<span class="fc" id="L110">                        shapeJson.getInt(&quot;x1&quot;),</span>
+<span class="fc" id="L111">                        shapeJson.getInt(&quot;y1&quot;),</span>
+<span class="fc" id="L112">                        shapeJson.getInt(&quot;x2&quot;),</span>
+<span class="fc" id="L113">                        shapeJson.getInt(&quot;y2&quot;),</span>
+<span class="fc" id="L114">                        shapeJson.getInt(&quot;x3&quot;),</span>
+<span class="fc" id="L115">                        shapeJson.getInt(&quot;y3&quot;)</span>
                     );
                     break;
             }
             
-<span class="nc bnc" id="L120" title="All 2 branches missed.">            if (shape != null) {</span>
-<span class="nc" id="L121">                shapes.add(shape);</span>
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">            if (shape != null) {</span>
+<span class="fc" id="L121">                shapes.add(shape);</span>
             }
         }
         
-<span class="nc" id="L125">        return shapes;</span>
+<span class="fc" id="L125">        return shapes;</span>
     }
     
     /**
@@ -132,7 +132,7 @@ public class FileManager {
      * @throws IOException 如果保存失败
      */
     public void saveDrawingXml(String xmlData, String filePath) throws IOException {
-<span class="nc" id="L135">        Files.write(Paths.get(filePath), xmlData.getBytes());</span>
-<span class="nc" id="L136">    }</span>
+<span class="fc" id="L135">        Files.write(Paths.get(filePath), xmlData.getBytes());</span>
+<span class="fc" id="L136">    }</span>
 } 
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

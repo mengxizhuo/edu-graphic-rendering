@@ -156,7 +156,7 @@ public class SwingGraphicsApp extends JFrame {
 <span class="nc bnc" id="L156" title="All 2 branches missed.">            if (drawing.undo()) {</span>
 <span class="nc" id="L157">                drawing.render();</span>
 <span class="nc" id="L158">                statusLabel.setText(&quot;已撤销操作&quot;);</span>
-<span class="nc" id="L159">            } else {</span>
+            } else {
 <span class="nc" id="L160">                statusLabel.setText(&quot;没有操作可撤销&quot;);</span>
             }
 <span class="nc" id="L162">        });</span>
@@ -167,7 +167,7 @@ public class SwingGraphicsApp extends JFrame {
 <span class="nc bnc" id="L167" title="All 2 branches missed.">            if (drawing.redo()) {</span>
 <span class="nc" id="L168">                drawing.render();</span>
 <span class="nc" id="L169">                statusLabel.setText(&quot;已重做操作&quot;);</span>
-<span class="nc" id="L170">            } else {</span>
+            } else {
 <span class="nc" id="L171">                statusLabel.setText(&quot;没有操作可重做&quot;);</span>
             }
 <span class="nc" id="L173">        });</span>
@@ -202,9 +202,9 @@ public class SwingGraphicsApp extends JFrame {
 <span class="nc" id="L202">        JMenuItem aboutItem = new JMenuItem(&quot;关于&quot;);</span>
 <span class="nc" id="L203">        aboutItem.addActionListener(e -&gt; {</span>
 <span class="nc" id="L204">            JOptionPane.showMessageDialog(this,</span>
-<span class="nc" id="L205">                &quot;图形渲染系统\n版本 1.0\n\n使用Java Swing开发的图形渲染应用\n支持多种设计模式&quot;,</span>
-<span class="nc" id="L206">                &quot;关于图形渲染系统&quot;,</span>
-<span class="nc" id="L207">                JOptionPane.INFORMATION_MESSAGE);</span>
+                &quot;图形渲染系统\n版本 1.0\n\n使用Java Swing开发的图形渲染应用\n支持多种设计模式&quot;,
+                &quot;关于图形渲染系统&quot;,
+                JOptionPane.INFORMATION_MESSAGE);
 <span class="nc" id="L208">        });</span>
 <span class="nc" id="L209">        helpMenu.add(aboutItem);</span>
         
@@ -278,7 +278,7 @@ public class SwingGraphicsApp extends JFrame {
 <span class="nc" id="L278">        remoteRenderingToggle.addActionListener(e -&gt; {</span>
 <span class="nc bnc" id="L279" title="All 2 branches missed.">            if (remoteRenderingToggle.isSelected()) {</span>
 <span class="nc" id="L280">                switchToRemoteRendering();</span>
-<span class="nc" id="L281">            } else {</span>
+            } else {
 <span class="nc" id="L282">                switchToLocalRendering();</span>
             }
 <span class="nc" id="L284">        });</span>
@@ -323,14 +323,14 @@ public class SwingGraphicsApp extends JFrame {
                 
                 // 重新渲染
 <span class="nc" id="L325">                drawing.render();</span>
-<span class="nc" id="L326">            } else {</span>
+            } else {
                 // 连接失败，保持本地渲染
 <span class="nc" id="L328">                remoteRenderingToggle.setSelected(false);</span>
 <span class="nc" id="L329">                statusLabel.setText(&quot;远程渲染连接失败，保持本地渲染模式&quot;);</span>
 <span class="nc" id="L330">                JOptionPane.showMessageDialog(this,</span>
-<span class="nc" id="L331">                    &quot;无法连接到远程渲染服务&quot;,</span>
-<span class="nc" id="L332">                    &quot;连接错误&quot;,</span>
-<span class="nc" id="L333">                    JOptionPane.ERROR_MESSAGE);</span>
+                    &quot;无法连接到远程渲染服务&quot;,
+                    &quot;连接错误&quot;,
+                    JOptionPane.ERROR_MESSAGE);
             }
         }
 <span class="nc" id="L336">    }</span>
@@ -349,7 +349,7 @@ public class SwingGraphicsApp extends JFrame {
 <span class="nc" id="L349">                        statusLabel.setText(&quot;已选中图形: &quot; + getShapeTypeName(shape));</span>
 <span class="nc" id="L350">                        return;</span>
                     }
-                }
+<span class="nc" id="L352">                }</span>
                 
                 // 如果没有点击现有形状，处理新形状创建
 <span class="nc bnc" id="L355" title="All 2 branches missed.">                if (currentShapeType.equals(&quot;Line&quot;)) {</span>
@@ -359,7 +359,7 @@ public class SwingGraphicsApp extends JFrame {
 <span class="nc" id="L359">                        x1 = e.getX();</span>
 <span class="nc" id="L360">                        y1 = e.getY();</span>
 <span class="nc" id="L361">                        statusLabel.setText(&quot;绘制线条: 已设置起点，请点击终点&quot;);</span>
-<span class="nc" id="L362">                    } else {</span>
+                    } else {
                         // 完成线条绘制
 <span class="nc" id="L364">                        x2 = e.getX();</span>
 <span class="nc" id="L365">                        y2 = e.getY();</span>
@@ -368,7 +368,7 @@ public class SwingGraphicsApp extends JFrame {
 <span class="nc" id="L368">                        drawing.render();</span>
 <span class="nc" id="L369">                        isDrawingLine = false;</span>
 <span class="nc" id="L370">                        statusLabel.setText(&quot;已添加线条&quot;);</span>
-                    }
+<span class="nc" id="L371">                    }</span>
 <span class="nc bnc" id="L372" title="All 2 branches missed.">                } else if (currentShapeType.equals(&quot;Triangle&quot;)) {</span>
 <span class="nc bnc" id="L373" title="All 2 branches missed.">                    if (triangleStage == 0) {</span>
                         // 第一个点
@@ -391,8 +391,8 @@ public class SwingGraphicsApp extends JFrame {
 <span class="nc" id="L391">                        triangleStage = 0;</span>
 <span class="nc" id="L392">                        isDrawingTriangle = false;</span>
 <span class="nc" id="L393">                        statusLabel.setText(&quot;已添加三角形&quot;);</span>
-                    }
-<span class="nc" id="L395">                } else {</span>
+<span class="nc" id="L394">                    }</span>
+                } else {
                     // 创建其他形状
 <span class="nc" id="L397">                    createNewShape(e.getPoint());</span>
                 }
@@ -448,8 +448,8 @@ public class SwingGraphicsApp extends JFrame {
 <span class="nc bnc" id="L448" title="All 2 branches missed.">            return distance &lt;= circle.getRadius();</span>
 <span class="nc bnc" id="L449" title="All 2 branches missed.">        } else if (shape instanceof com.example.graphics.model.Rectangle) {</span>
 <span class="nc" id="L450">            com.example.graphics.model.Rectangle rect = (com.example.graphics.model.Rectangle) shape;</span>
-<span class="nc bnc" id="L451" title="All 6 branches missed.">            return point.x &gt;= rect.getX() &amp;&amp; point.x &lt;= rect.getX() + rect.getWidth() &amp;&amp;</span>
-<span class="nc bnc" id="L452" title="All 2 branches missed.">                   point.y &gt;= rect.getY() &amp;&amp; point.y &lt;= rect.getY() + rect.getHeight();</span>
+<span class="nc bnc" id="L451" title="All 4 branches missed.">            return point.x &gt;= rect.getX() &amp;&amp; point.x &lt;= rect.getX() + rect.getWidth() &amp;&amp;</span>
+<span class="nc bnc" id="L452" title="All 4 branches missed.">                   point.y &gt;= rect.getY() &amp;&amp; point.y &lt;= rect.getY() + rect.getHeight();</span>
 <span class="nc bnc" id="L453" title="All 2 branches missed.">        } else if (shape instanceof com.example.graphics.model.Line) {</span>
 <span class="nc" id="L454">            com.example.graphics.model.Line line = (com.example.graphics.model.Line) shape;</span>
 <span class="nc" id="L455">            double lineLength = Math.sqrt(</span>
@@ -524,9 +524,9 @@ public class SwingGraphicsApp extends JFrame {
     private void newDrawing() {
 <span class="nc bnc" id="L525" title="All 2 branches missed.">        if (!drawing.getShapes().isEmpty()) {</span>
 <span class="nc" id="L526">            int option = JOptionPane.showConfirmDialog(this,</span>
-<span class="nc" id="L527">                &quot;是否保存当前图形？&quot;,</span>
-<span class="nc" id="L528">                &quot;新建&quot;,</span>
-<span class="nc" id="L529">                JOptionPane.YES_NO_CANCEL_OPTION);</span>
+                &quot;是否保存当前图形？&quot;,
+                &quot;新建&quot;,
+                JOptionPane.YES_NO_CANCEL_OPTION);
             
 <span class="nc bnc" id="L531" title="All 2 branches missed.">            if (option == JOptionPane.YES_OPTION) {</span>
 <span class="nc" id="L532">                saveDrawing();</span>
@@ -560,7 +560,7 @@ public class SwingGraphicsApp extends JFrame {
                 
 <span class="nc bnc" id="L561" title="All 2 branches missed.">                if (filePath.toLowerCase().endsWith(&quot;.json&quot;)) {</span>
 <span class="nc" id="L562">                    shapes = fileManager.loadDrawingJson(filePath);</span>
-<span class="nc" id="L563">                } else {</span>
+                } else {
                     // 默认为二进制文件
 <span class="nc" id="L565">                    shapes = fileManager.loadDrawingBinary(filePath);</span>
                 }
@@ -571,7 +571,7 @@ public class SwingGraphicsApp extends JFrame {
                 // 添加加载的图形
 <span class="nc bnc" id="L572" title="All 2 branches missed.">                for (Shape shape : shapes) {</span>
 <span class="nc" id="L573">                    drawing.addShape(shape);</span>
-                }
+<span class="nc" id="L574">                }</span>
                 
 <span class="nc" id="L576">                drawing.render();</span>
 <span class="nc" id="L577">                statusLabel.setText(&quot;已加载图形文件: &quot; + file.getName());</span>
@@ -579,10 +579,10 @@ public class SwingGraphicsApp extends JFrame {
 <span class="nc" id="L579">            } catch (Exception e) {</span>
 <span class="nc" id="L580">                JOptionPane.showMessageDialog(this,</span>
 <span class="nc" id="L581">                    &quot;加载文件失败: &quot; + e.getMessage(),</span>
-<span class="nc" id="L582">                    &quot;错误&quot;,</span>
-<span class="nc" id="L583">                    JOptionPane.ERROR_MESSAGE);</span>
+                    &quot;错误&quot;,
+                    JOptionPane.ERROR_MESSAGE);
 <span class="nc" id="L584">                statusLabel.setText(&quot;加载文件失败&quot;);</span>
-            }
+<span class="nc" id="L585">            }</span>
         }
 <span class="nc" id="L587">    }</span>
     
@@ -612,10 +612,10 @@ public class SwingGraphicsApp extends JFrame {
 <span class="nc" id="L612">            } catch (IOException e) {</span>
 <span class="nc" id="L613">                JOptionPane.showMessageDialog(this,</span>
 <span class="nc" id="L614">                    &quot;保存文件失败: &quot; + e.getMessage(),</span>
-<span class="nc" id="L615">                    &quot;错误&quot;,</span>
-<span class="nc" id="L616">                    JOptionPane.ERROR_MESSAGE);</span>
+                    &quot;错误&quot;,
+                    JOptionPane.ERROR_MESSAGE);
 <span class="nc" id="L617">                statusLabel.setText(&quot;保存文件失败&quot;);</span>
-            }
+<span class="nc" id="L618">            }</span>
         }
 <span class="nc" id="L620">    }</span>
     
@@ -651,22 +651,22 @@ public class SwingGraphicsApp extends JFrame {
 <span class="nc" id="L651">                    fileManager.saveDrawingJson(content, filePath);</span>
 <span class="nc bnc" id="L652" title="All 2 branches missed.">                } else if (extension.equals(&quot;xml&quot;)) {</span>
 <span class="nc" id="L653">                    fileManager.saveDrawingXml(content, filePath);</span>
-<span class="nc" id="L654">                } else {</span>
+                } else {
 <span class="nc" id="L655">                    try (FileWriter writer = new FileWriter(filePath)) {</span>
 <span class="nc" id="L656">                        writer.write(content);</span>
                     }
                 }
                 
 <span class="nc" id="L660">                JOptionPane.showMessageDialog(this, </span>
-<span class="nc" id="L661">                    &quot;文件已保存至：&quot; + filePath,</span>
-<span class="nc" id="L662">                    &quot;保存成功&quot;, JOptionPane.INFORMATION_MESSAGE);</span>
+                    &quot;文件已保存至：&quot; + filePath,
+                    &quot;保存成功&quot;, JOptionPane.INFORMATION_MESSAGE);
 <span class="nc" id="L663">                statusLabel.setText(&quot;已导出为&quot; + extension.toUpperCase() + &quot;文件&quot;);</span>
 <span class="nc" id="L664">            } catch (IOException e) {</span>
 <span class="nc" id="L665">                JOptionPane.showMessageDialog(this,</span>
 <span class="nc" id="L666">                    &quot;保存文件失败：&quot; + e.getMessage(),</span>
-<span class="nc" id="L667">                    &quot;错误&quot;, JOptionPane.ERROR_MESSAGE);</span>
+                    &quot;错误&quot;, JOptionPane.ERROR_MESSAGE);
 <span class="nc" id="L668">                statusLabel.setText(&quot;导出失败&quot;);</span>
-            }
+<span class="nc" id="L669">            }</span>
         }
 <span class="nc" id="L671">    }</span>
     
@@ -675,4 +675,4 @@ public class SwingGraphicsApp extends JFrame {
 <span class="nc" id="L675">        SwingUtilities.invokeLater(SwingGraphicsApp::new);</span>
 <span class="nc" id="L676">    }</span>
 } 
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,39 +1,30 @@
-# Graphic Rendering System
+# 图形渲染系统
 
-## Overview
+## 概述
 
-The Graphic Rendering System is a Java-based application that demonstrates the implementation of various design patterns in a graphical rendering context. This system allows users to create, manipulate, and render different shapes using multiple rendering techniques.
+图形渲染系统是一个基于 Java 的应用程序，用于演示在图形渲染环境中各种设计模式的实现。该系统允许用户创建、操作和渲染不同类型的图形，并支持多种渲染技术。
 
-## Features
+## 功能特点
 
-- Create various shapes (Circle, Rectangle, Line, Triangle)
-- Manipulate shapes (move, resize)
-- Render shapes using different renderers (Console, SVG, Swing)
-- Undo/Redo functionality
-- Export shapes to different formats (XML, JSON)
+- 创建多种图形（圆形、矩形、线条、三角形）
+- 图形操作（移动、调整大小）
+- 使用不同的渲染器渲染图形（控制台、SVG、Swing）
+- 撤销/重做功能
+- 将图形导出为不同格式（XML、JSON）
 
-## Design Patterns Implemented
 
-- **Factory Pattern**: For creating shapes and renderers
-- **Command Pattern**: For undo/redo functionality
-- **Observer Pattern**: For monitoring shape changes
-- **Adapter Pattern**: For integrating third-party renderers
-- **Visitor Pattern**: For exporting shapes to different formats
-- **Proxy Pattern**: For remote rendering capabilities
-- **Singleton Pattern**: For configuration management
+## 文档资料
 
-## Documentation
+我们提供了全面的文档支持：
 
-Comprehensive documentation is available:
+- [JavaDoc API 文档](javadoc/index.html)
+- [Doxygen 文档](doxygen/html/index.html)
+- [用户手册](../doc/UserManual.md)
+- [安装指南](../doc/InstallationGuide.md)
+- [设计文档](../doc/DesignDocument.md)
 
-- [JavaDoc API Documentation](javadoc/index.html)
-- [Doxygen Documentation](doxygen/html/index.html)
-- [User Manual](../doc/UserManual.md)
-- [Installation Guide](../doc/InstallationGuide.md)
-- [Design Document](../doc/DesignDocument.md)
+## 项目报告
 
-## Project Reports
-
-- [Dependencies](dependencies.html)
-- [Test Results](surefire-report.html)
-- [Code Coverage](jacoco/index.html) 
+- [依赖项报告](dependencies.html)
+- [测试结果报告](surefire-report.html)
+- [代码覆盖率报告](jacoco/index.html)

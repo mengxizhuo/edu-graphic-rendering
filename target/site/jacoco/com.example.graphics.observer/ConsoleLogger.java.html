@@ -6,23 +6,23 @@ import com.example.graphics.model.Shape;
  * Console logger implementation of the ShapeObserver interface.
  * This logs shape changes to the console.
  */
-<span class="nc" id="L9">public class ConsoleLogger implements ShapeObserver {</span>
+<span class="fc" id="L9">public class ConsoleLogger implements ShapeObserver {</span>
     @Override
     public void onShapeAdded(Shape shape) {
-<span class="nc" id="L12">        System.out.println(&quot;Shape added: &quot; + shape.getClass().getSimpleName() + </span>
-<span class="nc" id="L13">                           &quot; at position (&quot; + shape.getX() + &quot;,&quot; + shape.getY() + &quot;)&quot;);</span>
-<span class="nc" id="L14">    }</span>
+<span class="fc" id="L12">        System.out.println(&quot;Shape added: &quot; + shape.getClass().getSimpleName() + </span>
+<span class="fc" id="L13">                           &quot; at position (&quot; + shape.getX() + &quot;,&quot; + shape.getY() + &quot;)&quot;);</span>
+<span class="fc" id="L14">    }</span>
     
     @Override
     public void onShapeRemoved(Shape shape) {
-<span class="nc" id="L18">        System.out.println(&quot;Shape removed: &quot; + shape.getClass().getSimpleName() + </span>
-<span class="nc" id="L19">                           &quot; at position (&quot; + shape.getX() + &quot;,&quot; + shape.getY() + &quot;)&quot;);</span>
-<span class="nc" id="L20">    }</span>
+<span class="fc" id="L18">        System.out.println(&quot;Shape removed: &quot; + shape.getClass().getSimpleName() + </span>
+<span class="fc" id="L19">                           &quot; at position (&quot; + shape.getX() + &quot;,&quot; + shape.getY() + &quot;)&quot;);</span>
+<span class="fc" id="L20">    }</span>
     
     @Override
     public void onShapeModified(Shape shape) {
-<span class="nc" id="L24">        System.out.println(&quot;Shape modified: &quot; + shape.getClass().getSimpleName() + </span>
-<span class="nc" id="L25">                           &quot; at position (&quot; + shape.getX() + &quot;,&quot; + shape.getY() + &quot;)&quot;);</span>
-<span class="nc" id="L26">    }</span>
+<span class="fc" id="L24">        System.out.println(&quot;Shape modified: &quot; + shape.getClass().getSimpleName() + </span>
+<span class="fc" id="L25">                           &quot; at position (&quot; + shape.getX() + &quot;,&quot; + shape.getY() + &quot;)&quot;);</span>
+<span class="fc" id="L26">    }</span>
 } 
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

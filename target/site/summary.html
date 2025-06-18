@@ -9,7 +9,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content="Apache Maven Doxia Site Renderer 1.9.2" />
-    <title>Graphic Rendering System &#x2013; Project Summary</title>
+    <title>Graphic Rendering System &#x2013; 项目概述</title>
     <link rel="stylesheet" href="./css/maven-base.css" />
     <link rel="stylesheet" href="./css/maven-theme.css" />
     <link rel="stylesheet" href="./css/site.css" />
@@ -46,20 +46,8 @@
        <h5>Project Reports</h5>
     <ul>
      <li class="none"><a href="dependencies.html" title="Dependencies">Dependencies</a></li>
-     <li class="none"><a href="dependency-management.html" title="Dependency Management">Dependency Management</a></li>
      <li class="none"><a href="surefire-report.html" title="Test Results">Test Results</a></li>
      <li class="none"><a href="jacoco/index.html" title="Coverage">Coverage</a></li>
-    </ul>
-       <h5>Project Documentation</h5>
-    <ul>
-     <li class="expanded"><a href="project-info.html" title="Project Information">Project Information</a>
-      <ul>
-       <li class="none"><a href="index.html" title="About">About</a></li>
-       <li class="none"><strong>Summary</strong></li>
-       <li class="none"><a href="dependencies.html" title="Dependencies">Dependencies</a></li>
-       <li class="none"><a href="dependency-info.html" title="Dependency Information">Dependency Information</a></li>
-      </ul></li>
-     <li class="collapsed"><a href="project-reports.html" title="Project Reports">Project Reports</a></li>
     </ul>
       <a href="http://maven.apache.org/" title="Built by Maven" class="poweredBy">
         <img class="poweredBy" alt="Built by Maven" src="./images/logos/maven-feather.png" />
@@ -68,53 +56,53 @@
     </div>
     <div id="bodyColumn">
       <div id="contentBox">
-<h1>Project Summary</h1><section>
-<h2><a name="Architecture_Overview"></a>Architecture Overview</h2>
-<p>The Graphic Rendering System is structured around several key components:</p>
+<h1>&#x9879;&#x76ee;&#x6982;&#x8ff0;</h1><section>
+<h2><a name="a.E6.9E.B6.E6.9E.84.E6.A6.82.E8.A7.88"></a>&#x67b6;&#x6784;&#x6982;&#x89c8;</h2>
+<p>&#x56fe;&#x5f62;&#x6e32;&#x67d3;&#x7cfb;&#x7edf;&#x56f4;&#x7ed5;&#x4ee5;&#x4e0b;&#x51e0;&#x4e2a;&#x6838;&#x5fc3;&#x7ec4;&#x4ef6;&#x6784;&#x5efa;&#xff1a;</p>
 <ol style="list-style-type: decimal">
 
-<li><b>Shape Models</b>: Core shape classes (Circle, Rectangle, Line, Triangle) that inherit from the abstract Shape class</li>
-<li><b>Renderers</b>: Different rendering strategies (Console, SVG, Swing) implementing the Renderer interface</li>
-<li><b>Command System</b>: Implementation of the Command pattern for undo/redo functionality</li>
-<li><b>Factory System</b>: Factory classes for creating shapes and renderers</li>
-<li><b>Observer System</b>: Implementation of the Observer pattern for monitoring shape changes</li>
-<li><b>Visitor System</b>: Implementation of the Visitor pattern for exporting shapes</li>
-<li><b>Adapter System</b>: Implementation of the Adapter pattern for third-party renderers</li>
-<li><b>Proxy System</b>: Implementation of the Proxy pattern for remote rendering</li>
-<li><b>Utility Classes</b>: Supporting functionality like file management</li>
+<li><b>&#x56fe;&#x5f62;&#x6a21;&#x578b;</b>&#xff1a;&#x6838;&#x5fc3;&#x56fe;&#x5f62;&#x7c7b;&#xff08;&#x5706;&#x5f62;&#x3001;&#x77e9;&#x5f62;&#x3001;&#x7ebf;&#x6761;&#x3001;&#x4e09;&#x89d2;&#x5f62;&#xff09;&#xff0c;&#x5b83;&#x4eec;&#x7ee7;&#x627f;&#x81ea;&#x62bd;&#x8c61;&#x7c7b; <code>Shape</code></li>
+<li><b>&#x6e32;&#x67d3;&#x5668;</b>&#xff1a;&#x4e0d;&#x540c;&#x7684;&#x6e32;&#x67d3;&#x7b56;&#x7565;&#xff08;&#x63a7;&#x5236;&#x53f0;&#x3001;SVG&#x3001;Swing&#xff09;&#xff0c;&#x5b9e;&#x73b0; <code>Renderer</code> &#x63a5;&#x53e3;</li>
+<li><b>&#x547d;&#x4ee4;&#x7cfb;&#x7edf;</b>&#xff1a;&#x4f7f;&#x7528;&#x547d;&#x4ee4;&#x6a21;&#x5f0f;&#x5b9e;&#x73b0;&#x64a4;&#x9500;&#x4e0e;&#x91cd;&#x505a;&#x529f;&#x80fd;</li>
+<li><b>&#x5de5;&#x5382;&#x7cfb;&#x7edf;</b>&#xff1a;&#x7528;&#x4e8e;&#x521b;&#x5efa;&#x56fe;&#x5f62;&#x5bf9;&#x8c61;&#x548c;&#x6e32;&#x67d3;&#x5668;&#x7684;&#x5de5;&#x5382;&#x7c7b;</li>
+<li><b>&#x89c2;&#x5bdf;&#x8005;&#x7cfb;&#x7edf;</b>&#xff1a;&#x901a;&#x8fc7;&#x89c2;&#x5bdf;&#x8005;&#x6a21;&#x5f0f;&#x76d1;&#x542c;&#x56fe;&#x5f62;&#x53d8;&#x5316;</li>
+<li><b>&#x8bbf;&#x95ee;&#x8005;&#x7cfb;&#x7edf;</b>&#xff1a;&#x901a;&#x8fc7;&#x8bbf;&#x95ee;&#x8005;&#x6a21;&#x5f0f;&#x5b9e;&#x73b0;&#x56fe;&#x5f62;&#x5bfc;&#x51fa;&#x529f;&#x80fd;</li>
+<li><b>&#x9002;&#x914d;&#x5668;&#x7cfb;&#x7edf;</b>&#xff1a;&#x901a;&#x8fc7;&#x9002;&#x914d;&#x5668;&#x6a21;&#x5f0f;&#x96c6;&#x6210;&#x7b2c;&#x4e09;&#x65b9;&#x6e32;&#x67d3;&#x5668;</li>
+<li><b>&#x4ee3;&#x7406;&#x7cfb;&#x7edf;</b>&#xff1a;&#x901a;&#x8fc7;&#x4ee3;&#x7406;&#x6a21;&#x5f0f;&#x5b9e;&#x73b0;&#x8fdc;&#x7a0b;&#x6e32;&#x67d3;&#x529f;&#x80fd;</li>
+<li><b>&#x5de5;&#x5177;&#x7c7b;</b>&#xff1a;&#x5982;&#x6587;&#x4ef6;&#x7ba1;&#x7406;&#x7b49;&#x8f85;&#x52a9;&#x529f;&#x80fd;</li>
 </ol></section><section>
-<h2><a name="Design_Pattern_Implementation"></a>Design Pattern Implementation</h2><section>
-<h3><a name="Factory_Pattern"></a>Factory Pattern</h3>
-<p>The system uses factories to create shapes and renderers, allowing for flexibility in object creation.</p></section><section>
-<h3><a name="Command_Pattern"></a>Command Pattern</h3>
-<p>All operations that modify the drawing are encapsulated as commands, enabling undo/redo functionality.</p></section><section>
-<h3><a name="Observer_Pattern"></a>Observer Pattern</h3>
-<p>Shape changes are monitored through the Observer pattern, allowing for reactive updates.</p></section><section>
-<h3><a name="Adapter_Pattern"></a>Adapter Pattern</h3>
-<p>Third-party renderers are integrated through adapters, enabling compatibility with external systems.</p></section><section>
-<h3><a name="Visitor_Pattern"></a>Visitor Pattern</h3>
-<p>The Visitor pattern is used for exporting shapes to different formats without modifying the shape classes.</p></section><section>
-<h3><a name="Proxy_Pattern"></a>Proxy Pattern</h3>
-<p>Remote rendering is facilitated through the Proxy pattern, providing a local interface to remote rendering services.</p></section><section>
-<h3><a name="Singleton_Pattern"></a>Singleton Pattern</h3>
-<p>Configuration management is handled through a singleton, ensuring a single point of access to configuration data.</p></section></section><section>
-<h2><a name="Technical_Stack"></a>Technical Stack</h2>
+<h2><a name="a.E8.AE.BE.E8.AE.A1.E6.A8.A1.E5.BC.8F.E5.AE.9E.E7.8E.B0"></a>&#x8bbe;&#x8ba1;&#x6a21;&#x5f0f;&#x5b9e;&#x73b0;</h2><section>
+<h3><a name="a.E5.B7.A5.E5.8E.82.E6.A8.A1.E5.BC.8F.EF.BC.88Factory_Pattern.EF.BC.89"></a>&#x5de5;&#x5382;&#x6a21;&#x5f0f;&#xff08;Factory Pattern&#xff09;</h3>
+<p>&#x7cfb;&#x7edf;&#x4f7f;&#x7528;&#x5de5;&#x5382;&#x6765;&#x521b;&#x5efa;&#x56fe;&#x5f62;&#x5bf9;&#x8c61;&#x548c;&#x6e32;&#x67d3;&#x5668;&#xff0c;&#x4f7f;&#x5f97;&#x5bf9;&#x8c61;&#x7684;&#x521b;&#x5efa;&#x8fc7;&#x7a0b;&#x66f4;&#x52a0;&#x7075;&#x6d3b;&#x3002;</p></section><section>
+<h3><a name="a.E5.91.BD.E4.BB.A4.E6.A8.A1.E5.BC.8F.EF.BC.88Command_Pattern.EF.BC.89"></a>&#x547d;&#x4ee4;&#x6a21;&#x5f0f;&#xff08;Command Pattern&#xff09;</h3>
+<p>&#x6240;&#x6709;&#x4fee;&#x6539;&#x7ed8;&#x56fe;&#x5185;&#x5bb9;&#x7684;&#x64cd;&#x4f5c;&#x90fd;&#x88ab;&#x5c01;&#x88c5;&#x4e3a;&#x547d;&#x4ee4;&#x5bf9;&#x8c61;&#xff0c;&#x4ece;&#x800c;&#x652f;&#x6301;&#x64a4;&#x9500;&#x4e0e;&#x91cd;&#x505a;&#x529f;&#x80fd;&#x3002;</p></section><section>
+<h3><a name="a.E8.A7.82.E5.AF.9F.E8.80.85.E6.A8.A1.E5.BC.8F.EF.BC.88Observer_Pattern.EF.BC.89"></a>&#x89c2;&#x5bdf;&#x8005;&#x6a21;&#x5f0f;&#xff08;Observer Pattern&#xff09;</h3>
+<p>&#x901a;&#x8fc7;&#x89c2;&#x5bdf;&#x8005;&#x6a21;&#x5f0f;&#x76d1;&#x63a7;&#x56fe;&#x5f62;&#x7684;&#x53d8;&#x5316;&#xff0c;&#x5b9e;&#x73b0;&#x754c;&#x9762;&#x6216;&#x5176;&#x4ed6;&#x7ec4;&#x4ef6;&#x7684;&#x54cd;&#x5e94;&#x5f0f;&#x66f4;&#x65b0;&#x3002;</p></section><section>
+<h3><a name="a.E9.80.82.E9.85.8D.E5.99.A8.E6.A8.A1.E5.BC.8F.EF.BC.88Adapter_Pattern.EF.BC.89"></a>&#x9002;&#x914d;&#x5668;&#x6a21;&#x5f0f;&#xff08;Adapter Pattern&#xff09;</h3>
+<p>&#x901a;&#x8fc7;&#x9002;&#x914d;&#x5668;&#x5c06;&#x7b2c;&#x4e09;&#x65b9;&#x6e32;&#x67d3;&#x5668;&#x96c6;&#x6210;&#x5230;&#x7cfb;&#x7edf;&#x4e2d;&#xff0c;&#x786e;&#x4fdd;&#x4e0e;&#x5916;&#x90e8;&#x7cfb;&#x7edf;&#x7684;&#x517c;&#x5bb9;&#x6027;&#x3002;</p></section><section>
+<h3><a name="a.E8.AE.BF.E9.97.AE.E8.80.85.E6.A8.A1.E5.BC.8F.EF.BC.88Visitor_Pattern.EF.BC.89"></a>&#x8bbf;&#x95ee;&#x8005;&#x6a21;&#x5f0f;&#xff08;Visitor Pattern&#xff09;</h3>
+<p>&#x4f7f;&#x7528;&#x8bbf;&#x95ee;&#x8005;&#x6a21;&#x5f0f;&#x5c06;&#x56fe;&#x5f62;&#x5bfc;&#x51fa;&#x4e3a;&#x4e0d;&#x540c;&#x683c;&#x5f0f;&#xff0c;&#x800c;&#x65e0;&#x9700;&#x4fee;&#x6539;&#x56fe;&#x5f62;&#x7c7b;&#x672c;&#x8eab;&#x3002;</p></section><section>
+<h3><a name="a.E4.BB.A3.E7.90.86.E6.A8.A1.E5.BC.8F.EF.BC.88Proxy_Pattern.EF.BC.89"></a>&#x4ee3;&#x7406;&#x6a21;&#x5f0f;&#xff08;Proxy Pattern&#xff09;</h3>
+<p>&#x901a;&#x8fc7;&#x4ee3;&#x7406;&#x6a21;&#x5f0f;&#x5b9e;&#x73b0;&#x8fdc;&#x7a0b;&#x6e32;&#x67d3;&#x529f;&#x80fd;&#xff0c;&#x4e3a;&#x8fdc;&#x7a0b;&#x6e32;&#x67d3;&#x670d;&#x52a1;&#x63d0;&#x4f9b;&#x672c;&#x5730;&#x63a5;&#x53e3;&#x3002;</p></section><section>
+<h3><a name="a.E5.8D.95.E4.BE.8B.E6.A8.A1.E5.BC.8F.EF.BC.88Singleton_Pattern.EF.BC.89"></a>&#x5355;&#x4f8b;&#x6a21;&#x5f0f;&#xff08;Singleton Pattern&#xff09;</h3>
+<p>&#x914d;&#x7f6e;&#x7ba1;&#x7406;&#x91c7;&#x7528;&#x5355;&#x4f8b;&#x6a21;&#x5f0f;&#x5b9e;&#x73b0;&#xff0c;&#x786e;&#x4fdd;&#x914d;&#x7f6e;&#x6570;&#x636e;&#x7684;&#x5168;&#x5c40;&#x552f;&#x4e00;&#x8bbf;&#x95ee;&#x70b9;&#x3002;</p></section></section><section>
+<h2><a name="a.E6.8A.80.E6.9C.AF.E6.A0.88"></a>&#x6280;&#x672f;&#x6808;</h2>
 <ul>
 
-<li><b>Language</b>: Java 11</li>
-<li><b>Build System</b>: Maven</li>
-<li><b>Testing Framework</b>: JUnit 5</li>
-<li><b>Documentation</b>: JavaDoc, Doxygen</li>
-<li><b>UI Framework</b>: Java Swing (for graphical rendering)</li>
+<li><b>&#x7f16;&#x7a0b;&#x8bed;&#x8a00;</b>&#xff1a;Java 11</li>
+<li><b>&#x6784;&#x5efa;&#x5de5;&#x5177;</b>&#xff1a;Maven</li>
+<li><b>&#x6d4b;&#x8bd5;&#x6846;&#x67b6;</b>&#xff1a;JUnit 5</li>
+<li><b>&#x6587;&#x6863;&#x751f;&#x6210;</b>&#xff1a;JavaDoc&#x3001;Doxygen</li>
+<li><b>&#x7528;&#x6237;&#x754c;&#x9762;&#x6846;&#x67b6;</b>&#xff1a;Java Swing&#xff08;&#x7528;&#x4e8e;&#x56fe;&#x5f62;&#x6e32;&#x67d3;&#xff09;</li>
 </ul></section><section>
-<h2><a name="Development_Status"></a>Development Status</h2>
-<p>The project is currently in a stable state with all core functionality implemented. Future enhancements may include:</p>
+<h2><a name="a.E5.BC.80.E5.8F.91.E7.8A.B6.E6.80.81"></a>&#x5f00;&#x53d1;&#x72b6;&#x6001;</h2>
+<p>&#x76ee;&#x524d;&#x9879;&#x76ee;&#x5904;&#x4e8e;&#x7a33;&#x5b9a;&#x72b6;&#x6001;&#xff0c;&#x6240;&#x6709;&#x6838;&#x5fc3;&#x529f;&#x80fd;&#x5747;&#x5df2;&#x5b9e;&#x73b0;&#x3002;&#x672a;&#x6765;&#x53ef;&#x80fd;&#x7684;&#x589e;&#x5f3a;&#x5305;&#x62ec;&#xff1a;</p>
 <ol style="list-style-type: decimal">
 
-<li>Additional shape types</li>
-<li>More rendering options</li>
-<li>Enhanced export capabilities</li>
-<li>Network-based collaborative editing</li>
+<li>&#x65b0;&#x589e;&#x66f4;&#x591a;&#x7c7b;&#x578b;&#x7684;&#x56fe;&#x5f62;</li>
+<li>&#x652f;&#x6301;&#x66f4;&#x591a;&#x7684;&#x6e32;&#x67d3;&#x9009;&#x9879;</li>
+<li>&#x589e;&#x5f3a;&#x5bfc;&#x51fa;&#x529f;&#x80fd;</li>
+<li>&#x5b9e;&#x73b0;&#x57fa;&#x4e8e;&#x7f51;&#x7edc;&#x7684;&#x534f;&#x540c;&#x7f16;&#x8f91;&#x529f;&#x80fd;</li>
 </ol></section>
       </div>
     </div>
