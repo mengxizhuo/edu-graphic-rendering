@@ -20,7 +20,6 @@
   ├── /src/           # 源代码
   │    ├── /main/     # 主代码
   │    └── /test/     # 测试代码
-  ├── /javadoc/       # 生成的JavaDoc文档
   ├── /target/        # 编译输出
   │    └── /site/     # 生成的站点文档
   └── README.md       # 项目说明
