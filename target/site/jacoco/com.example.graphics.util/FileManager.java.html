@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FileManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">graphic-rendering</a> &gt; <a href="index.source.html" class="el_package">com.example.graphics.util</a> &gt; <span class="el_source">FileManager.java</span></div><h1>FileManager.java</h1><pre class="source lang-java linenums">package com.example.graphics.util;
+
+import com.example.graphics.Drawing;
+import com.example.graphics.factory.ShapeFactory;
+import com.example.graphics.model.Shape;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * 文件管理器类，用于保存和加载图形
+ */
+public class FileManager {
+    private final ShapeFactory shapeFactory;
+    
+    /**
+     * 构造函数
+     */
+<span class="nc" id="L24">    public FileManager() {</span>
+<span class="nc" id="L25">        this.shapeFactory = new ShapeFactory();</span>
+<span class="nc" id="L26">    }</span>
+    
+    /**
+     * 将图形保存为二进制文件
+     * @param drawing 要保存的图形
+     * @param filePath 文件路径
+     * @throws IOException 如果保存失败
+     */
+    public void saveDrawingBinary(Drawing drawing, String filePath) throws IOException {
+<span class="nc" id="L35">        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {</span>
+            // 创建一个新的列表，只包含形状
+<span class="nc" id="L37">            List&lt;Shape&gt; shapes = new ArrayList&lt;&gt;(drawing.getShapes());</span>
+<span class="nc" id="L38">            oos.writeObject(shapes);</span>
+        }
+<span class="nc" id="L40">    }</span>
+    
+    /**
+     * 从二进制文件加载图形
+     * @param filePath 文件路径
+     * @return 加载的形状列表
+     * @throws IOException 如果加载失败
+     * @throws ClassNotFoundException 如果类找不到
+     */
+    @SuppressWarnings(&quot;unchecked&quot;)
+    public List&lt;Shape&gt; loadDrawingBinary(String filePath) throws IOException, ClassNotFoundException {
+<span class="nc" id="L51">        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filePath))) {</span>
+<span class="nc" id="L52">            return (List&lt;Shape&gt;) ois.readObject();</span>
+        }
+    }
+    
+    /**
+     * 将图形保存为JSON文件
+     * @param jsonData JSON数据
+     * @param filePath 文件路径
+     * @throws IOException 如果保存失败
+     */
+    public void saveDrawingJson(String jsonData, String filePath) throws IOException {
+<span class="nc" id="L63">        Files.write(Paths.get(filePath), jsonData.getBytes());</span>
+<span class="nc" id="L64">    }</span>
+    
+    /**
+     * 从JSON文件加载图形
+     * @param filePath 文件路径
+     * @return 加载的形状列表
+     * @throws IOException 如果加载失败
+     */
+    public List&lt;Shape&gt; loadDrawingJson(String filePath) throws IOException {
+<span class="nc" id="L73">        String content = new String(Files.readAllBytes(Paths.get(filePath)));</span>
+<span class="nc" id="L74">        JSONObject jsonObject = new JSONObject(content);</span>
+<span class="nc" id="L75">        JSONArray shapesArray = jsonObject.getJSONArray(&quot;shapes&quot;);</span>
+        
+<span class="nc" id="L77">        List&lt;Shape&gt; shapes = new ArrayList&lt;&gt;();</span>
+        
+<span class="nc bnc" id="L79" title="All 2 branches missed.">        for (int i = 0; i &lt; shapesArray.length(); i++) {</span>
+<span class="nc" id="L80">            JSONObject shapeJson = shapesArray.getJSONObject(i);</span>
+<span class="nc" id="L81">            String type = shapeJson.getString(&quot;type&quot;);</span>
+            
+<span class="nc" id="L83">            Shape shape = null;</span>
+<span class="nc bnc" id="L84" title="All 5 branches missed.">            switch (type) {</span>
+                case &quot;circle&quot;:
+<span class="nc" id="L86">                    shape = shapeFactory.createCircle(</span>
+<span class="nc" id="L87">                        shapeJson.getInt(&quot;x&quot;),</span>
+<span class="nc" id="L88">                        shapeJson.getInt(&quot;y&quot;),</span>
+<span class="nc" id="L89">                        shapeJson.getInt(&quot;radius&quot;)</span>
+                    );
+<span class="nc" id="L91">                    break;</span>
+                case &quot;rectangle&quot;:
+<span class="nc" id="L93">                    shape = shapeFactory.createRectangle(</span>
+<span class="nc" id="L94">                        shapeJson.getInt(&quot;x&quot;),</span>
+<span class="nc" id="L95">                        shapeJson.getInt(&quot;y&quot;),</span>
+<span class="nc" id="L96">                        shapeJson.getInt(&quot;width&quot;),</span>
+<span class="nc" id="L97">                        shapeJson.getInt(&quot;height&quot;)</span>
+                    );
+<span class="nc" id="L99">                    break;</span>
+                case &quot;line&quot;:
+<span class="nc" id="L101">                    shape = shapeFactory.createLine(</span>
+<span class="nc" id="L102">                        shapeJson.getInt(&quot;x1&quot;),</span>
+<span class="nc" id="L103">                        shapeJson.getInt(&quot;y1&quot;),</span>
+<span class="nc" id="L104">                        shapeJson.getInt(&quot;x2&quot;),</span>
+<span class="nc" id="L105">                        shapeJson.getInt(&quot;y2&quot;)</span>
+                    );
+<span class="nc" id="L107">                    break;</span>
+                case &quot;triangle&quot;:
+<span class="nc" id="L109">                    shape = shapeFactory.createTriangle(</span>
+<span class="nc" id="L110">                        shapeJson.getInt(&quot;x1&quot;),</span>
+<span class="nc" id="L111">                        shapeJson.getInt(&quot;y1&quot;),</span>
+<span class="nc" id="L112">                        shapeJson.getInt(&quot;x2&quot;),</span>
+<span class="nc" id="L113">                        shapeJson.getInt(&quot;y2&quot;),</span>
+<span class="nc" id="L114">                        shapeJson.getInt(&quot;x3&quot;),</span>
+<span class="nc" id="L115">                        shapeJson.getInt(&quot;y3&quot;)</span>
+                    );
+                    break;
+            }
+            
+<span class="nc bnc" id="L120" title="All 2 branches missed.">            if (shape != null) {</span>
+<span class="nc" id="L121">                shapes.add(shape);</span>
+            }
+        }
+        
+<span class="nc" id="L125">        return shapes;</span>
+    }
+    
+    /**
+     * 将图形保存为XML文件
+     * @param xmlData XML数据
+     * @param filePath 文件路径
+     * @throws IOException 如果保存失败
+     */
+    public void saveDrawingXml(String xmlData, String filePath) throws IOException {
+<span class="nc" id="L135">        Files.write(Paths.get(filePath), xmlData.getBytes());</span>
+<span class="nc" id="L136">    }</span>
+} 
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

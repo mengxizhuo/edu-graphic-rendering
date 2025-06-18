@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ShapeSubject.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">graphic-rendering</a> &gt; <a href="index.source.html" class="el_package">com.example.graphics.observer</a> &gt; <span class="el_source">ShapeSubject.java</span></div><h1>ShapeSubject.java</h1><pre class="source lang-java linenums">package com.example.graphics.observer;
+
+import com.example.graphics.model.Shape;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Subject class for the Observer pattern.
+ * This maintains a list of observers and notifies them of changes.
+ */
+public class ShapeSubject {
+    private final List&lt;ShapeObserver&gt; observers;
+    
+    /**
+     * Constructor initializes the observer list
+     */
+<span class="fc" id="L17">    public ShapeSubject() {</span>
+<span class="fc" id="L18">        observers = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L19">    }</span>
+    
+    /**
+     * Add an observer to be notified of changes
+     * @param observer the observer to add
+     */
+    public void addObserver(ShapeObserver observer) {
+<span class="nc bnc" id="L26" title="All 2 branches missed.">        if (!observers.contains(observer)) {</span>
+<span class="nc" id="L27">            observers.add(observer);</span>
+        }
+<span class="nc" id="L29">    }</span>
+    
+    /**
+     * Remove an observer from the notification list
+     * @param observer the observer to remove
+     */
+    public void removeObserver(ShapeObserver observer) {
+<span class="nc" id="L36">        observers.remove(observer);</span>
+<span class="nc" id="L37">    }</span>
+    
+    /**
+     * Notify all observers that a shape was added
+     * @param shape the shape that was added
+     */
+    public void notifyShapeAdded(Shape shape) {
+<span class="pc bpc" id="L44" title="1 of 2 branches missed.">        for (ShapeObserver observer : observers) {</span>
+<span class="nc" id="L45">            observer.onShapeAdded(shape);</span>
+<span class="nc" id="L46">        }</span>
+<span class="fc" id="L47">    }</span>
+    
+    /**
+     * Notify all observers that a shape was removed
+     * @param shape the shape that was removed
+     */
+    public void notifyShapeRemoved(Shape shape) {
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">        for (ShapeObserver observer : observers) {</span>
+<span class="nc" id="L55">            observer.onShapeRemoved(shape);</span>
+<span class="nc" id="L56">        }</span>
+<span class="fc" id="L57">    }</span>
+    
+    /**
+     * Notify all observers that a shape was modified
+     * @param shape the shape that was modified
+     */
+    public void notifyShapeModified(Shape shape) {
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">        for (ShapeObserver observer : observers) {</span>
+<span class="nc" id="L65">            observer.onShapeModified(shape);</span>
+<span class="nc" id="L66">        }</span>
+<span class="fc" id="L67">    }</span>
+} 
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

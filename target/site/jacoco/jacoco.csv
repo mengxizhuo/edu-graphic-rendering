@@ -1,0 +1,33 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+graphic-rendering,com.example.graphics.model,Line,61,31,0,0,16,12,6,6,6,6
+graphic-rendering,com.example.graphics.model,Rectangle,27,31,0,0,8,12,4,6,4,6
+graphic-rendering,com.example.graphics.model,Circle,14,32,0,0,3,13,2,6,2,6
+graphic-rendering,com.example.graphics.model,Triangle,85,43,0,0,12,16,4,8,4,8
+graphic-rendering,com.example.graphics.factory,ShapeFactory,0,36,0,0,0,5,0,5,0,5
+graphic-rendering,com.example.graphics.factory,SwingRendererFactory,0,9,0,0,0,2,0,2,0,2
+graphic-rendering,com.example.graphics.factory,SvgRendererFactory,0,9,0,0,0,2,0,2,0,2
+graphic-rendering,com.example.graphics.factory,ConsoleRendererFactory,0,9,0,0,0,2,0,2,0,2
+graphic-rendering,com.example.graphics,SwingGraphicsApp,1389,0,87,0,331,0,78,0,34,0
+graphic-rendering,com.example.graphics,Drawing,17,153,1,11,7,36,5,14,4,9
+graphic-rendering,com.example.graphics,SwingGraphicsApp.new MouseAdapter() {...},264,0,18,0,49,0,12,0,3,0
+graphic-rendering,com.example.graphics,SwingGraphicsApp.new MouseMotionAdapter() {...},47,0,4,0,7,0,5,0,3,0
+graphic-rendering,com.example.graphics,Main,192,0,2,0,57,0,3,0,2,0
+graphic-rendering,com.example.graphics.adapter,MockThirdPartyRenderer,64,0,4,0,18,0,9,0,7,0
+graphic-rendering,com.example.graphics.adapter,ThirdPartyRendererAdapter,102,0,0,0,18,0,7,0,7,0
+graphic-rendering,com.example.graphics.observer,ShapeSubject,41,32,5,3,11,9,6,4,2,4
+graphic-rendering,com.example.graphics.observer,ConsoleLogger,36,0,0,0,10,0,4,0,4,0
+graphic-rendering,com.example.graphics.util,FileManager,188,0,9,0,49,0,12,0,6,0
+graphic-rendering,com.example.graphics.proxy,RemoteRendererImpl,121,0,0,0,43,0,8,0,8,0
+graphic-rendering,com.example.graphics.proxy,RemoteRendererProxy,155,0,18,0,59,0,21,0,12,0
+graphic-rendering,com.example.graphics.render,ConsoleRenderer,450,42,58,4,101,10,36,4,7,2
+graphic-rendering,com.example.graphics.render,Renderer,0,4,0,0,0,2,0,2,0,2
+graphic-rendering,com.example.graphics.render,SwingRenderer,312,19,6,0,78,6,10,1,7,1
+graphic-rendering,com.example.graphics.render,SwingRenderer.new JPanel() {...},101,0,6,0,17,0,6,0,3,0
+graphic-rendering,com.example.graphics.render,SvgRenderer,157,37,0,0,23,10,6,2,6,2
+graphic-rendering,com.example.graphics.visitor,XmlExportVisitor,21,225,0,0,6,51,0,7,0,7
+graphic-rendering,com.example.graphics.visitor,JsonExportVisitor,0,190,0,0,0,41,0,7,0,7
+graphic-rendering,com.example.graphics.singleton,RenderingConfig,0,51,0,2,0,21,0,11,0,10
+graphic-rendering,com.example.graphics.command,RemoveShapeCommand,29,27,7,1,5,8,5,2,1,2
+graphic-rendering,com.example.graphics.command,CommandManager,0,87,0,8,0,25,0,11,0,7
+graphic-rendering,com.example.graphics.command,AddShapeCommand,0,23,0,0,0,8,0,3,0,3
+graphic-rendering,com.example.graphics.command,MoveShapeCommand,0,36,0,0,0,11,0,3,0,3

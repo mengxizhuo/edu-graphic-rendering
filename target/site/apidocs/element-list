@@ -1,0 +1,11 @@
+com.example.graphics
+com.example.graphics.adapter
+com.example.graphics.command
+com.example.graphics.factory
+com.example.graphics.model
+com.example.graphics.observer
+com.example.graphics.proxy
+com.example.graphics.render
+com.example.graphics.singleton
+com.example.graphics.util
+com.example.graphics.visitor

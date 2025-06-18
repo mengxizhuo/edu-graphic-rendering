@@ -1,0 +1,678 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SwingGraphicsApp.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">graphic-rendering</a> &gt; <a href="index.source.html" class="el_package">com.example.graphics</a> &gt; <span class="el_source">SwingGraphicsApp.java</span></div><h1>SwingGraphicsApp.java</h1><pre class="source lang-java linenums">package com.example.graphics;
+
+import com.example.graphics.factory.ShapeFactory;
+import com.example.graphics.factory.SwingRendererFactory;
+import com.example.graphics.model.Line;
+import com.example.graphics.model.Shape;
+import com.example.graphics.observer.ConsoleLogger;
+import com.example.graphics.render.Renderer;
+import com.example.graphics.render.SwingRenderer;
+import com.example.graphics.singleton.RenderingConfig;
+import com.example.graphics.util.FileManager;
+import com.example.graphics.visitor.JsonExportVisitor;
+import com.example.graphics.visitor.XmlExportVisitor;
+import com.example.graphics.proxy.RemoteRendererProxy;
+
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.List;
+
+/**
+ * Swing GUI application for the graphics rendering system
+ */
+public class SwingGraphicsApp extends JFrame {
+    private final Drawing drawing;
+    private final SwingRenderer localRenderer;
+    private final RemoteRendererProxy remoteRenderer;
+    private final ShapeFactory shapeFactory;
+    private final FileManager fileManager;
+    
+    private Shape selectedShape;
+<span class="nc" id="L36">    private String currentShapeType = &quot;Circle&quot;;</span>
+    private Point dragStart;
+<span class="nc" id="L38">    private boolean isDragging = false;</span>
+<span class="nc" id="L39">    private boolean isDrawingLine = false;</span>
+<span class="nc" id="L40">    private boolean isDrawingTriangle = false;</span>
+<span class="nc" id="L41">    private int triangleStage = 0;</span>
+    private int x1, y1, x2, y2;  // 用于存储线条和三角形的点
+    
+    private JLabel statusLabel;
+    private JToggleButton remoteRenderingToggle;
+<span class="nc" id="L46">    private boolean isRemoteRenderingEnabled = false;</span>
+
+    public SwingGraphicsApp() {
+<span class="nc" id="L49">        super(&quot;图形渲染系统&quot;);</span>
+        
+        // 获取配置
+<span class="nc" id="L52">        RenderingConfig config = RenderingConfig.getInstance();</span>
+        
+        // 创建工厂和渲染器
+<span class="nc" id="L55">        SwingRendererFactory rendererFactory = new SwingRendererFactory();</span>
+<span class="nc" id="L56">        localRenderer = (SwingRenderer) rendererFactory.createRenderer(800, 600);</span>
+        
+        // 创建远程渲染器代理
+<span class="nc" id="L59">        remoteRenderer = new RemoteRendererProxy();</span>
+<span class="nc" id="L60">        remoteRenderer.setLocalRenderer(localRenderer); // 设置本地渲染器引用</span>
+        
+        // 创建绘图对象，默认使用本地渲染器
+<span class="nc" id="L63">        drawing = new Drawing(localRenderer);</span>
+<span class="nc" id="L64">        drawing.addObserver(new ConsoleLogger());</span>
+        
+        // 创建形状工厂
+<span class="nc" id="L67">        shapeFactory = new ShapeFactory();</span>
+        
+        // 创建文件管理器
+<span class="nc" id="L70">        fileManager = new FileManager();</span>
+        
+        // 设置UI
+<span class="nc" id="L73">        setupUI();</span>
+        
+        // 设置窗口属性
+<span class="nc" id="L76">        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);</span>
+<span class="nc" id="L77">        setSize(1000, 700);</span>
+<span class="nc" id="L78">        setLocationRelativeTo(null);</span>
+<span class="nc" id="L79">        setVisible(true);</span>
+<span class="nc" id="L80">    }</span>
+    
+    private void setupUI() {
+<span class="nc" id="L83">        JPanel mainPanel = new JPanel(new BorderLayout());</span>
+        
+        // 创建菜单栏
+<span class="nc" id="L86">        JMenuBar menuBar = createMenuBar();</span>
+<span class="nc" id="L87">        setJMenuBar(menuBar);</span>
+        
+        // 创建工具栏
+<span class="nc" id="L90">        JToolBar toolBar = createToolBar();</span>
+<span class="nc" id="L91">        mainPanel.add(toolBar, BorderLayout.NORTH);</span>
+        
+        // 创建渲染面板
+<span class="nc" id="L94">        JPanel renderPanel = localRenderer.getRenderPanel();</span>
+<span class="nc" id="L95">        renderPanel.setBorder(BorderFactory.createLoweredBevelBorder());</span>
+<span class="nc" id="L96">        setupRenderPanelListeners(renderPanel);</span>
+        
+        // 创建滚动面板
+<span class="nc" id="L99">        JScrollPane scrollPane = new JScrollPane(renderPanel);</span>
+<span class="nc" id="L100">        mainPanel.add(scrollPane, BorderLayout.CENTER);</span>
+        
+        // 创建状态栏
+<span class="nc" id="L103">        JPanel statusBar = new JPanel(new FlowLayout(FlowLayout.LEFT));</span>
+<span class="nc" id="L104">        statusBar.setBorder(BorderFactory.createLoweredBevelBorder());</span>
+<span class="nc" id="L105">        statusLabel = new JLabel(&quot;就绪&quot;);</span>
+<span class="nc" id="L106">        statusBar.add(statusLabel);</span>
+<span class="nc" id="L107">        mainPanel.add(statusBar, BorderLayout.SOUTH);</span>
+        
+<span class="nc" id="L109">        setContentPane(mainPanel);</span>
+        
+        // 添加一些初始形状作为示例
+<span class="nc" id="L112">        addSampleShapes();</span>
+<span class="nc" id="L113">    }</span>
+    
+    private JMenuBar createMenuBar() {
+<span class="nc" id="L116">        JMenuBar menuBar = new JMenuBar();</span>
+        
+        // 文件菜单
+<span class="nc" id="L119">        JMenu fileMenu = new JMenu(&quot;文件&quot;);</span>
+        
+<span class="nc" id="L121">        JMenuItem newItem = new JMenuItem(&quot;新建&quot;);</span>
+<span class="nc" id="L122">        newItem.addActionListener(e -&gt; newDrawing());</span>
+<span class="nc" id="L123">        fileMenu.add(newItem);</span>
+        
+<span class="nc" id="L125">        JMenuItem openItem = new JMenuItem(&quot;打开...&quot;);</span>
+<span class="nc" id="L126">        openItem.addActionListener(e -&gt; openDrawing());</span>
+<span class="nc" id="L127">        fileMenu.add(openItem);</span>
+        
+<span class="nc" id="L129">        fileMenu.addSeparator();</span>
+        
+<span class="nc" id="L131">        JMenuItem saveItem = new JMenuItem(&quot;保存...&quot;);</span>
+<span class="nc" id="L132">        saveItem.addActionListener(e -&gt; saveDrawing());</span>
+<span class="nc" id="L133">        fileMenu.add(saveItem);</span>
+        
+<span class="nc" id="L135">        JMenuItem saveJsonItem = new JMenuItem(&quot;导出为JSON...&quot;);</span>
+<span class="nc" id="L136">        saveJsonItem.addActionListener(e -&gt; exportToJson());</span>
+<span class="nc" id="L137">        fileMenu.add(saveJsonItem);</span>
+        
+<span class="nc" id="L139">        JMenuItem saveXmlItem = new JMenuItem(&quot;导出为XML...&quot;);</span>
+<span class="nc" id="L140">        saveXmlItem.addActionListener(e -&gt; exportToXml());</span>
+<span class="nc" id="L141">        fileMenu.add(saveXmlItem);</span>
+        
+<span class="nc" id="L143">        fileMenu.addSeparator();</span>
+        
+<span class="nc" id="L145">        JMenuItem exitItem = new JMenuItem(&quot;退出&quot;);</span>
+<span class="nc" id="L146">        exitItem.addActionListener(e -&gt; System.exit(0));</span>
+<span class="nc" id="L147">        fileMenu.add(exitItem);</span>
+        
+<span class="nc" id="L149">        menuBar.add(fileMenu);</span>
+        
+        // 编辑菜单
+<span class="nc" id="L152">        JMenu editMenu = new JMenu(&quot;编辑&quot;);</span>
+        
+<span class="nc" id="L154">        JMenuItem undoItem = new JMenuItem(&quot;撤销&quot;);</span>
+<span class="nc" id="L155">        undoItem.addActionListener(e -&gt; {</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">            if (drawing.undo()) {</span>
+<span class="nc" id="L157">                drawing.render();</span>
+<span class="nc" id="L158">                statusLabel.setText(&quot;已撤销操作&quot;);</span>
+<span class="nc" id="L159">            } else {</span>
+<span class="nc" id="L160">                statusLabel.setText(&quot;没有操作可撤销&quot;);</span>
+            }
+<span class="nc" id="L162">        });</span>
+<span class="nc" id="L163">        editMenu.add(undoItem);</span>
+        
+<span class="nc" id="L165">        JMenuItem redoItem = new JMenuItem(&quot;重做&quot;);</span>
+<span class="nc" id="L166">        redoItem.addActionListener(e -&gt; {</span>
+<span class="nc bnc" id="L167" title="All 2 branches missed.">            if (drawing.redo()) {</span>
+<span class="nc" id="L168">                drawing.render();</span>
+<span class="nc" id="L169">                statusLabel.setText(&quot;已重做操作&quot;);</span>
+<span class="nc" id="L170">            } else {</span>
+<span class="nc" id="L171">                statusLabel.setText(&quot;没有操作可重做&quot;);</span>
+            }
+<span class="nc" id="L173">        });</span>
+<span class="nc" id="L174">        editMenu.add(redoItem);</span>
+        
+<span class="nc" id="L176">        editMenu.addSeparator();</span>
+        
+<span class="nc" id="L178">        JMenuItem clearItem = new JMenuItem(&quot;清除所有&quot;);</span>
+<span class="nc" id="L179">        clearItem.addActionListener(e -&gt; {</span>
+<span class="nc" id="L180">            clearDrawing();</span>
+<span class="nc" id="L181">        });</span>
+<span class="nc" id="L182">        editMenu.add(clearItem);</span>
+        
+<span class="nc" id="L184">        menuBar.add(editMenu);</span>
+        
+        // 渲染菜单
+<span class="nc" id="L187">        JMenu renderMenu = new JMenu(&quot;渲染&quot;);</span>
+        
+<span class="nc" id="L189">        JMenuItem localRenderItem = new JMenuItem(&quot;本地渲染&quot;);</span>
+<span class="nc" id="L190">        localRenderItem.addActionListener(e -&gt; switchToLocalRendering());</span>
+<span class="nc" id="L191">        renderMenu.add(localRenderItem);</span>
+        
+<span class="nc" id="L193">        JMenuItem remoteRenderItem = new JMenuItem(&quot;远程渲染&quot;);</span>
+<span class="nc" id="L194">        remoteRenderItem.addActionListener(e -&gt; switchToRemoteRendering());</span>
+<span class="nc" id="L195">        renderMenu.add(remoteRenderItem);</span>
+        
+<span class="nc" id="L197">        menuBar.add(renderMenu);</span>
+        
+        // 帮助菜单
+<span class="nc" id="L200">        JMenu helpMenu = new JMenu(&quot;帮助&quot;);</span>
+        
+<span class="nc" id="L202">        JMenuItem aboutItem = new JMenuItem(&quot;关于&quot;);</span>
+<span class="nc" id="L203">        aboutItem.addActionListener(e -&gt; {</span>
+<span class="nc" id="L204">            JOptionPane.showMessageDialog(this,</span>
+<span class="nc" id="L205">                &quot;图形渲染系统\n版本 1.0\n\n使用Java Swing开发的图形渲染应用\n支持多种设计模式&quot;,</span>
+<span class="nc" id="L206">                &quot;关于图形渲染系统&quot;,</span>
+<span class="nc" id="L207">                JOptionPane.INFORMATION_MESSAGE);</span>
+<span class="nc" id="L208">        });</span>
+<span class="nc" id="L209">        helpMenu.add(aboutItem);</span>
+        
+<span class="nc" id="L211">        menuBar.add(helpMenu);</span>
+        
+<span class="nc" id="L213">        return menuBar;</span>
+    }
+    
+    private void addSampleShapes() {
+        // 添加一个圆形
+<span class="nc" id="L218">        Shape circle = shapeFactory.createCircle(200, 150, 50);</span>
+<span class="nc" id="L219">        drawing.addShape(circle);</span>
+        
+        // 添加一个矩形
+<span class="nc" id="L222">        Shape rectangle = shapeFactory.createRectangle(400, 200, 150, 100);</span>
+<span class="nc" id="L223">        drawing.addShape(rectangle);</span>
+        
+        // 添加一条线
+<span class="nc" id="L226">        Shape line = shapeFactory.createLine(100, 300, 500, 400);</span>
+<span class="nc" id="L227">        drawing.addShape(line);</span>
+        
+        // 添加一个三角形
+<span class="nc" id="L230">        Shape triangle = shapeFactory.createTriangle(300, 100, 350, 200, 250, 200);</span>
+<span class="nc" id="L231">        drawing.addShape(triangle);</span>
+        
+        // 刷新显示
+<span class="nc" id="L234">        drawing.render();</span>
+        
+<span class="nc" id="L236">        statusLabel.setText(&quot;已添加示例图形&quot;);</span>
+<span class="nc" id="L237">    }</span>
+    
+    private JToolBar createToolBar() {
+<span class="nc" id="L240">        JToolBar toolBar = new JToolBar();</span>
+<span class="nc" id="L241">        toolBar.setFloatable(false);</span>
+        
+        // 形状选择按钮
+<span class="nc" id="L244">        String[] shapeTypes = {&quot;Circle&quot;, &quot;Rectangle&quot;, &quot;Line&quot;, &quot;Triangle&quot;};</span>
+<span class="nc" id="L245">        ButtonGroup shapeGroup = new ButtonGroup();</span>
+        
+<span class="nc bnc" id="L247" title="All 2 branches missed.">        for (String type : shapeTypes) {</span>
+<span class="nc" id="L248">            JToggleButton button = new JToggleButton(type);</span>
+<span class="nc" id="L249">            button.addActionListener(e -&gt; {</span>
+<span class="nc" id="L250">                currentShapeType = type;</span>
+<span class="nc" id="L251">                statusLabel.setText(&quot;已选择: &quot; + type);</span>
+                
+                // 重置绘制状态
+<span class="nc" id="L254">                isDrawingLine = false;</span>
+<span class="nc" id="L255">                isDrawingTriangle = false;</span>
+<span class="nc" id="L256">                triangleStage = 0;</span>
+<span class="nc" id="L257">            });</span>
+<span class="nc" id="L258">            shapeGroup.add(button);</span>
+<span class="nc" id="L259">            toolBar.add(button);</span>
+            
+            // 默认选择圆形
+<span class="nc bnc" id="L262" title="All 2 branches missed.">            if (&quot;Circle&quot;.equals(type)) {</span>
+<span class="nc" id="L263">                button.setSelected(true);</span>
+            }
+        }
+        
+<span class="nc" id="L267">        toolBar.addSeparator();</span>
+        
+        // 清除按钮
+<span class="nc" id="L270">        JButton clearButton = new JButton(&quot;清除&quot;);</span>
+<span class="nc" id="L271">        clearButton.addActionListener(e -&gt; clearDrawing());</span>
+<span class="nc" id="L272">        toolBar.add(clearButton);</span>
+
+<span class="nc" id="L274">        toolBar.addSeparator();</span>
+        
+        // 渲染模式切换按钮
+<span class="nc" id="L277">        remoteRenderingToggle = new JToggleButton(&quot;远程渲染&quot;);</span>
+<span class="nc" id="L278">        remoteRenderingToggle.addActionListener(e -&gt; {</span>
+<span class="nc bnc" id="L279" title="All 2 branches missed.">            if (remoteRenderingToggle.isSelected()) {</span>
+<span class="nc" id="L280">                switchToRemoteRendering();</span>
+<span class="nc" id="L281">            } else {</span>
+<span class="nc" id="L282">                switchToLocalRendering();</span>
+            }
+<span class="nc" id="L284">        });</span>
+<span class="nc" id="L285">        toolBar.add(remoteRenderingToggle);</span>
+        
+<span class="nc" id="L287">        return toolBar;</span>
+    }
+    
+    // 切换到本地渲染
+    private void switchToLocalRendering() {
+<span class="nc bnc" id="L292" title="All 2 branches missed.">        if (isRemoteRenderingEnabled) {</span>
+            // 如果当前是远程渲染，则断开连接
+<span class="nc" id="L294">            remoteRenderer.disconnect();</span>
+            
+            // 切换到本地渲染器
+<span class="nc" id="L297">            drawing.setRenderer(localRenderer);</span>
+            
+            // 更新状态
+<span class="nc" id="L300">            isRemoteRenderingEnabled = false;</span>
+<span class="nc" id="L301">            remoteRenderingToggle.setSelected(false);</span>
+<span class="nc" id="L302">            statusLabel.setText(&quot;【本地渲染模式】已切换到本地渲染&quot;);</span>
+            
+            // 重新渲染
+<span class="nc" id="L305">            drawing.render();</span>
+        }
+<span class="nc" id="L307">    }</span>
+    
+    // 切换到远程渲染
+    private void switchToRemoteRendering() {
+<span class="nc bnc" id="L311" title="All 2 branches missed.">        if (!isRemoteRenderingEnabled) {</span>
+            // 尝试连接到远程渲染器
+<span class="nc" id="L313">            boolean connected = remoteRenderer.connect();</span>
+            
+<span class="nc bnc" id="L315" title="All 2 branches missed.">            if (connected) {</span>
+                // 切换到远程渲染器
+<span class="nc" id="L317">                drawing.setRenderer(remoteRenderer);</span>
+                
+                // 更新状态
+<span class="nc" id="L320">                isRemoteRenderingEnabled = true;</span>
+<span class="nc" id="L321">                remoteRenderingToggle.setSelected(true);</span>
+<span class="nc" id="L322">                statusLabel.setText(&quot;【远程渲染模式】已连接到远程渲染服务&quot;);</span>
+                
+                // 重新渲染
+<span class="nc" id="L325">                drawing.render();</span>
+<span class="nc" id="L326">            } else {</span>
+                // 连接失败，保持本地渲染
+<span class="nc" id="L328">                remoteRenderingToggle.setSelected(false);</span>
+<span class="nc" id="L329">                statusLabel.setText(&quot;远程渲染连接失败，保持本地渲染模式&quot;);</span>
+<span class="nc" id="L330">                JOptionPane.showMessageDialog(this,</span>
+<span class="nc" id="L331">                    &quot;无法连接到远程渲染服务&quot;,</span>
+<span class="nc" id="L332">                    &quot;连接错误&quot;,</span>
+<span class="nc" id="L333">                    JOptionPane.ERROR_MESSAGE);</span>
+            }
+        }
+<span class="nc" id="L336">    }</span>
+    
+    private void setupRenderPanelListeners(JPanel renderPanel) {
+<span class="nc" id="L339">        renderPanel.addMouseListener(new MouseAdapter() {</span>
+            @Override
+            public void mousePressed(MouseEvent e) {
+<span class="nc" id="L342">                dragStart = e.getPoint();</span>
+                
+                // 检查是否点击了现有形状
+<span class="nc bnc" id="L345" title="All 2 branches missed.">                for (Shape shape : drawing.getShapes()) {</span>
+<span class="nc bnc" id="L346" title="All 2 branches missed.">                    if (isPointOnShape(shape, e.getPoint())) {</span>
+<span class="nc" id="L347">                        selectedShape = shape;</span>
+<span class="nc" id="L348">                        isDragging = true;</span>
+<span class="nc" id="L349">                        statusLabel.setText(&quot;已选中图形: &quot; + getShapeTypeName(shape));</span>
+<span class="nc" id="L350">                        return;</span>
+                    }
+                }
+                
+                // 如果没有点击现有形状，处理新形状创建
+<span class="nc bnc" id="L355" title="All 2 branches missed.">                if (currentShapeType.equals(&quot;Line&quot;)) {</span>
+<span class="nc bnc" id="L356" title="All 2 branches missed.">                    if (!isDrawingLine) {</span>
+                        // 开始绘制线条
+<span class="nc" id="L358">                        isDrawingLine = true;</span>
+<span class="nc" id="L359">                        x1 = e.getX();</span>
+<span class="nc" id="L360">                        y1 = e.getY();</span>
+<span class="nc" id="L361">                        statusLabel.setText(&quot;绘制线条: 已设置起点，请点击终点&quot;);</span>
+<span class="nc" id="L362">                    } else {</span>
+                        // 完成线条绘制
+<span class="nc" id="L364">                        x2 = e.getX();</span>
+<span class="nc" id="L365">                        y2 = e.getY();</span>
+<span class="nc" id="L366">                        Shape line = shapeFactory.createLine(x1, y1, x2, y2);</span>
+<span class="nc" id="L367">                        drawing.addShape(line);</span>
+<span class="nc" id="L368">                        drawing.render();</span>
+<span class="nc" id="L369">                        isDrawingLine = false;</span>
+<span class="nc" id="L370">                        statusLabel.setText(&quot;已添加线条&quot;);</span>
+                    }
+<span class="nc bnc" id="L372" title="All 2 branches missed.">                } else if (currentShapeType.equals(&quot;Triangle&quot;)) {</span>
+<span class="nc bnc" id="L373" title="All 2 branches missed.">                    if (triangleStage == 0) {</span>
+                        // 第一个点
+<span class="nc" id="L375">                        x1 = e.getX();</span>
+<span class="nc" id="L376">                        y1 = e.getY();</span>
+<span class="nc" id="L377">                        triangleStage = 1;</span>
+<span class="nc" id="L378">                        isDrawingTriangle = true;</span>
+<span class="nc" id="L379">                        statusLabel.setText(&quot;绘制三角形: 已设置第一个顶点，请点击第二个顶点&quot;);</span>
+<span class="nc bnc" id="L380" title="All 2 branches missed.">                    } else if (triangleStage == 1) {</span>
+                        // 第二个点
+<span class="nc" id="L382">                        x2 = e.getX();</span>
+<span class="nc" id="L383">                        y2 = e.getY();</span>
+<span class="nc" id="L384">                        triangleStage = 2;</span>
+<span class="nc" id="L385">                        statusLabel.setText(&quot;绘制三角形: 已设置第二个顶点，请点击第三个顶点&quot;);</span>
+<span class="nc bnc" id="L386" title="All 2 branches missed.">                    } else if (triangleStage == 2) {</span>
+                        // 第三个点，完成三角形
+<span class="nc" id="L388">                        Shape triangle = shapeFactory.createTriangle(x1, y1, x2, y2, e.getX(), e.getY());</span>
+<span class="nc" id="L389">                        drawing.addShape(triangle);</span>
+<span class="nc" id="L390">                        drawing.render();</span>
+<span class="nc" id="L391">                        triangleStage = 0;</span>
+<span class="nc" id="L392">                        isDrawingTriangle = false;</span>
+<span class="nc" id="L393">                        statusLabel.setText(&quot;已添加三角形&quot;);</span>
+                    }
+<span class="nc" id="L395">                } else {</span>
+                    // 创建其他形状
+<span class="nc" id="L397">                    createNewShape(e.getPoint());</span>
+                }
+<span class="nc" id="L399">            }</span>
+            
+            @Override
+            public void mouseReleased(MouseEvent e) {
+<span class="nc" id="L403">                isDragging = false;</span>
+<span class="nc bnc" id="L404" title="All 2 branches missed.">                if (selectedShape != null) {</span>
+<span class="nc" id="L405">                    statusLabel.setText(&quot;已移动图形: &quot; + getShapeTypeName(selectedShape));</span>
+                }
+<span class="nc" id="L407">                selectedShape = null;</span>
+<span class="nc" id="L408">            }</span>
+        });
+        
+<span class="nc" id="L411">        renderPanel.addMouseMotionListener(new MouseMotionAdapter() {</span>
+            @Override
+            public void mouseDragged(MouseEvent e) {
+<span class="nc bnc" id="L414" title="All 4 branches missed.">                if (isDragging &amp;&amp; selectedShape != null) {</span>
+<span class="nc" id="L415">                    drawing.moveShape(selectedShape, e.getX(), e.getY());</span>
+<span class="nc" id="L416">                    statusLabel.setText(&quot;正在移动图形: &quot; + getShapeTypeName(selectedShape));</span>
+                }
+<span class="nc" id="L418">            }</span>
+            
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                // 显示鼠标坐标
+<span class="nc" id="L423">                statusLabel.setText(&quot;坐标: (&quot; + e.getX() + &quot;, &quot; + e.getY() + &quot;)&quot;);</span>
+<span class="nc" id="L424">            }</span>
+        });
+<span class="nc" id="L426">    }</span>
+    
+    private String getShapeTypeName(Shape shape) {
+<span class="nc bnc" id="L429" title="All 2 branches missed.">        if (shape instanceof com.example.graphics.model.Circle) {</span>
+<span class="nc" id="L430">            return &quot;圆形&quot;;</span>
+<span class="nc bnc" id="L431" title="All 2 branches missed.">        } else if (shape instanceof com.example.graphics.model.Rectangle) {</span>
+<span class="nc" id="L432">            return &quot;矩形&quot;;</span>
+<span class="nc bnc" id="L433" title="All 2 branches missed.">        } else if (shape instanceof com.example.graphics.model.Line) {</span>
+<span class="nc" id="L434">            return &quot;直线&quot;;</span>
+<span class="nc bnc" id="L435" title="All 2 branches missed.">        } else if (shape instanceof com.example.graphics.model.Triangle) {</span>
+<span class="nc" id="L436">            return &quot;三角形&quot;;</span>
+        }
+<span class="nc" id="L438">        return &quot;图形&quot;;</span>
+    }
+    
+    private boolean isPointOnShape(Shape shape, Point point) {
+<span class="nc bnc" id="L442" title="All 2 branches missed.">        if (shape instanceof com.example.graphics.model.Circle) {</span>
+<span class="nc" id="L443">            com.example.graphics.model.Circle circle = (com.example.graphics.model.Circle) shape;</span>
+<span class="nc" id="L444">            double distance = Math.sqrt(</span>
+<span class="nc" id="L445">                Math.pow(point.x - circle.getX(), 2) + </span>
+<span class="nc" id="L446">                Math.pow(point.y - circle.getY(), 2)</span>
+            );
+<span class="nc bnc" id="L448" title="All 2 branches missed.">            return distance &lt;= circle.getRadius();</span>
+<span class="nc bnc" id="L449" title="All 2 branches missed.">        } else if (shape instanceof com.example.graphics.model.Rectangle) {</span>
+<span class="nc" id="L450">            com.example.graphics.model.Rectangle rect = (com.example.graphics.model.Rectangle) shape;</span>
+<span class="nc bnc" id="L451" title="All 6 branches missed.">            return point.x &gt;= rect.getX() &amp;&amp; point.x &lt;= rect.getX() + rect.getWidth() &amp;&amp;</span>
+<span class="nc bnc" id="L452" title="All 2 branches missed.">                   point.y &gt;= rect.getY() &amp;&amp; point.y &lt;= rect.getY() + rect.getHeight();</span>
+<span class="nc bnc" id="L453" title="All 2 branches missed.">        } else if (shape instanceof com.example.graphics.model.Line) {</span>
+<span class="nc" id="L454">            com.example.graphics.model.Line line = (com.example.graphics.model.Line) shape;</span>
+<span class="nc" id="L455">            double lineLength = Math.sqrt(</span>
+<span class="nc" id="L456">                Math.pow(line.getX2() - line.getX1(), 2) + </span>
+<span class="nc" id="L457">                Math.pow(line.getY2() - line.getY1(), 2)</span>
+            );
+            
+<span class="nc" id="L460">            double d1 = Math.sqrt(</span>
+<span class="nc" id="L461">                Math.pow(point.x - line.getX1(), 2) + </span>
+<span class="nc" id="L462">                Math.pow(point.y - line.getY1(), 2)</span>
+            );
+            
+<span class="nc" id="L465">            double d2 = Math.sqrt(</span>
+<span class="nc" id="L466">                Math.pow(point.x - line.getX2(), 2) + </span>
+<span class="nc" id="L467">                Math.pow(point.y - line.getY2(), 2)</span>
+            );
+            
+            // 允许5个像素的误差
+<span class="nc bnc" id="L471" title="All 2 branches missed.">            return Math.abs(d1 + d2 - lineLength) &lt;= 5;</span>
+<span class="nc bnc" id="L472" title="All 2 branches missed.">        } else if (shape instanceof com.example.graphics.model.Triangle) {</span>
+<span class="nc" id="L473">            com.example.graphics.model.Triangle triangle = (com.example.graphics.model.Triangle) shape;</span>
+            
+            // 使用重心坐标法判断点是否在三角形内
+<span class="nc" id="L476">            int x1 = triangle.getX1();</span>
+<span class="nc" id="L477">            int y1 = triangle.getY1();</span>
+<span class="nc" id="L478">            int x2 = triangle.getX2();</span>
+<span class="nc" id="L479">            int y2 = triangle.getY2();</span>
+<span class="nc" id="L480">            int x3 = triangle.getX3();</span>
+<span class="nc" id="L481">            int y3 = triangle.getY3();</span>
+            
+<span class="nc" id="L483">            double denominator = ((y2 - y3) * (x1 - x3) + (x3 - x2) * (y1 - y3));</span>
+<span class="nc" id="L484">            double a = ((y2 - y3) * (point.x - x3) + (x3 - x2) * (point.y - y3)) / denominator;</span>
+<span class="nc" id="L485">            double b = ((y3 - y1) * (point.x - x3) + (x1 - x3) * (point.y - y3)) / denominator;</span>
+<span class="nc" id="L486">            double c = 1 - a - b;</span>
+            
+            // 如果重心坐标都在0到1之间，则点在三角形内
+<span class="nc bnc" id="L489" title="All 12 branches missed.">            return a &gt;= 0 &amp;&amp; a &lt;= 1 &amp;&amp; b &gt;= 0 &amp;&amp; b &lt;= 1 &amp;&amp; c &gt;= 0 &amp;&amp; c &lt;= 1;</span>
+        }
+<span class="nc" id="L491">        return false;</span>
+    }
+    
+    private void createNewShape(Point point) {
+<span class="nc" id="L495">        Shape newShape = null;</span>
+        
+<span class="nc bnc" id="L497" title="All 3 branches missed.">        switch (currentShapeType) {</span>
+            case &quot;Circle&quot;:
+<span class="nc" id="L499">                newShape = shapeFactory.createCircle(point.x, point.y, 50);</span>
+<span class="nc" id="L500">                statusLabel.setText(&quot;已添加圆形&quot;);</span>
+<span class="nc" id="L501">                break;</span>
+            case &quot;Rectangle&quot;:
+<span class="nc" id="L503">                newShape = shapeFactory.createRectangle(point.x, point.y, 100, 80);</span>
+<span class="nc" id="L504">                statusLabel.setText(&quot;已添加矩形&quot;);</span>
+                break;
+            // Line和Triangle在mousePressed中处理
+        }
+        
+<span class="nc bnc" id="L509" title="All 2 branches missed.">        if (newShape != null) {</span>
+<span class="nc" id="L510">            drawing.addShape(newShape);</span>
+<span class="nc" id="L511">            drawing.render();</span>
+        }
+<span class="nc" id="L513">    }</span>
+    
+    private void clearDrawing() {
+        // 清除所有形状
+<span class="nc bnc" id="L517" title="All 2 branches missed.">        for (Shape shape : drawing.getShapes().toArray(new Shape[0])) {</span>
+<span class="nc" id="L518">            drawing.removeShape(shape);</span>
+        }
+<span class="nc" id="L520">        drawing.render();</span>
+<span class="nc" id="L521">        statusLabel.setText(&quot;已清除所有图形&quot;);</span>
+<span class="nc" id="L522">    }</span>
+    
+    private void newDrawing() {
+<span class="nc bnc" id="L525" title="All 2 branches missed.">        if (!drawing.getShapes().isEmpty()) {</span>
+<span class="nc" id="L526">            int option = JOptionPane.showConfirmDialog(this,</span>
+<span class="nc" id="L527">                &quot;是否保存当前图形？&quot;,</span>
+<span class="nc" id="L528">                &quot;新建&quot;,</span>
+<span class="nc" id="L529">                JOptionPane.YES_NO_CANCEL_OPTION);</span>
+            
+<span class="nc bnc" id="L531" title="All 2 branches missed.">            if (option == JOptionPane.YES_OPTION) {</span>
+<span class="nc" id="L532">                saveDrawing();</span>
+<span class="nc bnc" id="L533" title="All 2 branches missed.">            } else if (option == JOptionPane.CANCEL_OPTION) {</span>
+<span class="nc" id="L534">                return;</span>
+            }
+        }
+        
+<span class="nc" id="L538">        clearDrawing();</span>
+<span class="nc" id="L539">    }</span>
+    
+    private void openDrawing() {
+<span class="nc" id="L542">        JFileChooser fileChooser = new JFileChooser();</span>
+<span class="nc" id="L543">        fileChooser.setDialogTitle(&quot;打开图形文件&quot;);</span>
+        
+        // 添加文件过滤器
+<span class="nc" id="L546">        FileNameExtensionFilter binFilter = new FileNameExtensionFilter(&quot;二进制文件 (*.bin)&quot;, &quot;bin&quot;);</span>
+<span class="nc" id="L547">        FileNameExtensionFilter jsonFilter = new FileNameExtensionFilter(&quot;JSON文件 (*.json)&quot;, &quot;json&quot;);</span>
+<span class="nc" id="L548">        fileChooser.addChoosableFileFilter(binFilter);</span>
+<span class="nc" id="L549">        fileChooser.addChoosableFileFilter(jsonFilter);</span>
+<span class="nc" id="L550">        fileChooser.setFileFilter(binFilter);  // 默认选择二进制文件</span>
+        
+<span class="nc" id="L552">        int result = fileChooser.showOpenDialog(this);</span>
+        
+<span class="nc bnc" id="L554" title="All 2 branches missed.">        if (result == JFileChooser.APPROVE_OPTION) {</span>
+<span class="nc" id="L555">            File file = fileChooser.getSelectedFile();</span>
+<span class="nc" id="L556">            String filePath = file.getAbsolutePath();</span>
+            
+            try {
+                List&lt;Shape&gt; shapes;
+                
+<span class="nc bnc" id="L561" title="All 2 branches missed.">                if (filePath.toLowerCase().endsWith(&quot;.json&quot;)) {</span>
+<span class="nc" id="L562">                    shapes = fileManager.loadDrawingJson(filePath);</span>
+<span class="nc" id="L563">                } else {</span>
+                    // 默认为二进制文件
+<span class="nc" id="L565">                    shapes = fileManager.loadDrawingBinary(filePath);</span>
+                }
+                
+                // 清除当前图形
+<span class="nc" id="L569">                clearDrawing();</span>
+                
+                // 添加加载的图形
+<span class="nc bnc" id="L572" title="All 2 branches missed.">                for (Shape shape : shapes) {</span>
+<span class="nc" id="L573">                    drawing.addShape(shape);</span>
+                }
+                
+<span class="nc" id="L576">                drawing.render();</span>
+<span class="nc" id="L577">                statusLabel.setText(&quot;已加载图形文件: &quot; + file.getName());</span>
+                
+<span class="nc" id="L579">            } catch (Exception e) {</span>
+<span class="nc" id="L580">                JOptionPane.showMessageDialog(this,</span>
+<span class="nc" id="L581">                    &quot;加载文件失败: &quot; + e.getMessage(),</span>
+<span class="nc" id="L582">                    &quot;错误&quot;,</span>
+<span class="nc" id="L583">                    JOptionPane.ERROR_MESSAGE);</span>
+<span class="nc" id="L584">                statusLabel.setText(&quot;加载文件失败&quot;);</span>
+            }
+        }
+<span class="nc" id="L587">    }</span>
+    
+    private void saveDrawing() {
+<span class="nc" id="L590">        JFileChooser fileChooser = new JFileChooser();</span>
+<span class="nc" id="L591">        fileChooser.setDialogTitle(&quot;保存图形文件&quot;);</span>
+        
+        // 添加文件过滤器
+<span class="nc" id="L594">        FileNameExtensionFilter binFilter = new FileNameExtensionFilter(&quot;二进制文件 (*.bin)&quot;, &quot;bin&quot;);</span>
+<span class="nc" id="L595">        fileChooser.addChoosableFileFilter(binFilter);</span>
+<span class="nc" id="L596">        fileChooser.setFileFilter(binFilter);</span>
+        
+<span class="nc" id="L598">        int result = fileChooser.showSaveDialog(this);</span>
+        
+<span class="nc bnc" id="L600" title="All 2 branches missed.">        if (result == JFileChooser.APPROVE_OPTION) {</span>
+<span class="nc" id="L601">            File file = fileChooser.getSelectedFile();</span>
+<span class="nc" id="L602">            String filePath = file.getAbsolutePath();</span>
+            
+            // 确保文件有正确的扩展名
+<span class="nc bnc" id="L605" title="All 2 branches missed.">            if (!filePath.toLowerCase().endsWith(&quot;.bin&quot;)) {</span>
+<span class="nc" id="L606">                filePath += &quot;.bin&quot;;</span>
+            }
+            
+            try {
+<span class="nc" id="L610">                fileManager.saveDrawingBinary(drawing, filePath);</span>
+<span class="nc" id="L611">                statusLabel.setText(&quot;已保存图形文件: &quot; + new File(filePath).getName());</span>
+<span class="nc" id="L612">            } catch (IOException e) {</span>
+<span class="nc" id="L613">                JOptionPane.showMessageDialog(this,</span>
+<span class="nc" id="L614">                    &quot;保存文件失败: &quot; + e.getMessage(),</span>
+<span class="nc" id="L615">                    &quot;错误&quot;,</span>
+<span class="nc" id="L616">                    JOptionPane.ERROR_MESSAGE);</span>
+<span class="nc" id="L617">                statusLabel.setText(&quot;保存文件失败&quot;);</span>
+            }
+        }
+<span class="nc" id="L620">    }</span>
+    
+    private void exportToJson() {
+<span class="nc" id="L623">        JsonExportVisitor visitor = new JsonExportVisitor();</span>
+<span class="nc" id="L624">        drawing.acceptVisitor(visitor);</span>
+<span class="nc" id="L625">        saveToFile(visitor.getJsonOutput(), &quot;json&quot;);</span>
+<span class="nc" id="L626">    }</span>
+    
+    private void exportToXml() {
+<span class="nc" id="L629">        XmlExportVisitor visitor = new XmlExportVisitor();</span>
+<span class="nc" id="L630">        drawing.acceptVisitor(visitor);</span>
+<span class="nc" id="L631">        saveToFile(visitor.getXmlOutput(), &quot;xml&quot;);</span>
+<span class="nc" id="L632">    }</span>
+    
+    private void saveToFile(String content, String extension) {
+<span class="nc" id="L635">        JFileChooser fileChooser = new JFileChooser();</span>
+<span class="nc" id="L636">        fileChooser.setDialogTitle(&quot;保存为&quot; + extension.toUpperCase() + &quot;文件&quot;);</span>
+        
+<span class="nc" id="L638">        int userSelection = fileChooser.showSaveDialog(this);</span>
+        
+<span class="nc bnc" id="L640" title="All 2 branches missed.">        if (userSelection == JFileChooser.APPROVE_OPTION) {</span>
+<span class="nc" id="L641">            File fileToSave = fileChooser.getSelectedFile();</span>
+<span class="nc" id="L642">            String filePath = fileToSave.getAbsolutePath();</span>
+            
+            // 确保文件有正确的扩展名
+<span class="nc bnc" id="L645" title="All 2 branches missed.">            if (!filePath.toLowerCase().endsWith(&quot;.&quot; + extension)) {</span>
+<span class="nc" id="L646">                filePath += &quot;.&quot; + extension;</span>
+            }
+            
+            try {
+<span class="nc bnc" id="L650" title="All 2 branches missed.">                if (extension.equals(&quot;json&quot;)) {</span>
+<span class="nc" id="L651">                    fileManager.saveDrawingJson(content, filePath);</span>
+<span class="nc bnc" id="L652" title="All 2 branches missed.">                } else if (extension.equals(&quot;xml&quot;)) {</span>
+<span class="nc" id="L653">                    fileManager.saveDrawingXml(content, filePath);</span>
+<span class="nc" id="L654">                } else {</span>
+<span class="nc" id="L655">                    try (FileWriter writer = new FileWriter(filePath)) {</span>
+<span class="nc" id="L656">                        writer.write(content);</span>
+                    }
+                }
+                
+<span class="nc" id="L660">                JOptionPane.showMessageDialog(this, </span>
+<span class="nc" id="L661">                    &quot;文件已保存至：&quot; + filePath,</span>
+<span class="nc" id="L662">                    &quot;保存成功&quot;, JOptionPane.INFORMATION_MESSAGE);</span>
+<span class="nc" id="L663">                statusLabel.setText(&quot;已导出为&quot; + extension.toUpperCase() + &quot;文件&quot;);</span>
+<span class="nc" id="L664">            } catch (IOException e) {</span>
+<span class="nc" id="L665">                JOptionPane.showMessageDialog(this,</span>
+<span class="nc" id="L666">                    &quot;保存文件失败：&quot; + e.getMessage(),</span>
+<span class="nc" id="L667">                    &quot;错误&quot;, JOptionPane.ERROR_MESSAGE);</span>
+<span class="nc" id="L668">                statusLabel.setText(&quot;导出失败&quot;);</span>
+            }
+        }
+<span class="nc" id="L671">    }</span>
+    
+    public static void main(String[] args) {
+        // 使用Swing线程
+<span class="nc" id="L675">        SwingUtilities.invokeLater(SwingGraphicsApp::new);</span>
+<span class="nc" id="L676">    }</span>
+} 
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

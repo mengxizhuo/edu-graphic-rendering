@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CommandManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">graphic-rendering</a> &gt; <a href="index.source.html" class="el_package">com.example.graphics.command</a> &gt; <span class="el_source">CommandManager.java</span></div><h1>CommandManager.java</h1><pre class="source lang-java linenums">package com.example.graphics.command;
+
+import java.util.Stack;
+
+/**
+ * Manager for executing, undoing, and redoing commands.
+ * This is part of the Command pattern implementation.
+ */
+public class CommandManager {
+    private final Stack&lt;Command&gt; undoStack;
+    private final Stack&lt;Command&gt; redoStack;
+    
+    /**
+     * Constructor initializes the command stacks
+     */
+<span class="fc" id="L16">    public CommandManager() {</span>
+<span class="fc" id="L17">        undoStack = new Stack&lt;&gt;();</span>
+<span class="fc" id="L18">        redoStack = new Stack&lt;&gt;();</span>
+<span class="fc" id="L19">    }</span>
+    
+    /**
+     * Execute a command and add it to the undo stack
+     * @param command the command to execute
+     */
+    public void executeCommand(Command command) {
+<span class="fc" id="L26">        command.execute();</span>
+<span class="fc" id="L27">        undoStack.push(command);</span>
+<span class="fc" id="L28">        redoStack.clear(); // Clear redo stack when a new command is executed</span>
+<span class="fc" id="L29">    }</span>
+    
+    /**
+     * Undo the most recently executed command
+     * @return true if a command was undone, false if there are no commands to undo
+     */
+    public boolean undo() {
+<span class="fc bfc" id="L36" title="All 2 branches covered.">        if (undoStack.isEmpty()) {</span>
+<span class="fc" id="L37">            return false;</span>
+        }
+        
+<span class="fc" id="L40">        Command command = undoStack.pop();</span>
+<span class="fc" id="L41">        command.undo();</span>
+<span class="fc" id="L42">        redoStack.push(command);</span>
+<span class="fc" id="L43">        return true;</span>
+    }
+    
+    /**
+     * Redo the most recently undone command
+     * @return true if a command was redone, false if there are no commands to redo
+     */
+    public boolean redo() {
+<span class="fc bfc" id="L51" title="All 2 branches covered.">        if (redoStack.isEmpty()) {</span>
+<span class="fc" id="L52">            return false;</span>
+        }
+        
+<span class="fc" id="L55">        Command command = redoStack.pop();</span>
+<span class="fc" id="L56">        command.execute();</span>
+<span class="fc" id="L57">        undoStack.push(command);</span>
+<span class="fc" id="L58">        return true;</span>
+    }
+    
+    /**
+     * Check if there are commands that can be undone
+     * @return true if there are commands that can be undone, false otherwise
+     */
+    public boolean canUndo() {
+<span class="fc bfc" id="L66" title="All 2 branches covered.">        return !undoStack.isEmpty();</span>
+    }
+    
+    /**
+     * Check if there are commands that can be redone
+     * @return true if there are commands that can be redone, false otherwise
+     */
+    public boolean canRedo() {
+<span class="fc bfc" id="L74" title="All 2 branches covered.">        return !redoStack.isEmpty();</span>
+    }
+    
+    /**
+     * Clear all command history
+     */
+    public void clearHistory() {
+<span class="fc" id="L81">        undoStack.clear();</span>
+<span class="fc" id="L82">        redoStack.clear();</span>
+<span class="fc" id="L83">    }</span>
+} 
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

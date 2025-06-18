@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RenderingConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">graphic-rendering</a> &gt; <a href="index.source.html" class="el_package">com.example.graphics.singleton</a> &gt; <span class="el_source">RenderingConfig.java</span></div><h1>RenderingConfig.java</h1><pre class="source lang-java linenums">package com.example.graphics.singleton;
+
+/**
+ * Singleton class for managing system-wide rendering configuration.
+ * This is an implementation of the Singleton pattern.
+ */
+public class RenderingConfig {
+    // The single instance of RenderingConfig
+    private static RenderingConfig instance;
+    
+    // Configuration properties
+    private int defaultWidth;
+    private int defaultHeight;
+    private String defaultRendererType;
+    private boolean debugMode;
+    
+    /**
+     * Private constructor to prevent instantiation from outside
+     */
+<span class="fc" id="L20">    private RenderingConfig() {</span>
+        // Default configuration values
+<span class="fc" id="L22">        defaultWidth = 800;</span>
+<span class="fc" id="L23">        defaultHeight = 600;</span>
+<span class="fc" id="L24">        defaultRendererType = &quot;svg&quot;;</span>
+<span class="fc" id="L25">        debugMode = false;</span>
+<span class="fc" id="L26">    }</span>
+    
+    /**
+     * Get the singleton instance of RenderingConfig
+     * @return the singleton instance
+     */
+    public static synchronized RenderingConfig getInstance() {
+<span class="fc bfc" id="L33" title="All 2 branches covered.">        if (instance == null) {</span>
+<span class="fc" id="L34">            instance = new RenderingConfig();</span>
+        }
+<span class="fc" id="L36">        return instance;</span>
+    }
+    
+    /**
+     * Get the default width for renderers
+     * @return the default width
+     */
+    public int getDefaultWidth() {
+<span class="fc" id="L44">        return defaultWidth;</span>
+    }
+    
+    /**
+     * Set the default width for renderers
+     * @param defaultWidth the default width to set
+     */
+    public void setDefaultWidth(int defaultWidth) {
+<span class="fc" id="L52">        this.defaultWidth = defaultWidth;</span>
+<span class="fc" id="L53">    }</span>
+    
+    /**
+     * Get the default height for renderers
+     * @return the default height
+     */
+    public int getDefaultHeight() {
+<span class="fc" id="L60">        return defaultHeight;</span>
+    }
+    
+    /**
+     * Set the default height for renderers
+     * @param defaultHeight the default height to set
+     */
+    public void setDefaultHeight(int defaultHeight) {
+<span class="fc" id="L68">        this.defaultHeight = defaultHeight;</span>
+<span class="fc" id="L69">    }</span>
+    
+    /**
+     * Get the default renderer type
+     * @return the default renderer type
+     */
+    public String getDefaultRendererType() {
+<span class="fc" id="L76">        return defaultRendererType;</span>
+    }
+    
+    /**
+     * Set the default renderer type
+     * @param defaultRendererType the default renderer type to set
+     */
+    public void setDefaultRendererType(String defaultRendererType) {
+<span class="fc" id="L84">        this.defaultRendererType = defaultRendererType;</span>
+<span class="fc" id="L85">    }</span>
+    
+    /**
+     * Check if debug mode is enabled
+     * @return true if debug mode is enabled, false otherwise
+     */
+    public boolean isDebugMode() {
+<span class="fc" id="L92">        return debugMode;</span>
+    }
+    
+    /**
+     * Set the debug mode
+     * @param debugMode true to enable debug mode, false to disable
+     */
+    public void setDebugMode(boolean debugMode) {
+<span class="fc" id="L100">        this.debugMode = debugMode;</span>
+<span class="fc" id="L101">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

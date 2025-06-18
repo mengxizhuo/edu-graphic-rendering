@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>XmlExportVisitor.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">graphic-rendering</a> &gt; <a href="index.source.html" class="el_package">com.example.graphics.visitor</a> &gt; <span class="el_source">XmlExportVisitor.java</span></div><h1>XmlExportVisitor.java</h1><pre class="source lang-java linenums">package com.example.graphics.visitor;
+
+import com.example.graphics.model.Circle;
+import com.example.graphics.model.Line;
+import com.example.graphics.model.Rectangle;
+import com.example.graphics.model.Triangle;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import java.io.StringWriter;
+
+/**
+ * Visitor implementation that exports shapes to XML format.
+ * This is an implementation of the Visitor pattern.
+ */
+public class XmlExportVisitor implements ShapeVisitor {
+    private Document document;
+    private Element rootElement;
+    
+    /**
+     * Constructor initializes the XML document
+     */
+<span class="fc" id="L34">    public XmlExportVisitor() {</span>
+        try {
+<span class="fc" id="L36">            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();</span>
+<span class="fc" id="L37">            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();</span>
+            
+            // Root elements
+<span class="fc" id="L40">            document = docBuilder.newDocument();</span>
+<span class="fc" id="L41">            rootElement = document.createElement(&quot;shapes&quot;);</span>
+<span class="fc" id="L42">            document.appendChild(rootElement);</span>
+<span class="nc" id="L43">        } catch (ParserConfigurationException e) {</span>
+<span class="nc" id="L44">            throw new RuntimeException(&quot;Error initializing XML document&quot;, e);</span>
+<span class="fc" id="L45">        }</span>
+<span class="fc" id="L46">    }</span>
+    
+    @Override
+    public void visit(Circle circle) {
+<span class="fc" id="L50">        Element circleElement = document.createElement(&quot;circle&quot;);</span>
+<span class="fc" id="L51">        circleElement.setAttribute(&quot;x&quot;, String.valueOf(circle.getX()));</span>
+<span class="fc" id="L52">        circleElement.setAttribute(&quot;y&quot;, String.valueOf(circle.getY()));</span>
+<span class="fc" id="L53">        circleElement.setAttribute(&quot;radius&quot;, String.valueOf(circle.getRadius()));</span>
+<span class="fc" id="L54">        rootElement.appendChild(circleElement);</span>
+<span class="fc" id="L55">    }</span>
+    
+    @Override
+    public void visit(Rectangle rectangle) {
+<span class="fc" id="L59">        Element rectElement = document.createElement(&quot;rectangle&quot;);</span>
+<span class="fc" id="L60">        rectElement.setAttribute(&quot;x&quot;, String.valueOf(rectangle.getX()));</span>
+<span class="fc" id="L61">        rectElement.setAttribute(&quot;y&quot;, String.valueOf(rectangle.getY()));</span>
+<span class="fc" id="L62">        rectElement.setAttribute(&quot;width&quot;, String.valueOf(rectangle.getWidth()));</span>
+<span class="fc" id="L63">        rectElement.setAttribute(&quot;height&quot;, String.valueOf(rectangle.getHeight()));</span>
+<span class="fc" id="L64">        rootElement.appendChild(rectElement);</span>
+<span class="fc" id="L65">    }</span>
+    
+    @Override
+    public void visit(Line line) {
+<span class="fc" id="L69">        Element lineElement = document.createElement(&quot;line&quot;);</span>
+<span class="fc" id="L70">        lineElement.setAttribute(&quot;x1&quot;, String.valueOf(line.getX1()));</span>
+<span class="fc" id="L71">        lineElement.setAttribute(&quot;y1&quot;, String.valueOf(line.getY1()));</span>
+<span class="fc" id="L72">        lineElement.setAttribute(&quot;x2&quot;, String.valueOf(line.getX2()));</span>
+<span class="fc" id="L73">        lineElement.setAttribute(&quot;y2&quot;, String.valueOf(line.getY2()));</span>
+<span class="fc" id="L74">        rootElement.appendChild(lineElement);</span>
+<span class="fc" id="L75">    }</span>
+    
+    @Override
+    public void visit(Triangle triangle) {
+<span class="fc" id="L79">        Element triangleElement = document.createElement(&quot;triangle&quot;);</span>
+<span class="fc" id="L80">        triangleElement.setAttribute(&quot;x1&quot;, String.valueOf(triangle.getX1()));</span>
+<span class="fc" id="L81">        triangleElement.setAttribute(&quot;y1&quot;, String.valueOf(triangle.getY1()));</span>
+<span class="fc" id="L82">        triangleElement.setAttribute(&quot;x2&quot;, String.valueOf(triangle.getX2()));</span>
+<span class="fc" id="L83">        triangleElement.setAttribute(&quot;y2&quot;, String.valueOf(triangle.getY2()));</span>
+<span class="fc" id="L84">        triangleElement.setAttribute(&quot;x3&quot;, String.valueOf(triangle.getX3()));</span>
+<span class="fc" id="L85">        triangleElement.setAttribute(&quot;y3&quot;, String.valueOf(triangle.getY3()));</span>
+<span class="fc" id="L86">        rootElement.appendChild(triangleElement);</span>
+<span class="fc" id="L87">    }</span>
+    
+    /**
+     * Get the XML representation of all visited shapes
+     * @return an XML string representing all shapes
+     */
+    public String getXmlOutput() {
+        try {
+<span class="fc" id="L95">            TransformerFactory transformerFactory = TransformerFactory.newInstance();</span>
+<span class="fc" id="L96">            Transformer transformer = transformerFactory.newTransformer();</span>
+<span class="fc" id="L97">            transformer.setOutputProperty(OutputKeys.INDENT, &quot;yes&quot;);</span>
+<span class="fc" id="L98">            transformer.setOutputProperty(&quot;{http://xml.apache.org/xslt}indent-amount&quot;, &quot;2&quot;);</span>
+            
+<span class="fc" id="L100">            StringWriter writer = new StringWriter();</span>
+<span class="fc" id="L101">            transformer.transform(new DOMSource(document), new StreamResult(writer));</span>
+<span class="fc" id="L102">            return writer.toString();</span>
+<span class="nc" id="L103">        } catch (TransformerException e) {</span>
+<span class="nc" id="L104">            throw new RuntimeException(&quot;Error transforming XML document&quot;, e);</span>
+        }
+    }
+    
+    /**
+     * Clear all shapes and reset the visitor
+     */
+    public void clear() {
+        try {
+<span class="fc" id="L113">            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();</span>
+<span class="fc" id="L114">            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();</span>
+            
+            // Root elements
+<span class="fc" id="L117">            document = docBuilder.newDocument();</span>
+<span class="fc" id="L118">            rootElement = document.createElement(&quot;shapes&quot;);</span>
+<span class="fc" id="L119">            document.appendChild(rootElement);</span>
+<span class="nc" id="L120">        } catch (ParserConfigurationException e) {</span>
+<span class="nc" id="L121">            throw new RuntimeException(&quot;Error resetting XML document&quot;, e);</span>
+<span class="fc" id="L122">        }</span>
+<span class="fc" id="L123">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

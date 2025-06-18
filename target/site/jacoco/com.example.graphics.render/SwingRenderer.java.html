@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SwingRenderer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">graphic-rendering</a> &gt; <a href="index.source.html" class="el_package">com.example.graphics.render</a> &gt; <span class="el_source">SwingRenderer.java</span></div><h1>SwingRenderer.java</h1><pre class="source lang-java linenums">package com.example.graphics.render;
+
+import com.example.graphics.model.Circle;
+import com.example.graphics.model.Line;
+import com.example.graphics.model.Rectangle;
+import com.example.graphics.model.Triangle;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
+import java.awt.geom.Path2D;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Swing-based renderer implementation that renders shapes on a JPanel
+ */
+public class SwingRenderer implements Renderer {
+    private final int width;
+    private final int height;
+    private final List&lt;java.awt.Shape&gt; shapes;
+    private final List&lt;Color&gt; shapeColors;
+    private JPanel renderPanel;
+
+<span class="fc" id="L26">    public SwingRenderer(int width, int height) {</span>
+<span class="fc" id="L27">        this.width = width;</span>
+<span class="fc" id="L28">        this.height = height;</span>
+<span class="fc" id="L29">        this.shapes = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L30">        this.shapeColors = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L31">    }</span>
+
+    @Override
+    public void renderCircle(Circle circle) {
+<span class="nc" id="L35">        shapes.add(new Ellipse2D.Double(</span>
+<span class="nc" id="L36">            circle.getX() - circle.getRadius(),</span>
+<span class="nc" id="L37">            circle.getY() - circle.getRadius(),</span>
+<span class="nc" id="L38">            circle.getRadius() * 2,</span>
+<span class="nc" id="L39">            circle.getRadius() * 2</span>
+        ));
+<span class="nc" id="L41">        shapeColors.add(Color.BLUE);</span>
+        
+        // 添加一个小点表示圆心
+<span class="nc" id="L44">        shapes.add(new Ellipse2D.Double(</span>
+<span class="nc" id="L45">            circle.getX() - 2,</span>
+<span class="nc" id="L46">            circle.getY() - 2,</span>
+<span class="nc" id="L47">            4,</span>
+<span class="nc" id="L48">            4</span>
+        ));
+<span class="nc" id="L50">        shapeColors.add(Color.RED);</span>
+<span class="nc" id="L51">    }</span>
+
+    @Override
+    public void renderRectangle(Rectangle rectangle) {
+<span class="nc" id="L55">        shapes.add(new java.awt.Rectangle(</span>
+<span class="nc" id="L56">            rectangle.getX(),</span>
+<span class="nc" id="L57">            rectangle.getY(),</span>
+<span class="nc" id="L58">            rectangle.getWidth(),</span>
+<span class="nc" id="L59">            rectangle.getHeight()</span>
+        ));
+<span class="nc" id="L61">        shapeColors.add(Color.GREEN);</span>
+<span class="nc" id="L62">    }</span>
+
+    @Override
+    public void renderLine(Line line) {
+<span class="nc" id="L66">        shapes.add(new Line2D.Double(</span>
+<span class="nc" id="L67">            line.getX1(),</span>
+<span class="nc" id="L68">            line.getY1(),</span>
+<span class="nc" id="L69">            line.getX2(),</span>
+<span class="nc" id="L70">            line.getY2()</span>
+        ));
+<span class="nc" id="L72">        shapeColors.add(Color.BLACK);</span>
+        
+        // 添加两个小点表示线的端点
+<span class="nc" id="L75">        shapes.add(new Ellipse2D.Double(</span>
+<span class="nc" id="L76">            line.getX1() - 3,</span>
+<span class="nc" id="L77">            line.getY1() - 3,</span>
+<span class="nc" id="L78">            6,</span>
+<span class="nc" id="L79">            6</span>
+        ));
+<span class="nc" id="L81">        shapeColors.add(Color.RED);</span>
+        
+<span class="nc" id="L83">        shapes.add(new Ellipse2D.Double(</span>
+<span class="nc" id="L84">            line.getX2() - 3,</span>
+<span class="nc" id="L85">            line.getY2() - 3,</span>
+<span class="nc" id="L86">            6,</span>
+<span class="nc" id="L87">            6</span>
+        ));
+<span class="nc" id="L89">        shapeColors.add(Color.RED);</span>
+<span class="nc" id="L90">    }</span>
+    
+    @Override
+    public void renderTriangle(Triangle triangle) {
+        // 创建三角形路径
+<span class="nc" id="L95">        Path2D path = new Path2D.Double();</span>
+<span class="nc" id="L96">        path.moveTo(triangle.getX1(), triangle.getY1());</span>
+<span class="nc" id="L97">        path.lineTo(triangle.getX2(), triangle.getY2());</span>
+<span class="nc" id="L98">        path.lineTo(triangle.getX3(), triangle.getY3());</span>
+<span class="nc" id="L99">        path.closePath();</span>
+        
+<span class="nc" id="L101">        shapes.add(path);</span>
+<span class="nc" id="L102">        shapeColors.add(Color.ORANGE);</span>
+        
+        // 添加三个小点表示三角形的顶点
+<span class="nc" id="L105">        shapes.add(new Ellipse2D.Double(</span>
+<span class="nc" id="L106">            triangle.getX1() - 3,</span>
+<span class="nc" id="L107">            triangle.getY1() - 3,</span>
+<span class="nc" id="L108">            6,</span>
+<span class="nc" id="L109">            6</span>
+        ));
+<span class="nc" id="L111">        shapeColors.add(Color.RED);</span>
+        
+<span class="nc" id="L113">        shapes.add(new Ellipse2D.Double(</span>
+<span class="nc" id="L114">            triangle.getX2() - 3,</span>
+<span class="nc" id="L115">            triangle.getY2() - 3,</span>
+<span class="nc" id="L116">            6,</span>
+<span class="nc" id="L117">            6</span>
+        ));
+<span class="nc" id="L119">        shapeColors.add(Color.RED);</span>
+        
+<span class="nc" id="L121">        shapes.add(new Ellipse2D.Double(</span>
+<span class="nc" id="L122">            triangle.getX3() - 3,</span>
+<span class="nc" id="L123">            triangle.getY3() - 3,</span>
+<span class="nc" id="L124">            6,</span>
+<span class="nc" id="L125">            6</span>
+        ));
+<span class="nc" id="L127">        shapeColors.add(Color.RED);</span>
+<span class="nc" id="L128">    }</span>
+
+    @Override
+    public void clear() {
+<span class="nc" id="L132">        shapes.clear();</span>
+<span class="nc" id="L133">        shapeColors.clear();</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">        if (renderPanel != null) {</span>
+<span class="nc" id="L135">            renderPanel.repaint();</span>
+        }
+<span class="nc" id="L137">    }</span>
+
+    @Override
+    public void display() {
+<span class="nc bnc" id="L141" title="All 2 branches missed.">        if (renderPanel != null) {</span>
+<span class="nc" id="L142">            renderPanel.repaint();</span>
+        }
+<span class="nc" id="L144">    }</span>
+
+    /**
+     * Get the JPanel that displays the rendered shapes
+     * @return the render panel
+     */
+    public JPanel getRenderPanel() {
+<span class="nc bnc" id="L151" title="All 2 branches missed.">        if (renderPanel == null) {</span>
+<span class="nc" id="L152">            renderPanel = new JPanel() {</span>
+                @Override
+                protected void paintComponent(Graphics g) {
+<span class="nc" id="L155">                    super.paintComponent(g);</span>
+<span class="nc" id="L156">                    Graphics2D g2d = (Graphics2D) g;</span>
+<span class="nc" id="L157">                    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);</span>
+                    
+                    // 绘制背景网格
+<span class="nc" id="L160">                    drawGrid(g2d);</span>
+                    
+                    // 绘制所有形状
+<span class="nc bnc" id="L163" title="All 2 branches missed.">                    for (int i = 0; i &lt; shapes.size(); i++) {</span>
+<span class="nc" id="L164">                        g2d.setColor(shapeColors.get(i));</span>
+<span class="nc" id="L165">                        g2d.setStroke(new BasicStroke(2));</span>
+<span class="nc" id="L166">                        g2d.draw(shapes.get(i));</span>
+                    }
+<span class="nc" id="L168">                }</span>
+                
+                private void drawGrid(Graphics2D g2d) {
+<span class="nc" id="L171">                    g2d.setColor(new Color(240, 240, 240));</span>
+<span class="nc" id="L172">                    g2d.setStroke(new BasicStroke(1));</span>
+                    
+                    // 绘制水平线
+<span class="nc bnc" id="L175" title="All 2 branches missed.">                    for (int y = 0; y &lt; height; y += 20) {</span>
+<span class="nc" id="L176">                        g2d.drawLine(0, y, width, y);</span>
+                    }
+                    
+                    // 绘制垂直线
+<span class="nc bnc" id="L180" title="All 2 branches missed.">                    for (int x = 0; x &lt; width; x += 20) {</span>
+<span class="nc" id="L181">                        g2d.drawLine(x, 0, x, height);</span>
+                    }
+<span class="nc" id="L183">                }</span>
+            };
+<span class="nc" id="L185">            renderPanel.setPreferredSize(new Dimension(width, height));</span>
+<span class="nc" id="L186">            renderPanel.setBackground(Color.WHITE);</span>
+        }
+<span class="nc" id="L188">        return renderPanel;</span>
+    }
+} 
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

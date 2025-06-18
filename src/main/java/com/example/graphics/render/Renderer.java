@@ -43,4 +43,20 @@ public interface Renderer {
      * Display the rendered content
      */
     void display();
+    
+    /**
+     * Get the width of the rendering area
+     * @return the width
+     */
+    default int getWidth() {
+        return 800; // Default width
+    }
+    
+    /**
+     * Get the height of the rendering area
+     * @return the height
+     */
+    default int getHeight() {
+        return 600; // Default height
+    }
 } 

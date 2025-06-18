@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Rectangle.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">graphic-rendering</a> &gt; <a href="index.source.html" class="el_package">com.example.graphics.model</a> &gt; <span class="el_source">Rectangle.java</span></div><h1>Rectangle.java</h1><pre class="source lang-java linenums">package com.example.graphics.model;
+
+import com.example.graphics.visitor.ShapeVisitor;
+
+/**
+ * Rectangle implementation of the Shape interface.
+ */
+public class Rectangle implements Shape {
+    private int x;
+    private int y;
+    private int width;
+    private int height;
+    
+    /**
+     * Constructs a rectangle with the specified parameters
+     * @param x the x coordinate of the top-left corner
+     * @param y the y coordinate of the top-left corner
+     * @param width the width of the rectangle
+     * @param height the height of the rectangle
+     */
+<span class="fc" id="L21">    public Rectangle(int x, int y, int width, int height) {</span>
+<span class="fc" id="L22">        this.x = x;</span>
+<span class="fc" id="L23">        this.y = y;</span>
+<span class="fc" id="L24">        this.width = width;</span>
+<span class="fc" id="L25">        this.height = height;</span>
+<span class="fc" id="L26">    }</span>
+    
+    @Override
+    public int getX() {
+<span class="fc" id="L30">        return x;</span>
+    }
+    
+    @Override
+    public int getY() {
+<span class="fc" id="L35">        return y;</span>
+    }
+    
+    @Override
+    public void setPosition(int x, int y) {
+<span class="nc" id="L40">        this.x = x;</span>
+<span class="nc" id="L41">        this.y = y;</span>
+<span class="nc" id="L42">    }</span>
+    
+    /**
+     * Get the width of the rectangle
+     * @return the width
+     */
+    public int getWidth() {
+<span class="fc" id="L49">        return width;</span>
+    }
+    
+    /**
+     * Set the width of the rectangle
+     * @param width the new width
+     */
+    public void setWidth(int width) {
+<span class="nc" id="L57">        this.width = width;</span>
+<span class="nc" id="L58">    }</span>
+    
+    /**
+     * Get the height of the rectangle
+     * @return the height
+     */
+    public int getHeight() {
+<span class="fc" id="L65">        return height;</span>
+    }
+    
+    /**
+     * Set the height of the rectangle
+     * @param height the new height
+     */
+    public void setHeight(int height) {
+<span class="nc" id="L73">        this.height = height;</span>
+<span class="nc" id="L74">    }</span>
+    
+    @Override
+    public void accept(ShapeVisitor visitor) {
+<span class="fc" id="L78">        visitor.visit(this);</span>
+<span class="fc" id="L79">    }</span>
+    
+    @Override
+    public Shape clone() {
+<span class="nc" id="L83">        return new Rectangle(this.x, this.y, this.width, this.height);</span>
+    }
+} 
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

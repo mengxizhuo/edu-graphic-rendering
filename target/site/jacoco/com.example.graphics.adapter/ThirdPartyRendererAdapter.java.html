@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ThirdPartyRendererAdapter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">graphic-rendering</a> &gt; <a href="index.source.html" class="el_package">com.example.graphics.adapter</a> &gt; <span class="el_source">ThirdPartyRendererAdapter.java</span></div><h1>ThirdPartyRendererAdapter.java</h1><pre class="source lang-java linenums">package com.example.graphics.adapter;
+
+import com.example.graphics.model.Circle;
+import com.example.graphics.model.Line;
+import com.example.graphics.model.Rectangle;
+import com.example.graphics.model.Triangle;
+import com.example.graphics.render.Renderer;
+
+/**
+ * Adapter for the ThirdPartyRenderer interface.
+ * This adapts the third-party renderer to our Renderer interface.
+ * Implementation of the Adapter pattern.
+ */
+public class ThirdPartyRendererAdapter implements Renderer {
+    private final ThirdPartyRenderer thirdPartyRenderer;
+    
+    /**
+     * Constructor takes the third-party renderer to adapt
+     * @param thirdPartyRenderer the third-party renderer to adapt
+     */
+<span class="nc" id="L21">    public ThirdPartyRendererAdapter(ThirdPartyRenderer thirdPartyRenderer) {</span>
+<span class="nc" id="L22">        this.thirdPartyRenderer = thirdPartyRenderer;</span>
+<span class="nc" id="L23">    }</span>
+    
+    @Override
+    public void renderCircle(Circle circle) {
+<span class="nc" id="L27">        thirdPartyRenderer.drawCircle(circle.getX(), circle.getY(), circle.getRadius());</span>
+<span class="nc" id="L28">    }</span>
+    
+    @Override
+    public void renderRectangle(Rectangle rectangle) {
+<span class="nc" id="L32">        thirdPartyRenderer.drawRect(rectangle.getX(), rectangle.getY(), </span>
+<span class="nc" id="L33">                                   rectangle.getWidth(), rectangle.getHeight());</span>
+<span class="nc" id="L34">    }</span>
+    
+    @Override
+    public void renderLine(Line line) {
+<span class="nc" id="L38">        thirdPartyRenderer.drawLine(line.getX1(), line.getY1(), line.getX2(), line.getY2());</span>
+<span class="nc" id="L39">    }</span>
+    
+    @Override
+    public void renderTriangle(Triangle triangle) {
+        // 使用第三方渲染器的多边形绘制功能来绘制三角形
+<span class="nc" id="L44">        int[] xPoints = {triangle.getX1(), triangle.getX2(), triangle.getX3()};</span>
+<span class="nc" id="L45">        int[] yPoints = {triangle.getY1(), triangle.getY2(), triangle.getY3()};</span>
+<span class="nc" id="L46">        thirdPartyRenderer.drawPolygon(xPoints, yPoints, 3);</span>
+<span class="nc" id="L47">    }</span>
+    
+    @Override
+    public void clear() {
+<span class="nc" id="L51">        thirdPartyRenderer.clearSurface();</span>
+<span class="nc" id="L52">    }</span>
+    
+    @Override
+    public void display() {
+<span class="nc" id="L56">        thirdPartyRenderer.refreshDisplay();</span>
+<span class="nc" id="L57">    }</span>
+} 
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
