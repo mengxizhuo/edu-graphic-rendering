@@ -137,3 +137,6 @@ mvn site
 
 ## 开发
 mengxizhuo@gmail.com
+
+## 开源协议
+Creative Commons 署名协议（CC-BY）允许下载和引用，但依据学校学术诚信政策，严禁将其作为他人作业提交
