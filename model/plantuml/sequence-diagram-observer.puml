@@ -1,0 +1,103 @@
+@startuml 观察者模式序列图
+
+!theme plain
+skinparam sequenceArrowThickness 2
+skinparam sequenceGroupBorderThickness 2
+skinparam noteBorderThickness 2
+skinparam sequenceLifeLineBorderColor #DEE2E6
+skinparam sequenceLifeLineBackgroundColor #F8F9FA
+
+actor Client
+participant Drawing
+participant ShapeSubject
+participant ConsoleLogger
+participant "otherObserver:ShapeObserver" as OtherObserver
+
+' 注册观察者
+Client -> Drawing : addObserver(new ConsoleLogger())
+activate Drawing
+
+Drawing -> ShapeSubject : addObserver(observer)
+activate ShapeSubject
+ShapeSubject -> ShapeSubject : observers.add(observer)
+ShapeSubject --> Drawing
+deactivate ShapeSubject
+
+Drawing --> Client
+deactivate Drawing
+
+' 再注册一个观察者
+Client -> Drawing : addObserver(otherObserver)
+activate Drawing
+
+Drawing -> ShapeSubject : addObserver(otherObserver)
+activate ShapeSubject
+ShapeSubject -> ShapeSubject : observers.add(otherObserver)
+ShapeSubject --> Drawing
+deactivate ShapeSubject
+
+Drawing --> Client
+deactivate Drawing
+
+' 添加图形时通知观察者
+Client -> Drawing : addShape(shape)
+activate Drawing
+
+Drawing -> Drawing : 执行添加图形的逻辑...
+
+Drawing -> ShapeSubject : notifyShapeAdded(shape)
+activate ShapeSubject
+
+ShapeSubject -> ConsoleLogger : onShapeAdded(shape)
+activate ConsoleLogger
+ConsoleLogger -> ConsoleLogger : System.out.println("Shape added...")
+ConsoleLogger --> ShapeSubject
+deactivate ConsoleLogger
+
+ShapeSubject -> OtherObserver : onShapeAdded(shape)
+activate OtherObserver
+OtherObserver -> OtherObserver : 处理图形添加事件
+OtherObserver --> ShapeSubject
+deactivate OtherObserver
+
+ShapeSubject --> Drawing
+deactivate ShapeSubject
+
+Drawing --> Client
+deactivate Drawing
+
+' 移除观察者
+Client -> Drawing : removeObserver(otherObserver)
+activate Drawing
+
+Drawing -> ShapeSubject : removeObserver(otherObserver)
+activate ShapeSubject
+ShapeSubject -> ShapeSubject : observers.remove(otherObserver)
+ShapeSubject --> Drawing
+deactivate ShapeSubject
+
+Drawing --> Client
+deactivate Drawing
+
+' 移除图形时只通知剩余的观察者
+Client -> Drawing : removeShape(shape)
+activate Drawing
+
+Drawing -> Drawing : 执行移除图形的逻辑...
+
+Drawing -> ShapeSubject : notifyShapeRemoved(shape)
+activate ShapeSubject
+
+ShapeSubject -> ConsoleLogger : onShapeRemoved(shape)
+activate ConsoleLogger
+ConsoleLogger -> ConsoleLogger : System.out.println("Shape removed...")
+ConsoleLogger --> ShapeSubject
+deactivate ConsoleLogger
+
+ShapeSubject --> Drawing
+deactivate ShapeSubject
+
+Drawing --> Client
+deactivate Drawing
+
+@enduml 

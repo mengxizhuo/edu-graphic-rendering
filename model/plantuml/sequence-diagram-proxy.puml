@@ -1,0 +1,109 @@
+@startuml 代理模式序列图
+
+!theme plain
+skinparam sequenceArrowThickness 2
+skinparam sequenceGroupBorderThickness 2
+skinparam noteBorderThickness 2
+skinparam sequenceLifeLineBorderColor #DEE2E6
+skinparam sequenceLifeLineBackgroundColor #F8F9FA
+
+actor Client
+participant Drawing
+participant RemoteRendererProxy
+participant RemoteRendererImpl
+participant "circle:Circle" as Circle
+
+' 创建代理
+Client -> RemoteRendererProxy : new RemoteRendererProxy()
+activate RemoteRendererProxy
+RemoteRendererProxy --> Client : proxy
+deactivate RemoteRendererProxy
+
+' 连接到远程服务
+Client -> RemoteRendererProxy : connect()
+activate RemoteRendererProxy
+
+RemoteRendererProxy -> RemoteRendererProxy : 连接远程服务...
+note right of RemoteRendererProxy: 模拟网络连接延迟
+
+RemoteRendererProxy -> RemoteRendererImpl : new RemoteRendererImpl()
+activate RemoteRendererImpl
+RemoteRendererImpl --> RemoteRendererProxy : remoteRenderer
+deactivate RemoteRendererImpl
+
+RemoteRendererProxy -> RemoteRendererProxy : connected = true
+RemoteRendererProxy --> Client : true
+deactivate RemoteRendererProxy
+
+' 设置渲染器
+Client -> Drawing : setRenderer(proxy)
+activate Drawing
+Drawing -> Drawing : this.renderer = proxy
+Drawing --> Client
+deactivate Drawing
+
+' 渲染图形
+Client -> Drawing : render()
+activate Drawing
+
+Drawing -> RemoteRendererProxy : clear()
+activate RemoteRendererProxy
+
+RemoteRendererProxy -> RemoteRendererProxy : ensureConnected()
+RemoteRendererProxy -> RemoteRendererImpl : clear()
+activate RemoteRendererImpl
+RemoteRendererImpl -> RemoteRendererImpl : simulateNetworkDelay()
+note right of RemoteRendererImpl: 模拟网络延迟
+RemoteRendererImpl -> RemoteRendererImpl : System.out.println("Remote: Clearing...")
+RemoteRendererImpl --> RemoteRendererProxy
+deactivate RemoteRendererImpl
+
+RemoteRendererProxy --> Drawing
+deactivate RemoteRendererProxy
+
+Drawing -> RemoteRendererProxy : renderCircle(circle)
+activate RemoteRendererProxy
+
+RemoteRendererProxy -> RemoteRendererProxy : ensureConnected()
+RemoteRendererProxy -> RemoteRendererImpl : renderCircle(circle)
+activate RemoteRendererImpl
+RemoteRendererImpl -> RemoteRendererImpl : simulateNetworkDelay()
+RemoteRendererImpl -> Circle : getX(), getY(), getRadius()
+activate Circle
+Circle --> RemoteRendererImpl : x, y, radius
+deactivate Circle
+RemoteRendererImpl -> RemoteRendererImpl : System.out.println("Remote: Rendering circle...")
+RemoteRendererImpl --> RemoteRendererProxy
+deactivate RemoteRendererImpl
+
+RemoteRendererProxy --> Drawing
+deactivate RemoteRendererProxy
+
+Drawing -> RemoteRendererProxy : display()
+activate RemoteRendererProxy
+
+RemoteRendererProxy -> RemoteRendererProxy : ensureConnected()
+RemoteRendererProxy -> RemoteRendererImpl : display()
+activate RemoteRendererImpl
+RemoteRendererImpl -> RemoteRendererImpl : simulateNetworkDelay()
+RemoteRendererImpl -> RemoteRendererImpl : System.out.println("Remote: Displaying...")
+RemoteRendererImpl --> RemoteRendererProxy
+deactivate RemoteRendererImpl
+
+RemoteRendererProxy --> Drawing
+deactivate RemoteRendererProxy
+
+Drawing --> Client
+deactivate Drawing
+
+' 断开连接
+Client -> RemoteRendererProxy : disconnect()
+activate RemoteRendererProxy
+
+RemoteRendererProxy -> RemoteRendererProxy : 断开连接...
+RemoteRendererProxy -> RemoteRendererProxy : remoteRenderer = null
+RemoteRendererProxy -> RemoteRendererProxy : connected = false
+RemoteRendererProxy --> Client
+deactivate RemoteRendererProxy
+
+@enduml 

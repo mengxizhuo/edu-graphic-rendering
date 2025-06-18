@@ -1,0 +1,94 @@
+@startuml 抽象工厂模式序列图
+
+!theme plain
+skinparam sequenceArrowThickness 2
+skinparam sequenceGroupBorderThickness 2
+skinparam noteBorderThickness 2
+skinparam sequenceLifeLineBorderColor #DEE2E6
+skinparam sequenceLifeLineBackgroundColor #F8F9FA
+
+actor Client
+participant "svgFactory:SvgRendererFactory" as SvgFactory
+participant "consoleFactory:ConsoleRendererFactory" as ConsoleFactory
+participant "svgRenderer:SvgRenderer" as SvgRenderer
+participant "consoleRenderer:ConsoleRenderer" as ConsoleRenderer
+participant RenderingConfig
+participant Drawing
+
+' 获取配置
+Client -> RenderingConfig : getInstance()
+activate RenderingConfig
+RenderingConfig --> Client : config
+deactivate RenderingConfig
+
+Client -> RenderingConfig : getDefaultWidth(), getDefaultHeight()
+activate RenderingConfig
+RenderingConfig --> Client : width, height
+deactivate RenderingConfig
+
+' 创建SVG渲染器工厂
+Client -> SvgFactory : new SvgRendererFactory()
+activate SvgFactory
+SvgFactory --> Client : svgFactory
+deactivate SvgFactory
+
+' 使用SVG工厂创建渲染器
+Client -> SvgFactory : createRenderer(width, height)
+activate SvgFactory
+SvgFactory -> SvgRenderer : new SvgRenderer(width, height)
+activate SvgRenderer
+SvgRenderer --> SvgFactory : svgRenderer
+deactivate SvgRenderer
+SvgFactory --> Client : svgRenderer
+deactivate SvgFactory
+
+' 创建控制台渲染器工厂
+Client -> ConsoleFactory : new ConsoleRendererFactory()
+activate ConsoleFactory
+ConsoleFactory --> Client : consoleFactory
+deactivate ConsoleFactory
+
+' 使用控制台工厂创建渲染器
+Client -> ConsoleFactory : createRenderer(40, 20)
+activate ConsoleFactory
+ConsoleFactory -> ConsoleRenderer : new ConsoleRenderer(40, 20)
+activate ConsoleRenderer
+ConsoleRenderer --> ConsoleFactory : consoleRenderer
+deactivate ConsoleRenderer
+ConsoleFactory --> Client : consoleRenderer
+deactivate ConsoleFactory
+
+' 创建Drawing并使用SVG渲染器
+Client -> Drawing : new Drawing(svgRenderer)
+activate Drawing
+Drawing --> Client : drawing
+deactivate Drawing
+
+' 渲染
+Client -> Drawing : render()
+activate Drawing
+Drawing -> SvgRenderer : 渲染操作...
+activate SvgRenderer
+SvgRenderer --> Drawing
+deactivate SvgRenderer
+Drawing --> Client
+deactivate Drawing
+
+' 切换到控制台渲染器
+Client -> Drawing : setRenderer(consoleRenderer)
+activate Drawing
+Drawing -> Drawing : this.renderer = consoleRenderer
+Drawing --> Client
+deactivate Drawing
+
+' 使用控制台渲染器渲染
+Client -> Drawing : render()
+activate Drawing
+Drawing -> ConsoleRenderer : 渲染操作...
+activate ConsoleRenderer
+ConsoleRenderer --> Drawing
+deactivate ConsoleRenderer
+Drawing --> Client
+deactivate Drawing
+
+@enduml 

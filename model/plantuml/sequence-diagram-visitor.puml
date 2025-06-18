@@ -1,0 +1,75 @@
+@startuml 访问者模式序列图
+
+!theme plain
+skinparam sequenceArrowThickness 2
+skinparam sequenceGroupBorderThickness 2
+skinparam noteBorderThickness 2
+skinparam sequenceLifeLineBorderColor #DEE2E6
+skinparam sequenceLifeLineBackgroundColor #F8F9FA
+
+actor Client
+participant Drawing
+participant JsonExportVisitor
+participant "circle:Circle" as Circle
+participant "rectangle:Rectangle" as Rectangle
+participant "line:Line" as Line
+
+Client -> JsonExportVisitor : new JsonExportVisitor()
+activate JsonExportVisitor
+JsonExportVisitor --> Client : visitor
+deactivate JsonExportVisitor
+
+Client -> Drawing : acceptVisitor(visitor)
+activate Drawing
+
+note over Drawing : 遍历所有图形
+
+loop 对于每个图形
+    alt 如果是Circle
+        Drawing -> Circle : accept(visitor)
+        activate Circle
+        
+        Circle -> JsonExportVisitor : visit(this)
+        activate JsonExportVisitor
+        JsonExportVisitor -> JsonExportVisitor : shapes.put(circleJson)
+        JsonExportVisitor --> Circle
+        deactivate JsonExportVisitor
+        
+        Circle --> Drawing
+        deactivate Circle
+    else 如果是Rectangle
+        Drawing -> Rectangle : accept(visitor)
+        activate Rectangle
+        
+        Rectangle -> JsonExportVisitor : visit(this)
+        activate JsonExportVisitor
+        JsonExportVisitor -> JsonExportVisitor : shapes.put(rectJson)
+        JsonExportVisitor --> Rectangle
+        deactivate JsonExportVisitor
+        
+        Rectangle --> Drawing
+        deactivate Rectangle
+    else 如果是Line
+        Drawing -> Line : accept(visitor)
+        activate Line
+        
+        Line -> JsonExportVisitor : visit(this)
+        activate JsonExportVisitor
+        JsonExportVisitor -> JsonExportVisitor : shapes.put(lineJson)
+        JsonExportVisitor --> Line
+        deactivate JsonExportVisitor
+        
+        Line --> Drawing
+        deactivate Line
+    end
+end
+
+Drawing --> Client
+deactivate Drawing
+
+Client -> JsonExportVisitor : getJsonOutput()
+activate JsonExportVisitor
+JsonExportVisitor --> Client : JSON字符串
+deactivate JsonExportVisitor
+
+@enduml 

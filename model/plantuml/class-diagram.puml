@@ -1,0 +1,311 @@
+@startuml 图形渲染系统-类图
+
+' 设置主题和样式
+!theme plain
+skinparam classAttributeIconSize 0
+skinparam classFontStyle bold
+skinparam classBackgroundColor #F8F9FA
+skinparam classBorderColor #DEE2E6
+skinparam packageBackgroundColor #F8F9FA
+skinparam packageBorderColor #DEE2E6
+
+' 包定义
+package "model" {
+  interface Shape {
+    +getX(): int
+    +getY(): int
+    +setPosition(x: int, y: int): void
+    +accept(visitor: ShapeVisitor): void
+    +clone(): Shape
+  }
+  
+  class Circle {
+    -x: int
+    -y: int
+    -radius: int
+    +Circle(x: int, y: int, radius: int)
+    +getRadius(): int
+    +setRadius(radius: int): void
+  }
+  
+  class Rectangle {
+    -x: int
+    -y: int
+    -width: int
+    -height: int
+    +Rectangle(x: int, y: int, width: int, height: int)
+    +getWidth(): int
+    +getHeight(): int
+    +setWidth(width: int): void
+    +setHeight(height: int): void
+  }
+  
+  class Line {
+    -x1: int
+    -y1: int
+    -x2: int
+    -y2: int
+    +Line(x1: int, y1: int, x2: int, y2: int)
+    +getX1(): int
+    +getY1(): int
+    +getX2(): int
+    +getY2(): int
+    +setPoint1(x1: int, y1: int): void
+    +setPoint2(x2: int, y2: int): void
+  }
+}
+
+package "factory" {
+  class ShapeFactory {
+    +createCircle(x: int, y: int, radius: int): Shape
+    +createRectangle(x: int, y: int, width: int, height: int): Shape
+    +createLine(x1: int, y1: int, x2: int, y2: int): Shape
+  }
+  
+  interface RendererFactory {
+    +createRenderer(width: int, height: int): Renderer
+  }
+  
+  class SvgRendererFactory {
+    +createRenderer(width: int, height: int): Renderer
+  }
+  
+  class ConsoleRendererFactory {
+    +createRenderer(width: int, height: int): Renderer
+  }
+}
+
+package "render" {
+  interface Renderer {
+    +renderCircle(circle: Circle): void
+    +renderRectangle(rectangle: Rectangle): void
+    +renderLine(line: Line): void
+    +clear(): void
+    +display(): void
+  }
+  
+  class SvgRenderer {
+    -svgContent: StringBuilder
+    -width: int
+    -height: int
+    +SvgRenderer(width: int, height: int)
+    +getSvgContent(): String
+  }
+  
+  class ConsoleRenderer {
+    -canvas: char[][]
+    -width: int
+    -height: int
+    +ConsoleRenderer(width: int, height: int)
+    -drawPixel(x: int, y: int): void
+  }
+}
+
+package "command" {
+  interface Command {
+    +execute(): void
+    +undo(): void
+  }
+  
+  class AddShapeCommand {
+    -shapes: List<Shape>
+    -shape: Shape
+    +AddShapeCommand(shapes: List<Shape>, shape: Shape)
+  }
+  
+  class RemoveShapeCommand {
+    -shapes: List<Shape>
+    -shape: Shape
+    -index: int
+    +RemoveShapeCommand(shapes: List<Shape>, shape: Shape)
+  }
+  
+  class MoveShapeCommand {
+    -shape: Shape
+    -newX: int
+    -newY: int
+    -oldX: int
+    -oldY: int
+    +MoveShapeCommand(shape: Shape, newX: int, newY: int)
+  }
+  
+  class CommandManager {
+    -undoStack: Stack<Command>
+    -redoStack: Stack<Command>
+    +executeCommand(command: Command): void
+    +undo(): boolean
+    +redo(): boolean
+    +canUndo(): boolean
+    +canRedo(): boolean
+    +clearHistory(): void
+  }
+}
+
+package "visitor" {
+  interface ShapeVisitor {
+    +visit(circle: Circle): void
+    +visit(rectangle: Rectangle): void
+    +visit(line: Line): void
+  }
+  
+  class JsonExportVisitor {
+    -shapes: JSONArray
+    +getJsonOutput(): String
+    +clear(): void
+  }
+  
+  class XmlExportVisitor {
+    -document: Document
+    -rootElement: Element
+    +getXmlOutput(): String
+    +clear(): void
+  }
+}
+
+package "observer" {
+  interface ShapeObserver {
+    +onShapeAdded(shape: Shape): void
+    +onShapeRemoved(shape: Shape): void
+    +onShapeModified(shape: Shape): void
+  }
+  
+  class ShapeSubject {
+    -observers: List<ShapeObserver>
+    +addObserver(observer: ShapeObserver): void
+    +removeObserver(observer: ShapeObserver): void
+    +notifyShapeAdded(shape: Shape): void
+    +notifyShapeRemoved(shape: Shape): void
+    +notifyShapeModified(shape: Shape): void
+  }
+  
+  class ConsoleLogger {
+  }
+}
+
+package "adapter" {
+  interface ThirdPartyRenderer {
+    +drawCircle(centerX: double, centerY: double, radius: double): void
+    +drawRect(x: double, y: double, width: double, height: double): void
+    +drawLine(startX: double, startY: double, endX: double, endY: double): void
+    +clearSurface(): void
+    +refreshDisplay(): void
+  }
+  
+  class MockThirdPartyRenderer {
+  }
+  
+  class ThirdPartyRendererAdapter {
+    -thirdPartyRenderer: ThirdPartyRenderer
+    +ThirdPartyRendererAdapter(thirdPartyRenderer: ThirdPartyRenderer)
+  }
+}
+
+package "proxy" {
+  interface RemoteRenderer {
+    +renderCircle(circle: Circle): void
+    +renderRectangle(rectangle: Rectangle): void
+    +renderLine(line: Line): void
+    +clear(): void
+    +display(): void
+  }
+  
+  class RemoteRendererImpl {
+    -simulateNetworkDelay(): void
+  }
+  
+  class RemoteRendererProxy {
+    -remoteRenderer: RemoteRenderer
+    -connected: boolean
+    +connect(): boolean
+    +disconnect(): void
+    +isConnected(): boolean
+    -ensureConnected(): void
+  }
+}
+
+package "singleton" {
+  class RenderingConfig {
+    -instance: RenderingConfig {static}
+    -defaultWidth: int
+    -defaultHeight: int
+    -defaultRendererType: String
+    -debugMode: boolean
+    -RenderingConfig()
+    +getInstance(): RenderingConfig {static}
+    +getDefaultWidth(): int
+    +setDefaultWidth(width: int): void
+    +getDefaultHeight(): int
+    +setDefaultHeight(height: int): void
+    +getDefaultRendererType(): String
+    +setDefaultRendererType(type: String): void
+    +isDebugMode(): boolean
+    +setDebugMode(debug: boolean): void
+  }
+}
+
+class Drawing {
+  -shapes: List<Shape>
+  -commandManager: CommandManager
+  -shapeSubject: ShapeSubject
+  -renderer: Renderer
+  +Drawing(renderer: Renderer)
+  +addShape(shape: Shape): void
+  +removeShape(shape: Shape): void
+  +moveShape(shape: Shape, x: int, y: int): void
+  +undo(): boolean
+  +redo(): boolean
+  +addObserver(observer: ShapeObserver): void
+  +removeObserver(observer: ShapeObserver): void
+  +setRenderer(renderer: Renderer): void
+  +getRenderer(): Renderer
+  +getShapes(): List<Shape>
+  +render(): void
+  +acceptVisitor(visitor: ShapeVisitor): void
+}
+
+' 关系定义
+Shape <|.. Circle
+Shape <|.. Rectangle
+Shape <|.. Line
+
+ShapeFactory ..> Shape : creates
+ShapeFactory ..> Circle : creates
+ShapeFactory ..> Rectangle : creates
+ShapeFactory ..> Line : creates
+
+RendererFactory <|.. SvgRendererFactory
+RendererFactory <|.. ConsoleRendererFactory
+
+SvgRendererFactory ..> SvgRenderer : creates
+ConsoleRendererFactory ..> ConsoleRenderer : creates
+
+Renderer <|.. SvgRenderer
+Renderer <|.. ConsoleRenderer
+Renderer <|.. ThirdPartyRendererAdapter
+Renderer <|.. RemoteRendererProxy
+
+Command <|.. AddShapeCommand
+Command <|.. RemoveShapeCommand
+Command <|.. MoveShapeCommand
+
+CommandManager o-- Command
+
+ShapeVisitor <|.. JsonExportVisitor
+ShapeVisitor <|.. XmlExportVisitor
+
+ShapeObserver <|.. ConsoleLogger
+ShapeSubject o-- ShapeObserver
+
+ThirdPartyRenderer <|.. MockThirdPartyRenderer
+ThirdPartyRendererAdapter o-- ThirdPartyRenderer
+
+RemoteRenderer <|.. RemoteRendererImpl
+RemoteRenderer <|.. RemoteRendererProxy
+RemoteRendererProxy o-- RemoteRendererImpl
+
+Drawing o-- Shape
+Drawing o-- CommandManager
+Drawing o-- ShapeSubject
+Drawing o-- Renderer
+
+@enduml

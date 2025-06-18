@@ -1,0 +1,57 @@
+@startuml 渲染图形序列图
+
+!theme plain
+skinparam sequenceArrowThickness 2
+skinparam sequenceGroupBorderThickness 2
+skinparam noteBorderThickness 2
+skinparam sequenceLifeLineBorderColor #DEE2E6
+skinparam sequenceLifeLineBackgroundColor #F8F9FA
+
+actor Client
+participant Drawing
+participant "shape:Shape" as Shape
+participant "renderer:Renderer" as Renderer
+
+Client -> Drawing : render()
+activate Drawing
+
+Drawing -> Renderer : clear()
+activate Renderer
+Renderer --> Drawing
+deactivate Renderer
+
+note over Drawing : 遍历所有图形
+
+loop 对于每个图形
+    Drawing -> Shape : instanceof检查
+    activate Shape
+    Shape --> Drawing
+    deactivate Shape
+    
+    alt 如果是Circle
+        Drawing -> Renderer : renderCircle((Circle)shape)
+        activate Renderer
+        Renderer --> Drawing
+        deactivate Renderer
+    else 如果是Rectangle
+        Drawing -> Renderer : renderRectangle((Rectangle)shape)
+        activate Renderer
+        Renderer --> Drawing
+        deactivate Renderer
+    else 如果是Line
+        Drawing -> Renderer : renderLine((Line)shape)
+        activate Renderer
+        Renderer --> Drawing
+        deactivate Renderer
+    end
+end
+
+Drawing -> Renderer : display()
+activate Renderer
+Renderer --> Drawing
+deactivate Renderer
+
+Drawing --> Client
+deactivate Drawing
+
+@enduml 

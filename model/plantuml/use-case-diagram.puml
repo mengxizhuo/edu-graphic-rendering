@@ -1,0 +1,78 @@
+@startuml 图形渲染系统-用例图
+
+!theme plain
+skinparam actorStyle awesome
+skinparam usecaseBackgroundColor #F8F9FA
+skinparam usecaseBorderColor #DEE2E6
+skinparam actorBackgroundColor #F8F9FA
+skinparam actorBorderColor #DEE2E6
+
+' 定义角色
+:用户: as User
+:系统: as System
+
+' 定义用例
+rectangle "图形渲染系统" {
+  (创建图形) as CreateShape
+  (渲染图形) as RenderShape
+  (移动图形) as MoveShape
+  (删除图形) as DeleteShape
+  (撤销操作) as UndoOperation
+  (重做操作) as RedoOperation
+  (切换渲染器) as SwitchRenderer
+  (导出图形数据) as ExportData
+  (使用远程渲染) as UseRemoteRenderer
+  (配置系统) as ConfigSystem
+  
+  ' 扩展关系
+  (创建圆形) as CreateCircle
+  (创建矩形) as CreateRectangle
+  (创建线段) as CreateLine
+  
+  (导出为JSON) as ExportJSON
+  (导出为XML) as ExportXML
+  
+  (使用SVG渲染器) as UseSVGRenderer
+  (使用控制台渲染器) as UseConsoleRenderer
+  (使用第三方渲染器) as UseThirdPartyRenderer
+}
+
+' 定义关系
+User --> CreateShape
+User --> RenderShape
+User --> MoveShape
+User --> DeleteShape
+User --> UndoOperation
+User --> RedoOperation
+User --> SwitchRenderer
+User --> ExportData
+User --> UseRemoteRenderer
+User --> ConfigSystem
+
+CreateShape <|-- CreateCircle
+CreateShape <|-- CreateRectangle
+CreateShape <|-- CreateLine
+
+ExportData <|-- ExportJSON
+ExportData <|-- ExportXML
+
+SwitchRenderer <|-- UseSVGRenderer
+SwitchRenderer <|-- UseConsoleRenderer
+SwitchRenderer <|-- UseThirdPartyRenderer
+
+' 系统用例
+System --> RenderShape
+System --> ExportData
+
+' 包含关系
+RenderShape ..> SwitchRenderer : <<include>>
+UseRemoteRenderer ..> RenderShape : <<include>>
+
+' 扩展关系
+UndoOperation ..> MoveShape : <<extend>>
+UndoOperation ..> CreateShape : <<extend>>
+UndoOperation ..> DeleteShape : <<extend>>
+
+RedoOperation ..> UndoOperation : <<extend>>
+
+@enduml 

@@ -1,0 +1,130 @@
+@startuml 命令模式序列图
+
+!theme plain
+skinparam sequenceArrowThickness 2
+skinparam sequenceGroupBorderThickness 2
+skinparam noteBorderThickness 2
+skinparam sequenceLifeLineBorderColor #DEE2E6
+skinparam sequenceLifeLineBackgroundColor #F8F9FA
+
+actor Client
+participant Drawing
+participant CommandManager
+participant MoveShapeCommand
+participant "shape:Shape" as Shape
+participant ShapeSubject
+participant ConsoleLogger
+
+' 执行移动命令
+Client -> Drawing : moveShape(shape, x, y)
+activate Drawing
+
+Drawing -> MoveShapeCommand : new MoveShapeCommand(shape, x, y)
+activate MoveShapeCommand
+MoveShapeCommand -> Shape : getX(), getY()
+activate Shape
+Shape --> MoveShapeCommand : oldX, oldY
+deactivate Shape
+MoveShapeCommand --> Drawing : command
+deactivate MoveShapeCommand
+
+Drawing -> CommandManager : executeCommand(command)
+activate CommandManager
+
+CommandManager -> MoveShapeCommand : execute()
+activate MoveShapeCommand
+MoveShapeCommand -> Shape : setPosition(x, y)
+activate Shape
+Shape --> MoveShapeCommand
+deactivate Shape
+MoveShapeCommand --> CommandManager
+deactivate MoveShapeCommand
+
+CommandManager -> CommandManager : undoStack.push(command)
+CommandManager -> CommandManager : redoStack.clear()
+CommandManager --> Drawing
+deactivate CommandManager
+
+Drawing -> ShapeSubject : notifyShapeModified(shape)
+activate ShapeSubject
+ShapeSubject -> ConsoleLogger : onShapeModified(shape)
+activate ConsoleLogger
+ConsoleLogger --> ShapeSubject
+deactivate ConsoleLogger
+ShapeSubject --> Drawing
+deactivate ShapeSubject
+
+Drawing --> Client
+deactivate Drawing
+
+' 撤销命令
+Client -> Drawing : undo()
+activate Drawing
+
+Drawing -> CommandManager : undo()
+activate CommandManager
+
+CommandManager -> CommandManager : command = undoStack.pop()
+CommandManager -> MoveShapeCommand : undo()
+activate MoveShapeCommand
+
+MoveShapeCommand -> Shape : setPosition(oldX, oldY)
+activate Shape
+Shape --> MoveShapeCommand
+deactivate Shape
+
+MoveShapeCommand --> CommandManager
+deactivate MoveShapeCommand
+
+CommandManager -> CommandManager : redoStack.push(command)
+CommandManager --> Drawing : true
+deactivate CommandManager
+
+Drawing -> ShapeSubject : notifyShapeModified(shape)
+activate ShapeSubject
+ShapeSubject -> ConsoleLogger : onShapeModified(shape)
+activate ConsoleLogger
+ConsoleLogger --> ShapeSubject
+deactivate ConsoleLogger
+ShapeSubject --> Drawing
+deactivate ShapeSubject
+
+Drawing --> Client : true
+deactivate Drawing
+
+' 重做命令
+Client -> Drawing : redo()
+activate Drawing
+
+Drawing -> CommandManager : redo()
+activate CommandManager
+
+CommandManager -> CommandManager : command = redoStack.pop()
+CommandManager -> MoveShapeCommand : execute()
+activate MoveShapeCommand
+
+MoveShapeCommand -> Shape : setPosition(x, y)
+activate Shape
+Shape --> MoveShapeCommand
+deactivate Shape
+
+MoveShapeCommand --> CommandManager
+deactivate MoveShapeCommand
+
+CommandManager -> CommandManager : undoStack.push(command)
+CommandManager --> Drawing : true
+deactivate CommandManager
+
+Drawing -> ShapeSubject : notifyShapeModified(shape)
+activate ShapeSubject
+ShapeSubject -> ConsoleLogger : onShapeModified(shape)
+activate ConsoleLogger
+ConsoleLogger --> ShapeSubject
+deactivate ConsoleLogger
+ShapeSubject --> Drawing
+deactivate ShapeSubject
+
+Drawing --> Client : true
+deactivate Drawing
+
+@enduml 

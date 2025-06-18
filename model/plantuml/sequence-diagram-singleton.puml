@@ -1,0 +1,79 @@
+@startuml 单例模式序列图
+
+!theme plain
+skinparam sequenceArrowThickness 2
+skinparam sequenceGroupBorderThickness 2
+skinparam noteBorderThickness 2
+skinparam sequenceLifeLineBorderColor #DEE2E6
+skinparam sequenceLifeLineBackgroundColor #F8F9FA
+
+actor "Client1" as Client1
+actor "Client2" as Client2
+participant RenderingConfig
+
+' 第一个客户端获取实例
+Client1 -> RenderingConfig : getInstance()
+activate RenderingConfig
+
+note right of RenderingConfig
+  if (instance == null) {
+    instance = new RenderingConfig();
+  }
+  return instance;
+end note
+
+RenderingConfig -> RenderingConfig : instance == null
+RenderingConfig -> RenderingConfig : instance = new RenderingConfig()
+RenderingConfig --> Client1 : config
+deactivate RenderingConfig
+
+' 第一个客户端设置配置
+Client1 -> RenderingConfig : setDefaultWidth(1024)
+activate RenderingConfig
+RenderingConfig -> RenderingConfig : defaultWidth = 1024
+RenderingConfig --> Client1
+deactivate RenderingConfig
+
+Client1 -> RenderingConfig : setDefaultHeight(768)
+activate RenderingConfig
+RenderingConfig -> RenderingConfig : defaultHeight = 768
+RenderingConfig --> Client1
+deactivate RenderingConfig
+
+' 第二个客户端获取同一个实例
+Client2 -> RenderingConfig : getInstance()
+activate RenderingConfig
+
+note right of RenderingConfig
+  instance已存在，返回相同实例
+end note
+
+RenderingConfig -> RenderingConfig : instance != null
+RenderingConfig --> Client2 : 相同的config实例
+deactivate RenderingConfig
+
+' 第二个客户端获取第一个客户端设置的值
+Client2 -> RenderingConfig : getDefaultWidth()
+activate RenderingConfig
+RenderingConfig --> Client2 : 1024
+deactivate RenderingConfig
+
+Client2 -> RenderingConfig : getDefaultHeight()
+activate RenderingConfig
+RenderingConfig --> Client2 : 768
+deactivate RenderingConfig
+
+' 第二个客户端修改配置
+Client2 -> RenderingConfig : setDebugMode(true)
+activate RenderingConfig
+RenderingConfig -> RenderingConfig : debugMode = true
+RenderingConfig --> Client2
+deactivate RenderingConfig
+
+' 第一个客户端看到更改
+Client1 -> RenderingConfig : isDebugMode()
+activate RenderingConfig
+RenderingConfig --> Client1 : true
+deactivate RenderingConfig
+
+@enduml 

@@ -1,0 +1,46 @@
+@startuml 添加图形序列图
+
+!theme plain
+skinparam sequenceArrowThickness 2
+skinparam sequenceGroupBorderThickness 2
+skinparam noteBorderThickness 2
+skinparam sequenceLifeLineBorderColor #DEE2E6
+skinparam sequenceLifeLineBackgroundColor #F8F9FA
+
+actor Client
+participant Drawing
+participant CommandManager
+participant AddShapeCommand
+participant ShapeSubject
+participant ConsoleLogger
+
+Client -> Drawing : addShape(shape)
+activate Drawing
+
+Drawing -> CommandManager : executeCommand(new AddShapeCommand(shapes, shape))
+activate CommandManager
+
+CommandManager -> AddShapeCommand : execute()
+activate AddShapeCommand
+AddShapeCommand -> AddShapeCommand : shapes.add(shape)
+AddShapeCommand --> CommandManager
+deactivate AddShapeCommand
+
+CommandManager --> Drawing
+deactivate CommandManager
+
+Drawing -> ShapeSubject : notifyShapeAdded(shape)
+activate ShapeSubject
+
+ShapeSubject -> ConsoleLogger : onShapeAdded(shape)
+activate ConsoleLogger
+ConsoleLogger --> ShapeSubject
+deactivate ConsoleLogger
+
+ShapeSubject --> Drawing
+deactivate ShapeSubject
+
+Drawing --> Client
+deactivate Drawing
+
+@enduml 

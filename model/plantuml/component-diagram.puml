@@ -1,0 +1,101 @@
+@startuml 图形渲染系统-组件图
+
+!theme plain
+skinparam componentStyle rectangle
+skinparam componentBackgroundColor #F8F9FA
+skinparam componentBorderColor #DEE2E6
+skinparam interfaceBackgroundColor #F8F9FA
+skinparam interfaceBorderColor #DEE2E6
+
+' 定义组件
+package "Model Layer" {
+  [Shape Model] as ShapeModel
+  interface "Shape" as IShape
+  ShapeModel -up- IShape
+}
+
+package "Factory Layer" {
+  [Shape Factory] as ShapeFactory
+  [Renderer Factory] as RendererFactory
+  interface "RendererFactory" as IRendererFactory
+  RendererFactory -up- IRendererFactory
+}
+
+package "Render Layer" {
+  [Renderer Implementation] as RendererImpl
+  interface "Renderer" as IRenderer
+  RendererImpl -up- IRenderer
+}
+
+package "Command Layer" {
+  [Command Implementation] as CommandImpl
+  [Command Manager] as CommandManager
+  interface "Command" as ICommand
+  CommandImpl -up- ICommand
+}
+
+package "Visitor Layer" {
+  [Visitor Implementation] as VisitorImpl
+  interface "ShapeVisitor" as IVisitor
+  VisitorImpl -up- IVisitor
+}
+
+package "Observer Layer" {
+  [Observer Implementation] as ObserverImpl
+  [Subject Implementation] as SubjectImpl
+  interface "ShapeObserver" as IObserver
+  ObserverImpl -up- IObserver
+}
+
+package "Adapter Layer" {
+  [Third-Party Adapter] as Adapter
+  interface "ThirdPartyRenderer" as IThirdParty
+  [Mock Third-Party Renderer] as MockRenderer
+  MockRenderer -up- IThirdParty
+}
+
+package "Proxy Layer" {
+  [Remote Renderer Proxy] as Proxy
+  interface "RemoteRenderer" as IRemote
+  [Remote Renderer Implementation] as RemoteImpl
+  RemoteImpl -up- IRemote
+  Proxy -up- IRemote
+}
+
+package "Singleton Layer" {
+  [Rendering Config] as Config
+}
+
+[Drawing] as Drawing
+
+' 定义关系
+ShapeFactory ..> IShape : creates
+ShapeFactory ..> ShapeModel : creates
+
+IRendererFactory ..> IRenderer : creates
+RendererFactory ..> RendererImpl : creates
+
+Drawing o-- IShape : contains
+Drawing o-- IRenderer : uses
+Drawing o-- CommandManager : uses
+Drawing o-- SubjectImpl : uses
+
+CommandManager o-- ICommand : manages
+CommandImpl ..> ShapeModel : manipulates
+
+VisitorImpl ..> ShapeModel : visits
+IShape ..> IVisitor : accepts
+
+ObserverImpl ..> ShapeModel : observes
+SubjectImpl o-- IObserver : notifies
+
+Adapter o-- IThirdParty : adapts
+Adapter -up- IRenderer : implements
+
+Proxy o-- IRemote : proxies
+Proxy -up- IRenderer : implements
+
+Drawing ..> Config : uses
+Config ..> Config : singleton instance
+
+@enduml 

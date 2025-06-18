@@ -1,0 +1,76 @@
+@startuml 适配器模式序列图
+
+!theme plain
+skinparam sequenceArrowThickness 2
+skinparam sequenceGroupBorderThickness 2
+skinparam noteBorderThickness 2
+skinparam sequenceLifeLineBorderColor #DEE2E6
+skinparam sequenceLifeLineBackgroundColor #F8F9FA
+
+actor Client
+participant Drawing
+participant ThirdPartyRendererAdapter
+participant MockThirdPartyRenderer
+participant "circle:Circle" as Circle
+
+' 创建第三方渲染器
+Client -> MockThirdPartyRenderer : new MockThirdPartyRenderer()
+activate MockThirdPartyRenderer
+MockThirdPartyRenderer --> Client : thirdPartyRenderer
+deactivate MockThirdPartyRenderer
+
+' 创建适配器
+Client -> ThirdPartyRendererAdapter : new ThirdPartyRendererAdapter(thirdPartyRenderer)
+activate ThirdPartyRendererAdapter
+ThirdPartyRendererAdapter --> Client : adapter
+deactivate ThirdPartyRendererAdapter
+
+' 设置渲染器
+Client -> Drawing : setRenderer(adapter)
+activate Drawing
+Drawing -> Drawing : this.renderer = adapter
+Drawing --> Client
+deactivate Drawing
+
+' 渲染图形
+Client -> Drawing : render()
+activate Drawing
+
+Drawing -> ThirdPartyRendererAdapter : clear()
+activate ThirdPartyRendererAdapter
+ThirdPartyRendererAdapter -> MockThirdPartyRenderer : clearSurface()
+activate MockThirdPartyRenderer
+MockThirdPartyRenderer -> MockThirdPartyRenderer : System.out.println("ThirdParty: Clearing surface")
+MockThirdPartyRenderer --> ThirdPartyRendererAdapter
+deactivate MockThirdPartyRenderer
+ThirdPartyRendererAdapter --> Drawing
+deactivate ThirdPartyRendererAdapter
+
+Drawing -> ThirdPartyRendererAdapter : renderCircle(circle)
+activate ThirdPartyRendererAdapter
+ThirdPartyRendererAdapter -> Circle : getX(), getY(), getRadius()
+activate Circle
+Circle --> ThirdPartyRendererAdapter : x, y, radius
+deactivate Circle
+ThirdPartyRendererAdapter -> MockThirdPartyRenderer : drawCircle(x, y, radius)
+activate MockThirdPartyRenderer
+MockThirdPartyRenderer -> MockThirdPartyRenderer : System.out.println("ThirdParty: Drawing circle...")
+MockThirdPartyRenderer --> ThirdPartyRendererAdapter
+deactivate MockThirdPartyRenderer
+ThirdPartyRendererAdapter --> Drawing
+deactivate ThirdPartyRendererAdapter
+
+Drawing -> ThirdPartyRendererAdapter : display()
+activate ThirdPartyRendererAdapter
+ThirdPartyRendererAdapter -> MockThirdPartyRenderer : refreshDisplay()
+activate MockThirdPartyRenderer
+MockThirdPartyRenderer -> MockThirdPartyRenderer : System.out.println("ThirdParty: Refreshing display")
+MockThirdPartyRenderer --> ThirdPartyRendererAdapter
+deactivate MockThirdPartyRenderer
+ThirdPartyRendererAdapter --> Drawing
+deactivate ThirdPartyRendererAdapter
+
+Drawing --> Client
+deactivate Drawing
+
+@enduml 

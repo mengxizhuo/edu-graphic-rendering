@@ -1,0 +1,118 @@
+@startuml 图形渲染系统-设计模式关系图
+
+!theme plain
+skinparam packageBackgroundColor #F8F9FA
+skinparam packageBorderColor #DEE2E6
+skinparam classBackgroundColor #F8F9FA
+skinparam classBorderColor #DEE2E6
+skinparam noteBorderColor #DEE2E6
+skinparam noteBackgroundColor #FFFDF5
+
+' 创建型模式
+package "创建型模式" {
+  class "工厂模式\nFactory" as Factory #E3F2FD {
+    ShapeFactory
+    - 创建具体图形对象
+    - 将对象的创建与使用分离
+  }
+  
+  class "抽象工厂模式\nAbstract Factory" as AbstractFactory #E3F2FD {
+    RendererFactory
+    - 创建不同渲染器族
+    - 支持多种渲染方式
+  }
+  
+  class "单例模式\nSingleton" as Singleton #E3F2FD {
+    RenderingConfig
+    - 全局唯一配置实例
+    - 提供共享配置
+  }
+}
+
+' 结构型模式
+package "结构型模式" {
+  class "适配器模式\nAdapter" as Adapter #E8F5E9 {
+    ThirdPartyRendererAdapter
+    - 适配第三方渲染器接口
+    - 兼容不同图形库
+  }
+  
+  class "桥接模式\nBridge" as Bridge #E8F5E9 {
+    Renderer接口与实现
+    - 抽象与实现分离
+    - 支持多种渲染方式
+  }
+  
+  class "代理模式\nProxy" as Proxy #E8F5E9 {
+    RemoteRendererProxy
+    - 控制对远程渲染服务的访问
+    - 提供本地与远程渲染
+  }
+}
+
+' 行为型模式
+package "行为型模式" {
+  class "命令模式\nCommand" as Command #FFF9C4 {
+    Command接口及实现
+    - 操作封装为对象
+    - 支持撤销和重做
+  }
+  
+  class "访问者模式\nVisitor" as Visitor #FFF9C4 {
+    ShapeVisitor接口及实现
+    - 不修改图形类添加新操作
+    - 导出为JSON、XML等格式
+  }
+  
+  class "观察者模式\nObserver" as Observer #FFF9C4 {
+    ShapeObserver接口及实现
+    - 监听模型变化
+    - 实现界面与数据分离
+  }
+}
+
+' 核心类
+class "Drawing" as Drawing {
+  - 集成各种设计模式
+  - 管理图形和渲染
+}
+
+' 关系
+Drawing --> Factory : 使用
+Drawing --> AbstractFactory : 使用
+Drawing --> Singleton : 使用
+Drawing --> Adapter : 使用
+Drawing --> Bridge : 使用
+Drawing --> Proxy : 使用
+Drawing --> Command : 使用
+Drawing --> Visitor : 使用
+Drawing --> Observer : 使用
+
+note "ShapeFactory创建图形对象" as N1
+Factory .. N1
+
+note "RendererFactory创建渲染器" as N2
+AbstractFactory .. N2
+
+note "RenderingConfig提供全局配置" as N3
+Singleton .. N3
+
+note "ThirdPartyRendererAdapter适配第三方渲染器" as N4
+Adapter .. N4
+
+note "Renderer接口与实现分离" as N5
+Bridge .. N5
+
+note "RemoteRendererProxy控制远程访问" as N6
+Proxy .. N6
+
+note "Command封装操作，支持撤销重做" as N7
+Command .. N7
+
+note "ShapeVisitor实现数据导出" as N8
+Visitor .. N8
+
+note "ShapeObserver监听模型变化" as N9
+Observer .. N9
+
+@enduml 

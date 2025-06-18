@@ -1,0 +1,52 @@
+@startuml 工厂模式序列图
+
+!theme plain
+skinparam sequenceArrowThickness 2
+skinparam sequenceGroupBorderThickness 2
+skinparam noteBorderThickness 2
+skinparam sequenceLifeLineBorderColor #DEE2E6
+skinparam sequenceLifeLineBackgroundColor #F8F9FA
+
+actor Client
+participant ShapeFactory
+participant "circle:Circle" as Circle
+participant "rectangle:Rectangle" as Rectangle
+participant "line:Line" as Line
+
+' 创建工厂
+Client -> ShapeFactory : new ShapeFactory()
+activate ShapeFactory
+ShapeFactory --> Client : factory
+deactivate ShapeFactory
+
+' 创建圆形
+Client -> ShapeFactory : createCircle(100, 100, 50)
+activate ShapeFactory
+ShapeFactory -> Circle : new Circle(100, 100, 50)
+activate Circle
+Circle --> ShapeFactory : circle
+deactivate Circle
+ShapeFactory --> Client : circle
+deactivate ShapeFactory
+
+' 创建矩形
+Client -> ShapeFactory : createRectangle(200, 200, 150, 100)
+activate ShapeFactory
+ShapeFactory -> Rectangle : new Rectangle(200, 200, 150, 100)
+activate Rectangle
+Rectangle --> ShapeFactory : rectangle
+deactivate Rectangle
+ShapeFactory --> Client : rectangle
+deactivate ShapeFactory
+
+' 创建线段
+Client -> ShapeFactory : createLine(50, 50, 350, 350)
+activate ShapeFactory
+ShapeFactory -> Line : new Line(50, 50, 350, 350)
+activate Line
+Line --> ShapeFactory : line
+deactivate Line
+ShapeFactory --> Client : line
+deactivate ShapeFactory
+
+@enduml 
