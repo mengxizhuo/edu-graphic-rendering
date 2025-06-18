@@ -92,4 +92,4 @@ drawing.render();
 
 ## 8. 联系方式
 
-mengxizhuo@gmail.com。 
+mengxizhuo@gmail.com

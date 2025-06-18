@@ -202,7 +202,7 @@ public class SwingGraphicsApp extends JFrame {
         JMenuItem aboutItem = new JMenuItem("关于");
         aboutItem.addActionListener(e -> {
             JOptionPane.showMessageDialog(this,
-                "图形渲染系统\n版本 1.0\n\n使用Java Swing开发的图形渲染应用\n支持多种设计模式",
+                "图形渲染系统\n版本 1.0\n\n使用Java Swing开发的图形渲染应用\n支持多种设计模式\nsxizhuo.cn\nmengxizhuo@gmail.com",
                 "关于图形渲染系统",
                 JOptionPane.INFORMATION_MESSAGE);
         });
