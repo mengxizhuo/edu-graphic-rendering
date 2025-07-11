@@ -20,7 +20,6 @@
   ├── /src/           # 源代码
   │    ├── /main/     # 主代码
   │    └── /test/     # 测试代码
-  ├── /javadoc/       # 生成的JavaDoc文档
   ├── /target/        # 编译输出
   │    └── /site/     # 生成的站点文档
   └── README.md       # 项目说明
@@ -137,3 +136,6 @@ mvn site
 
 ## 开发
 mengxizhuo@gmail.com
+
+## 开源协议
+Creative Commons 署名协议（CC-BY）允许下载和引用，但依据学校学术诚信政策，严禁将其作为他人作业提交
