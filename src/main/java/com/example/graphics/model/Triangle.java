@@ -1,11 +1,13 @@
 package com.example.graphics.model;
 
 import com.example.graphics.visitor.ShapeVisitor;
+import java.io.Serializable;
 
 /**
  * Triangle implementation of the Shape interface.
  */
-public class Triangle implements Shape {
+public class Triangle implements Shape, Serializable {
+    private static final long serialVersionUID = 1L;
     private int x1;
     private int y1;
     private int x2;

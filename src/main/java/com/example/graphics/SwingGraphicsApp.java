@@ -34,12 +34,22 @@ public class SwingGraphicsApp extends JFrame {
     
     private Shape selectedShape;
     private String currentShapeType = "Circle";
+    private String currentMode = "Create"; // Create, Move
     private Point dragStart;
     private boolean isDragging = false;
     private boolean isDrawingLine = false;
     private boolean isDrawingTriangle = false;
     private int triangleStage = 0;
     private int x1, y1, x2, y2;  // 用于存储线条和三角形的点
+    
+    // 新增：圆形和矩形创建状态
+    private boolean isCreatingCircle = false;
+    private boolean isCreatingRectangle = false;
+    private com.example.graphics.model.Circle creatingCircle;
+    private com.example.graphics.model.Rectangle creatingRectangle;
+    private Point rectangleStart;
+    private Point circleCenter; // 圆心位置
+    private int currentRadius = 10;
     
     private JLabel statusLabel;
     private JToggleButton remoteRenderingToggle;
@@ -240,6 +250,37 @@ public class SwingGraphicsApp extends JFrame {
         JToolBar toolBar = new JToolBar();
         toolBar.setFloatable(false);
         
+        // 模式选择按钮
+        String[] modes = {"Create", "Move"};
+        ButtonGroup modeGroup = new ButtonGroup();
+        
+        for (String mode : modes) {
+            JToggleButton button = new JToggleButton(mode.equals("Create") ? "创建模式" : "移动模式");
+            button.addActionListener(e -> {
+                currentMode = mode;
+                statusLabel.setText("当前模式: " + (mode.equals("Create") ? "创建模式" : "移动模式"));
+                
+                // 重置绘制状态
+                isDrawingLine = false;
+                isDrawingTriangle = false;
+                triangleStage = 0;
+                selectedShape = null;
+                isDragging = false;
+                
+                // 重置创建状态
+                resetCreationStates();
+            });
+            modeGroup.add(button);
+            toolBar.add(button);
+            
+            // 默认选择创建模式
+            if ("Create".equals(mode)) {
+                button.setSelected(true);
+            }
+        }
+        
+        toolBar.addSeparator();
+        
         // 形状选择按钮
         String[] shapeTypes = {"Circle", "Rectangle", "Line", "Triangle"};
         ButtonGroup shapeGroup = new ButtonGroup();
@@ -254,6 +295,9 @@ public class SwingGraphicsApp extends JFrame {
                 isDrawingLine = false;
                 isDrawingTriangle = false;
                 triangleStage = 0;
+                
+                // 重置创建状态
+                resetCreationStates();
             });
             shapeGroup.add(button);
             toolBar.add(button);
@@ -339,90 +383,244 @@ public class SwingGraphicsApp extends JFrame {
         renderPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                dragStart = e.getPoint();
-                
-                // 检查是否点击了现有形状
-                for (Shape shape : drawing.getShapes()) {
-                    if (isPointOnShape(shape, e.getPoint())) {
-                        selectedShape = shape;
-                        isDragging = true;
-                        statusLabel.setText("已选中图形: " + getShapeTypeName(shape));
-                        return;
-                    }
+                if (SwingUtilities.isRightMouseButton(e)) {
+                    handleRightClick(e);
+                    return;
                 }
                 
-                // 如果没有点击现有形状，处理新形状创建
-                if (currentShapeType.equals("Line")) {
-                    if (!isDrawingLine) {
-                        // 开始绘制线条
-                        isDrawingLine = true;
-                        x1 = e.getX();
-                        y1 = e.getY();
-                        statusLabel.setText("绘制线条: 已设置起点，请点击终点");
-                    } else {
-                        // 完成线条绘制
-                        x2 = e.getX();
-                        y2 = e.getY();
-                        Shape line = shapeFactory.createLine(x1, y1, x2, y2);
-                        drawing.addShape(line);
-                        drawing.render();
-                        isDrawingLine = false;
-                        statusLabel.setText("已添加线条");
-                    }
-                } else if (currentShapeType.equals("Triangle")) {
-                    if (triangleStage == 0) {
-                        // 第一个点
-                        x1 = e.getX();
-                        y1 = e.getY();
-                        triangleStage = 1;
-                        isDrawingTriangle = true;
-                        statusLabel.setText("绘制三角形: 已设置第一个顶点，请点击第二个顶点");
-                    } else if (triangleStage == 1) {
-                        // 第二个点
-                        x2 = e.getX();
-                        y2 = e.getY();
-                        triangleStage = 2;
-                        statusLabel.setText("绘制三角形: 已设置第二个顶点，请点击第三个顶点");
-                    } else if (triangleStage == 2) {
-                        // 第三个点，完成三角形
-                        Shape triangle = shapeFactory.createTriangle(x1, y1, x2, y2, e.getX(), e.getY());
-                        drawing.addShape(triangle);
-                        drawing.render();
-                        triangleStage = 0;
-                        isDrawingTriangle = false;
-                        statusLabel.setText("已添加三角形");
-                    }
-                } else {
-                    // 创建其他形状
-                    createNewShape(e.getPoint());
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    handleLeftClick(e);
                 }
             }
             
             @Override
             public void mouseReleased(MouseEvent e) {
-                isDragging = false;
-                if (selectedShape != null) {
-                    statusLabel.setText("已移动图形: " + getShapeTypeName(selectedShape));
+                if (currentMode.equals("Move")) {
+                    isDragging = false;
+                    if (selectedShape != null) {
+                        statusLabel.setText("图形移动完成: " + getShapeTypeName(selectedShape));
+                    }
+                    selectedShape = null;
                 }
-                selectedShape = null;
             }
         });
         
         renderPanel.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                if (isDragging && selectedShape != null) {
-                    drawing.moveShape(selectedShape, e.getX(), e.getY());
+                if (currentMode.equals("Move") && isDragging && selectedShape != null) {
+                    selectedShape.setPosition(e.getX(), e.getY());
+                    drawing.render();
                     statusLabel.setText("正在移动图形: " + getShapeTypeName(selectedShape));
+                } else if (isCreatingRectangle && rectangleStart != null) {
+                    updateRectangleSize(e.getPoint());
+                } else if (isCreatingCircle && circleCenter != null) {
+                    updateCircleRadius(e.getPoint());
                 }
             }
             
             @Override
             public void mouseMoved(MouseEvent e) {
-                // 显示鼠标坐标
-                statusLabel.setText("坐标: (" + e.getX() + ", " + e.getY() + ")");
+                if (isCreatingRectangle && rectangleStart != null) {
+                    updateRectangleSize(e.getPoint());
+                } else if (isCreatingCircle && circleCenter != null) {
+                    updateCircleRadius(e.getPoint());
+                } else if (!isCreatingCircle && !isCreatingRectangle) {
+                    statusLabel.setText("坐标: (" + e.getX() + ", " + e.getY() + ")");
+                }
             }
         });
+    }
+    
+    private void handleLeftClick(MouseEvent e) {
+        if (currentMode.equals("Move")) {
+            // 移动模式
+            for (Shape shape : drawing.getShapes()) {
+                if (isPointOnShape(shape, e.getPoint())) {
+                    selectedShape = shape;
+                    isDragging = true;
+                    statusLabel.setText("已选中图形进行移动: " + getShapeTypeName(shape));
+                    return;
+                }
+            }
+            statusLabel.setText("移动模式：请点击要移动的图形");
+            return;
+        }
+        
+        // 创建模式
+        if (currentMode.equals("Create")) {
+            if (isCreatingCircle) {
+                // 正在创建圆形，点击确认
+                confirmCircleCreation();
+            } else if (isCreatingRectangle) {
+                // 正在创建矩形，点击确认
+                confirmRectangleCreation();
+            } else {
+                // 开始创建新图形
+                startShapeCreation(e.getPoint());
+            }
+        }
+    }
+    
+    private void handleRightClick(MouseEvent e) {
+        // 如果正在创建圆形，右键直接输入半径
+        if (isCreatingCircle && creatingCircle != null) {
+            int newRadius = showRadiusDialog(currentRadius);
+            if (newRadius > 0) {
+                currentRadius = newRadius;
+                creatingCircle.setRadius(currentRadius);
+                // 临时添加以便渲染
+                drawing.addShape(creatingCircle);
+                drawing.render();
+                drawing.removeShape(creatingCircle);
+                statusLabel.setText("正在创建圆形 - 半径: " + currentRadius + " (点击确认，右键可自定义大小)");
+            }
+            return;
+        }
+        
+        // 检查是否点击了圆形，用于自定义半径
+        for (Shape shape : drawing.getShapes()) {
+            if (isPointOnShape(shape, e.getPoint()) && shape instanceof com.example.graphics.model.Circle) {
+                com.example.graphics.model.Circle circle = (com.example.graphics.model.Circle) shape;
+                int newRadius = showRadiusDialog(circle.getRadius());
+                if (newRadius > 0) {
+                    circle.setRadius(newRadius);
+                    drawing.render();
+                    statusLabel.setText("圆圈半径已设置为: " + newRadius);
+                }
+                return;
+            }
+        }
+    }
+    
+    private void startShapeCreation(Point point) {
+        switch (currentShapeType) {
+            case "Circle":
+                startCircleCreation(point);
+                break;
+            case "Rectangle":
+                startRectangleCreation(point);
+                break;
+            case "Line":
+                handleLineCreation(point);
+                break;
+            case "Triangle":
+                handleTriangleCreation(point);
+                break;
+        }
+    }
+    
+    private void startCircleCreation(Point point) {
+        isCreatingCircle = true;
+        circleCenter = point;
+        currentRadius = 10;
+        creatingCircle = new com.example.graphics.model.Circle(point.x, point.y, currentRadius);
+        statusLabel.setText("正在创建圆形 - 拖拽调整半径，点击确认 (右键可自定义大小)");
+    }
+    
+    private void updateCircleRadius(Point currentPoint) {
+        if (circleCenter != null && creatingCircle != null) {
+            // 计算鼠标到圆心的距离作为半径
+            double distance = Math.sqrt(
+                Math.pow(currentPoint.x - circleCenter.x, 2) + 
+                Math.pow(currentPoint.y - circleCenter.y, 2)
+            );
+            
+            currentRadius = Math.max(5, (int) distance); // 最小半径为5
+            currentRadius = Math.min(currentRadius, 300); // 最大半径为300
+            
+            creatingCircle.setRadius(currentRadius);
+            
+            // 临时添加以便渲染
+            drawing.addShape(creatingCircle);
+            drawing.render();
+            drawing.removeShape(creatingCircle);
+            
+            statusLabel.setText("正在创建圆形 - 半径: " + currentRadius + " (点击确认，右键可自定义大小)");
+        }
+    }
+    
+    private void confirmCircleCreation() {
+        drawing.addShape(creatingCircle);
+        drawing.render();
+        statusLabel.setText("已创建圆形 - 半径: " + currentRadius);
+        isCreatingCircle = false;
+        creatingCircle = null;
+        circleCenter = null;
+    }
+    
+    private void startRectangleCreation(Point point) {
+        isCreatingRectangle = true;
+        rectangleStart = point;
+        creatingRectangle = new com.example.graphics.model.Rectangle(point.x, point.y, 1, 1);
+        statusLabel.setText("正在创建矩形 - 拖拽到右下角，点击确认");
+    }
+    
+    private void updateRectangleSize(Point currentPoint) {
+        if (rectangleStart != null && creatingRectangle != null) {
+            int width = Math.abs(currentPoint.x - rectangleStart.x);
+            int height = Math.abs(currentPoint.y - rectangleStart.y);
+            int x = Math.min(rectangleStart.x, currentPoint.x);
+            int y = Math.min(rectangleStart.y, currentPoint.y);
+            
+            creatingRectangle.setPosition(x, y);
+            creatingRectangle.setSize(width, height);
+            
+            // 临时添加以便渲染
+            drawing.addShape(creatingRectangle);
+            drawing.render();
+            drawing.removeShape(creatingRectangle);
+            
+            statusLabel.setText("正在创建矩形 - 大小: " + width + "x" + height + " (点击确认)");
+        }
+    }
+    
+    private void confirmRectangleCreation() {
+        drawing.addShape(creatingRectangle);
+        drawing.render();
+        statusLabel.setText("已创建矩形 - 大小: " + creatingRectangle.getWidth() + "x" + creatingRectangle.getHeight());
+        isCreatingRectangle = false;
+        creatingRectangle = null;
+        rectangleStart = null;
+    }
+    
+    private void handleLineCreation(Point point) {
+        if (!isDrawingLine) {
+            isDrawingLine = true;
+            x1 = point.x;
+            y1 = point.y;
+            statusLabel.setText("绘制线条: 已设置起点，请点击终点");
+        } else {
+            x2 = point.x;
+            y2 = point.y;
+            Shape line = shapeFactory.createLine(x1, y1, x2, y2);
+            drawing.addShape(line);
+            drawing.render();
+            isDrawingLine = false;
+            statusLabel.setText("已添加线条");
+        }
+    }
+    
+    private void handleTriangleCreation(Point point) {
+        if (triangleStage == 0) {
+            x1 = point.x;
+            y1 = point.y;
+            triangleStage = 1;
+            isDrawingTriangle = true;
+            statusLabel.setText("绘制三角形: 已设置第一个顶点，请点击第二个顶点");
+        } else if (triangleStage == 1) {
+            x2 = point.x;
+            y2 = point.y;
+            triangleStage = 2;
+            statusLabel.setText("绘制三角形: 已设置第二个顶点，请点击第三个顶点");
+        } else if (triangleStage == 2) {
+            Shape triangle = shapeFactory.createTriangle(x1, y1, x2, y2, point.x, point.y);
+            drawing.addShape(triangle);
+            drawing.render();
+            triangleStage = 0;
+            isDrawingTriangle = false;
+            statusLabel.setText("已添加三角形");
+        }
     }
     
     private String getShapeTypeName(Shape shape) {
@@ -491,28 +689,48 @@ public class SwingGraphicsApp extends JFrame {
         return false;
     }
     
-    private void createNewShape(Point point) {
-        Shape newShape = null;
+    private int showRadiusDialog(int currentRadius) {
+        String input = JOptionPane.showInputDialog(this, 
+            "请输入圆形半径:\n当前半径: " + currentRadius, 
+            "设置圆形大小", 
+            JOptionPane.QUESTION_MESSAGE);
         
-        switch (currentShapeType) {
-            case "Circle":
-                newShape = shapeFactory.createCircle(point.x, point.y, 50);
-                statusLabel.setText("已添加圆形");
-                break;
-            case "Rectangle":
-                newShape = shapeFactory.createRectangle(point.x, point.y, 100, 80);
-                statusLabel.setText("已添加矩形");
-                break;
-            // Line和Triangle在mousePressed中处理
+        if (input != null && !input.trim().isEmpty()) {
+            try {
+                int radius = Integer.parseInt(input.trim());
+                if (radius > 0 && radius <= 500) {
+                    return radius;
+                } else {
+                    JOptionPane.showMessageDialog(this, 
+                        "半径必须在1到500之间", 
+                        "输入错误", 
+                        JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, 
+                    "请输入有效的数字", 
+                    "输入错误", 
+                    JOptionPane.ERROR_MESSAGE);
+            }
         }
-        
-        if (newShape != null) {
-            drawing.addShape(newShape);
-            drawing.render();
-        }
+        return -1;
+    }
+    
+    private void resetCreationStates() {
+        // 重置创建状态
+        isCreatingCircle = false;
+        isCreatingRectangle = false;
+        creatingCircle = null;
+        creatingRectangle = null;
+        rectangleStart = null;
+        circleCenter = null;
+        currentRadius = 10;
     }
     
     private void clearDrawing() {
+        // 重置创建状态
+        resetCreationStates();
+        
         // 清除所有形状
         for (Shape shape : drawing.getShapes().toArray(new Shape[0])) {
             drawing.removeShape(shape);

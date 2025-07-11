@@ -1,11 +1,13 @@
 package com.example.graphics.model;
 
 import com.example.graphics.visitor.ShapeVisitor;
+import java.io.Serializable;
 
 /**
  * Circle implementation of the Shape interface.
  */
-public class Circle implements Shape {
+public class Circle implements Shape, Serializable {
+    private static final long serialVersionUID = 1L;
     private int x;
     private int y;
     private int radius;
